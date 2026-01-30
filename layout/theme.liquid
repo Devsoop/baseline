@@ -98,9 +98,12 @@
         color: rgba(var(--color-foreground), 0.75);
         background-color: rgb(var(--color-background));
       }
-
+     
       :root {
-        --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+
+        --font-body-family: 'IvyEpic', {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+
+        
         --font-body-style: {{ settings.type_body_font.style }};
         --font-body-weight: {{ settings.type_body_font.weight }};
         --font-body-weight-bold: {{ settings.type_body_font.weight | plus: 300 | at_most: 1000 }};
@@ -220,6 +223,39 @@
         --variant-pills-shadow-horizontal-offset: {{ settings.variant_pills_shadow_horizontal_offset }}px;
         --variant-pills-shadow-vertical-offset: {{ settings.variant_pills_shadow_vertical_offset }}px;
         --variant-pills-shadow-blur-radius: {{ settings.variant_pills_shadow_blur }}px;
+
+        /*Override Font*/
+        /* --font-heading-family: 'BioSans'; */
+        --font-body-family: "IvyEpic";
+        /* --font-body-family--alt: 'BioSans'; */
+      }
+      @font-face {
+        font-display: swap;
+        font-family: 'IvyEpic';
+        src: url('{{ 'IvyEpic.otf' | asset_url }}') format('opentype');
+        font-weight: 300;
+        font-style: normal;
+      }
+      @font-face {
+        font-display: swap;
+        font-family: 'IvyEpic';
+        src: url('{{ 'IvyEpic_Light.otf' | asset_url }}') format('opentype');
+        font-weight: 400;
+        font-style: normal;
+      }
+      @font-face {
+        font-display: swap;
+        font-family: 'IvyEpic';
+        src: url('{{ 'IvyEpic_Regular.otf' | asset_url }}') format('opentype');
+        font-weight:500;
+        font-style: normal;
+      }
+      @font-face {
+        font-display: swap;
+        font-family: 'IvyEpic';
+        src: url('{{ 'IvyEpic_Medium.otf' | asset_url }}') format('opentype');
+        font-weight: 600;
+        font-style: normal;
       }
 
       *,
