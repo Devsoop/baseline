@@ -437,6 +437,12 @@ class MenuDrawer extends HTMLElement {
     this.querySelectorAll(
       'button:not(.localization-selector):not(.country-selector__close-button):not(.country-filter__reset-button)'
     ).forEach((button) => button.addEventListener('click', this.onCloseButtonClick.bind(this)));
+    this.querySelectorAll('.menu-drawer__close-drawer').forEach((btn) =>
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.closeMenuDrawer(e, this.mainDetailsToggle.querySelector('summary'));
+      })
+    );
   }
 
   onKeyUp(event) {
@@ -569,6 +575,9 @@ class HeaderDrawer extends MenuDrawer {
       `${parseInt(this.header.getBoundingClientRect().bottom - this.borderOffset)}px`
     );
     this.header.classList.add('menu-open');
+    if (window.matchMedia('(max-width: 989px)').matches) {
+      document.body.classList.add('mobile-menu-open');
+    }
 
     setTimeout(() => {
       this.mainDetailsToggle.classList.add('menu-opening');
@@ -582,6 +591,7 @@ class HeaderDrawer extends MenuDrawer {
 
   closeMenuDrawer(event, elementToFocus) {
     if (!elementToFocus) return;
+    document.body.classList.remove('mobile-menu-open');
     super.closeMenuDrawer(event, elementToFocus);
     this.header.classList.remove('menu-open');
     window.removeEventListener('resize', this.onResize);
