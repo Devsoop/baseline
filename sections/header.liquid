@@ -118,11 +118,31 @@
   endif
 %}
 
+{% comment %} Alternate logo/scheme: check if template list (string) contains current page type {% endcomment %}
+{% assign template_full = request.page_type %}
+{% if template.suffix != blank %}
+  {% assign template_full = request.page_type | append: '.' | append: template.suffix %}
+{% endif %}
+
+{% if settings.alternate_logo_templates contains template_full and settings.alternate_logo != blank %}
+  {% assign current_logo = settings.alternate_logo %}
+{% else %}
+  {% assign current_logo = settings.logo %}
+{% endif %}
+
+{% if section.settings.alternate_color_scheme_templates contains template_full and section.settings.alternate_color_scheme != blank %}
+  {% assign current_color_scheme = section.settings.alternate_color_scheme %}
+  {% assign current_menu_color_scheme = section.settings.alternate_color_scheme %}
+{% else %}
+  {% assign current_color_scheme = section.settings.color_scheme %}
+  {% assign current_menu_color_scheme = section.settings.menu_color_scheme %}
+{% endif %}
+
 <{{ header_tag }}
   {% if header_tag == 'sticky-header' %}
     data-sticky-type="{{ section.settings.sticky_header_type }}"
   {% endif %}
-  class="header-wrapper color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}"
+  class="header-wrapper color-{{ current_color_scheme }} gradient{% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}"
 >
   {%- liquid
     assign social_links = false
@@ -139,7 +159,7 @@
   <header class="header header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width{% if section.settings.menu_type_desktop == 'drawer' %} drawer-menu{% endif %}{% if section.settings.menu != blank or section.settings.mobile_menu_button_label != blank %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if localization_forms %} header--has-localizations{% endif %}">
     {%- liquid
       if section.settings.menu != blank or section.settings.mobile_menu_button_label != blank
-        render 'header-drawer'
+        render 'header-drawer', menu_color_scheme: current_menu_color_scheme
       endif
 
       if section.settings.logo_position == 'top-center' or section.settings.menu == blank
@@ -152,14 +172,14 @@
         <h1 class="header__heading">
       {%- endif -%}
       <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
-        {%- if settings.logo != blank -%}
+        {%- if current_logo != blank -%}
           <div class="header__heading-logo-wrapper">
-            {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
-            {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
+            {%- assign logo_alt = current_logo.alt | default: shop.name | escape -%}
+            {%- assign logo_height = settings.logo_width | divided_by: current_logo.aspect_ratio -%}
             {% capture sizes %}(max-width: {{ settings.logo_width | times: 2 }}px) 50vw, {{ settings.logo_width }}px{% endcapture %}
             {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
             {{
-              settings.logo
+              current_logo
               | image_url: width: 600
               | image_tag:
                 class: 'header__heading-logo motion-reduce',
@@ -195,14 +215,14 @@
         <h1 class="header__heading">
       {%- endif -%}
       <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
-        {%- if settings.logo != blank -%}
+        {%- if current_logo != blank -%}
           <div class="header__heading-logo-wrapper">
-            {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
-            {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
+            {%- assign logo_alt = current_logo.alt | default: shop.name | escape -%}
+            {%- assign logo_height = settings.logo_width | divided_by: current_logo.aspect_ratio -%}
             {% capture sizes %}(min-width: 750px) {{ settings.logo_width }}px, 50vw{% endcapture %}
             {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
             {{
-              settings.logo
+              current_logo
               | image_url: width: 600
               | image_tag:
                 class: 'header__heading-logo',
@@ -307,7 +327,7 @@
 
 {%- if settings.cart_type == 'notification' -%}
   {%- render 'cart-notification',
-    color_scheme: section.settings.color_scheme,
+    color_scheme: current_color_scheme,
     desktop_menu_type: section.settings.menu_type_desktop
   -%}
 {%- endif -%}
@@ -431,8 +451,8 @@
     "@context": "http://schema.org",
     "@type": "Organization",
     "name": {{ shop.name | json }},
-    {% if settings.logo %}
-      "logo": {{ settings.logo | image_url: width: 500 | prepend: "https:" | json }},
+    {% if current_logo %}
+      "logo": {{ current_logo | image_url: width: 500 | prepend: "https:" | json }},
     {% endif %}
     "sameAs": [
       {{ settings.social_twitter_link | json }},
@@ -598,6 +618,19 @@
       "id": "menu_color_scheme",
       "label": "t:sections.header.settings.menu_color_scheme.label",
       "default": "scheme-1"
+    },
+    {
+      "type": "color_scheme",
+      "id": "alternate_color_scheme",
+      "label": "Alternate color scheme",
+      "info": "Used on templates listed below"
+    },
+    {
+      "type": "text",
+      "id": "alternate_color_scheme_templates",
+      "label": "Use alternate color scheme on templates",
+      "info": "Comma-separated. e.g. index, product, page.about",
+      "placeholder": "index, product"
     },
     {
       "type": "header",

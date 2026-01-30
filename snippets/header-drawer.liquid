@@ -8,6 +8,16 @@
 
 {%- liquid
   assign mobile_menu_links = section.settings.menu
+
+  assign template_full = request.page_type
+  if template.suffix != blank
+    assign template_full = request.page_type | append: '.' | append: template.suffix
+  endif
+  if settings.alternate_logo_templates contains template_full and settings.alternate_logo != blank
+    assign current_logo = settings.alternate_logo
+  else
+    assign current_logo = settings.logo
+  endif
 -%}
 
 <header-drawer data-breakpoint="{% if section.settings.menu_type_desktop == 'drawer' %}desktop{% else %}tablet{% endif %}">
@@ -21,7 +31,7 @@
         {{- 'icon-close.svg' | inline_asset_content -}}
       </span>
     </summary>
-    <div id="menu-drawer" class="gradient menu-drawer menu-drawer--baseline motion-reduce color-{{ section.settings.menu_color_scheme }}">
+    <div id="menu-drawer" class="gradient menu-drawer menu-drawer--baseline motion-reduce color-{{ menu_color_scheme | default: section.settings.menu_color_scheme }}">
       <button type="button" class="menu-drawer__close-drawer link focus-inset" aria-label="{{ 'general.accessibility.close' | t }}">
         <span class="svg-wrapper">{{ 'icon-close.svg' | inline_asset_content }}</span>
       </button>
@@ -30,10 +40,10 @@
           <nav class="menu-drawer__navigation">
             <div class="menu-drawer__brand">
               <a href="{{ routes.root_url }}" class="menu-drawer__logo-link link focus-inset">
-                {%- if settings.logo != blank -%}
-                  {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
-                  {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
-                  {{ settings.logo | image_url: width: 300 | image_tag: class: 'menu-drawer__logo', alt: logo_alt, height: logo_height, width: settings.logo_width, loading: 'lazy' }}
+                {%- if current_logo != blank -%}
+                  {%- assign logo_alt = current_logo.alt | default: shop.name | escape -%}
+                  {%- assign logo_height = settings.logo_width | divided_by: current_logo.aspect_ratio -%}
+                  {{ current_logo | image_url: width: 300 | image_tag: class: 'menu-drawer__logo', alt: logo_alt, height: logo_height, width: settings.logo_width, loading: 'lazy' }}
                 {%- else -%}
                   <span class="menu-drawer__logo-text h2">{{ shop.name }}</span>
                 {%- endif -%}
