@@ -120,7 +120,7 @@
       text-transform: uppercase;
       letter-spacing: 1.5px;
     }
-    
+
     .info-block-tile-two h3 {
       font-family: {{ section.settings.heading_font }}, serif;
       font-size: 24px;
@@ -311,7 +311,7 @@
       align-items: flex-start;
       margin-bottom: 20px;
     }
-    
+
 
     .flip-icon {
       width: 30px;
@@ -337,7 +337,7 @@
       display: flex;
       align-items: center;
       justify-content: start;
-      margin: 30px 0;
+      {% comment %} margin: 30px 0; {% endcomment %}
     }
 
     .benefit-icon {
@@ -355,6 +355,7 @@
       font-size: 20px;
       font-weight: 700;
       margin: 0 0 10px;
+      font-style: italic;
     }
 
     .benefit-description {
@@ -363,6 +364,23 @@
       line-height: 1.6;
       margin: 0;
       opacity: 0.9;
+    }
+    .benefit-learn-more{
+      background: transparent;
+      border: 1px solid white;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      margin-top: 30px;
+      text-decoration: none;
+      text-align: center;
+    }
+    .benefit-learn-more:hover{
+      background: white;
+      color: black;
+      transform: translateY(-2px);
     }
 
     .benefit-cta {
@@ -599,10 +617,10 @@
                 <p class="info-text">{{ block.settings.info_description_additional }}</p>
               </div>
               {% if block.settings.show_info_card %}
-              <div class="info-block-tile-two">
-                <h3>{{ block.settings.info_card_title }}</h3>
-                <p class="info-text">{{ block.settings.info_card_text }}</p>
-              </div>
+                <div class="info-block-tile-two">
+                  <h3>{{ block.settings.info_card_title }}</h3>
+                  <p class="info-text">{{ block.settings.info_card_text }}</p>
+                </div>
               {% endif %}
             </div>
           {% endif %}
@@ -672,29 +690,30 @@
                         style="flex: 1; display: flex; flex-direction: column; justify-content: center;"
                       >
                         <div class="benefit-icon-wrapper">
-                        {% if block.settings.benefit_icon %}
-                          <img
-                            src="{{ block.settings.benefit_icon | img_url: '150x150' }}"
-                            alt="{{ block.settings.benefit_title }}"
-                            class="benefit-icon"
-                            loading="lazy"
-                            width=""
-                            height=""
-                          >
-                        {% else %}
-                          <svg
-                            class="benefit-icon"
-                            viewBox="0 0 100 100"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                          >
-                            <circle cx="50" cy="50" r="40"/>
-                            <path d="M30 50h40M50 30v40"/>
-                          </svg>
-                        {% endif %}
-                      </div>
+                          {% if block.settings.benefit_icon %}
+                            <img
+                              src="{{ block.settings.benefit_icon | img_url: '150x150' }}"
+                              alt="{{ block.settings.benefit_title }}"
+                              class="benefit-icon"
+                              loading="lazy"
+                              width=""
+                              height=""
+                            >
+                          {% else %}
+                            <svg
+                              class="benefit-icon"
+                              viewBox="0 0 100 100"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2"
+                            >
+                              <circle cx="50" cy="50" r="40"/>
+                              <path d="M30 50h40M50 30v40"/>
+                            </svg>
+                          {% endif %}
+                        </div>
                         <p class="benefit-description">{{ block.settings.benefit_back_description }}</p>
+                        <a href="{{ block.settings.benifit_card_button_link }}" class="benefit-learn-more">{{ block.settings.benifit_card_button_text }}</a>
                       </div>
                     </div>
                   </div>
@@ -1206,7 +1225,7 @@
           "id": "info_card_text",
           "label": "Info Card Text",
           "default": "This is the info card text."
-        },
+        }
       ]
     },
     {
@@ -1241,6 +1260,17 @@
           "id": "benefit_back_description",
           "label": "Description (Back)",
           "default": "Polyphenols support brain health by protecting neurons and enhancing cognitive function. Studies show improved memory and focus."
+        },
+        {
+          "type": "text",
+          "id": "benifit_card_button_text",
+          "label": "Card CTA Text",
+          "default": "Learn More"
+        },
+        {
+          "type": "url",
+          "id": "benifit_card_button_link",
+          "label": "CTA Button Link"
         }
       ]
     }
