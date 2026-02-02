@@ -9,6 +9,9 @@
   Usage:
   {% render 'product-variant-picker-bundle', product: product, block: block, product_form_id: product_form_id %}
 {% endcomment %}
+{{ 'component-product-bundle.css' | asset_url | stylesheet_tag }}
+
+ 
 {%- liquid
   assign is_subscription_selected = true
 -%}
