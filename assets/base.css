@@ -3610,15 +3610,15 @@ details-disclosure > details {
   justify-self: start;
   display: flex;
   justify-content: center;
-  background: #80808038;
+  background: #80808099;
   border-radius: 10px;
 }
 .scrolled-past-header  .header__icons {
   justify-self: center;
-  background: #80808038;
+  background: #80808099;
   border-radius: 10px;
 }
 .scrolled-past-header .header__inline-menu{
-  background: #80808038;
+  background: #80808099;
   border-radius: 10px;
 }
