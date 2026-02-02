@@ -9,80 +9,78 @@
  */
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
+    "animation_hero_8L33Mb": {
+      "type": "animation-hero",
+      "name": "Animation hero",
+      "settings": {
+        "hero_heading": "Health in every drop",
+        "hero_button_text": "Try baseline",
+        "hero_button_link": "",
+        "hero_banner_image": "shopify://shop_images/banner-3.png",
+        "polyphenols_heading": "Powered by polyphenols",
+        "polyphenols_text": "<p><em><strong>Polyphenols</strong></em> are powerful plant compounds found naturally in olives. These micronutrients act as <em><strong>potent antioxidants</strong></em>, protecting your cells from damage caused by <em><strong>free radicals</strong></em> and <em><strong>oxidative stress</strong></em>. At baseline we craft high polyphenol olive oil that contains significantly more of these beneficial compounds than regular olive oil — <em><strong>making every drop a concentrated source of nature's protection.</strong></em></p>",
+        "polyphenols_button_text": "Take the 3-minute polyphenol journey",
+        "polyphenols_button_link": "",
+        "polyphenols_image": "shopify://shop_images/image-olive.png",
+        "padding_top": 264,
+        "padding_bottom": 100
+      }
+    },
+    "grid_layout_section_bPy98A": {
+      "type": "grid-layout-section",
       "blocks": {
-        "heading": {
-          "type": "heading",
+        "card_tall_EfBrRh": {
+          "type": "card_tall",
           "settings": {
-            "heading": "Browse our latest products",
-            "heading_size": "h0"
+            "image": "shopify://shop_images/IMG_6350_1.png",
+            "title": "Small Batch. Single origin,\ncold extracted in small runs."
           }
         },
-        "button": {
-          "type": "buttons",
+        "card_fresh_7UEBNe": {
+          "type": "card_fresh",
           "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
+            "image": "shopify://shop_images/image_17.png",
+            "copy": "Fresh. Sourced from the\nfinest single-origin farms\nacross the globe."
+          }
+        },
+        "card_lab_xWRGb8": {
+          "type": "card_lab",
+          "settings": {
+            "title": "Lab\nVerified",
+            "description": "Every batch is independently tested and certified. Full transparency from farm to bottle.",
+            "button_text": "See Example Lab Report",
+            "button_url": ""
+          }
+        },
+        "card_try_dGknHK": {
+          "type": "card_try",
+          "settings": {
+            "title": "Try\nBaseline\nToday",
+            "button_text": "Try Baseline",
+            "button_url": ""
+          }
+        },
+        "card_cold_qgEn6z": {
+          "type": "card_cold",
+          "settings": {
+            "image": "shopify://shop_images/image_16.png",
+            "copy": "Cold Extracted.\nCold extraction to preserve polyphenols."
           }
         }
       },
       "block_order": [
-        "heading",
-        "button"
+        "card_tall_EfBrRh",
+        "card_fresh_7UEBNe",
+        "card_lab_xWRGb8",
+        "card_try_dGknHK",
+        "card_cold_qgEn6z"
       ],
-      "custom_css": [
-        "{margin-top: -110px;}"
-      ],
-      "settings": {
-        "image": "shopify://shop_images/Screenshot_2026-01-30_at_5.59.51_PM.png",
-        "image_overlay_opacity": 0,
-        "image_height": "large",
-        "image_behavior": "none",
-        "desktop_content_position": "bottom-center",
-        "desktop_content_alignment": "center",
-        "show_text_box": false,
-        "color_scheme": "scheme-3",
-        "stack_images_on_mobile": false,
-        "mobile_content_alignment": "center",
-        "show_text_below": false
-      }
-    },
-    "featured_collection": {
-      "type": "featured-collection",
-      "settings": {
-        "collection": "all",
-        "products_to_show": 8,
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "columns_desktop": 4,
-        "enable_desktop_slider": false,
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "color_scheme": "scheme-1",
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "swipe_on_mobile": false,
-        "padding_top": 44,
-        "padding_bottom": 36
-      }
+      "name": "Grid layout (cards)",
+      "settings": {}
     }
   },
   "order": [
-    "image_banner",
-    "featured_collection"
+    "animation_hero_8L33Mb",
+    "grid_layout_section_bPy98A"
   ]
 }
