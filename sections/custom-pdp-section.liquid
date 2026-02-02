@@ -1,0 +1,1356 @@
+{% comment %}
+  Daily Ritual Section - Two-part section with image blocks and flip cards
+  Features:
+  - Part 1: 3-column image grid with buttons and text blocks
+  - Part 2: Horizontally scrollable flip cards with expandable content
+{% endcomment %}
+
+<style>
+  .daily-ritual-section {
+      {% if section.settings.background_img != blank %}
+          background-image: url('{{ section.settings.background_img | img_url: '2000x' }}');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+      {% endif %}
+      padding: {{ section.settings.section_padding_top }}px 0 {{ section.settings.section_padding_bottom }}px;
+  }
+
+    .daily-ritual-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Part 1: Daily Ritual Header and Grid */
+    .ritual-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .ritual-title {
+      font-family: {{ section.settings.heading_font }}, serif;
+      font-size: clamp(28px, 5vw, {{ section.settings.heading_size }}px);
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: {{ section.settings.heading_color }};
+      margin: 0 0 20px;
+      text-transform: uppercase;
+      padding: 0px 140px;
+    }
+
+    .ritual-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .ritual-card {
+      background: {{ section.settings.card_background }};
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .ritual-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .ritual-card-header {
+      padding: 20px;
+      text-align: left;
+    }
+
+    .ritual-card-title {
+      font-family: {{ section.settings.card_title_font }}, sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: {{ section.settings.card_title_color }};
+      margin: 0 0 5px;
+      font-style: italic;
+    }
+
+    .ritual-card-subtitle {
+      font-family: {{ section.settings.body_font }}, sans-serif;
+      font-size: 18px;
+      color: {{ section.settings.card_subtitle_color }};
+      margin: 0;
+    }
+
+    .ritual-card-image {
+      width: 100%;
+      height: 300px;
+      object-fit: contain;
+    }
+
+    .ritual-card-footer {
+      padding: 15px 110px;
+      background: rgba(255, 255, 255, 0.5);
+      text-align: center;
+      font-size: 11px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Bottom Info Section */
+    .ritual-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      background: transparent;
+    }
+
+    .info-block {
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      background: {{ section.settings.info_background }};
+      padding: 40px;
+    }
+
+    .info-block-tile-one h3 {
+      font-family: {{ section.settings.heading_font }}, serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: {{ section.settings.info_heading_color }};
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+    
+    .info-block-tile-two h3 {
+      font-family: {{ section.settings.heading_font }}, serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: {{ section.settings.info_heading_color }};
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+    .info-block-tile-one{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    .info-block-tile-two{
+        width:80%;;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 12px;
+        background: #00000033;
+        padding: 12px;
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .info-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: {{ section.settings.button_background }};
+      color: {{ section.settings.button_text_color }};
+      border: 2px solid {{ section.settings.button_border_color }};
+      border-radius: 20px;
+      font-family: {{ section.settings.body_font }}, sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+
+    .info-button:hover {
+      background: {{ section.settings.button_hover_background }};
+      color: {{ section.settings.button_hover_text_color }};
+      transform: translateY(-2px);
+    }
+
+    .info-button.active {
+      background: {{ section.settings.button_active_background }};
+      color: {{ section.settings.button_active_text_color }};
+    }
+
+    .info-icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .info-text {
+      font-family: {{ section.settings.body_font }}, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: {{ section.settings.info_text_color }};
+      margin: 0;
+    }
+
+    .dose-badge {
+      max-width: max-content;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: {{ section.settings.badge_background }};
+      color: {{ section.settings.badge_text_color }};
+      border-radius: 25px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    /* Part 2: Benefits Section */
+    .benefits-section {
+      margin-top: 80px;
+    }
+
+    .benefits-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .benefits-title {
+      font-family: {{ section.settings.heading_font }}, serif;
+      font-size: clamp(24px, 4vw, {{ section.settings.benefits_heading_size }}px);
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: {{ section.settings.heading_color }};
+      margin: 0 0 15px;
+      text-transform: uppercase;
+      padding: 0px 140px;
+    }
+
+    .benefits-subtitle {
+      font-family: {{ section.settings.body_font }}, sans-serif;
+      font-size: 16px;
+      color: {{ section.settings.subtitle_color }};
+      margin: 0;
+    }
+
+    .benefits-scroll-container {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .benefits-cards-wrapper {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding: 20px 0 40px;
+      scrollbar-width: none;
+      scrollbar-color: transparent;
+    }
+
+    .benefits-cards-wrapper::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .benefits-cards-wrapper::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .benefits-cards-wrapper::-webkit-scrollbar-thumb {
+      background: {{ section.settings.scrollbar_color }};
+      border-radius: 10px;
+    }
+
+    .benefit-card {
+      min-width: 280px;
+      max-width: 320px;
+      height: 350px;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+
+    .benefit-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+
+    .benefit-card.flipped .benefit-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .benefit-card-front,
+    .benefit-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      padding: 30px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .benefit-card-front {
+      background: {{ section.settings.benefit_card_background }};
+      color: {{ section.settings.benefit_card_text_color }};
+    }
+
+    .benefit-card-back {
+      background: {{ section.settings.benefit_card_back_background }};
+      color: {{ section.settings.benefit_card_back_text_color }};
+      transform: rotateY(180deg);
+    }
+
+    .benefit-card-header {
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    
+
+    .flip-icon {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      border: 1px solid;
+      font-size: 20px;
+      font-weight: 300;
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .benefit-card:hover .flip-icon {
+      transform: rotate(90deg);
+    }
+
+    .benefit-icon-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      margin: 30px 0;
+    }
+
+    .benefit-icon {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+    }
+
+    .benefit-content {
+      flex: 1;
+    }
+
+    .benefit-title {
+      font-family: {{ section.settings.card_title_font }}, sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0 0 10px;
+    }
+
+    .benefit-description {
+      font-family: {{ section.settings.body_font }}, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0;
+      opacity: 0.9;
+    }
+
+    .benefit-cta {
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    .benefit-cta-button {
+      display: inline-block;
+      padding: 15px 40px;
+      background: {{ section.settings.cta_background }};
+      color: {{ section.settings.cta_text_color }};
+      border: 2px solid {{ section.settings.cta_border_color }};
+      border-radius: 30px;
+      font-family: {{ section.settings.body_font }}, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      transition: all 0.3s ease;
+    }
+
+    .benefit-cta-button:hover {
+      background: {{ section.settings.cta_hover_background }};
+      color: {{ section.settings.cta_hover_text_color }};
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .ritual-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .info-block{
+        flex-direction: column;
+      }
+
+      {% comment %} .ritual-grid .ritual-card:last-child {
+        grid-column: 1 / -1;
+        max-width: 50%;
+        margin: auto;
+      } {% endcomment %}
+
+      .ritual-info {
+        gap: 20px;
+      }
+
+      .benefit-card {
+        min-width: 260px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .ritual-grid {
+        grid-template-columns: 1fr;
+      }
+      .info-block{
+        flex-direction: column;
+        padding: 20px;
+      }
+      .benefits-title{
+        padding: 0px 20px;
+      }
+      .ritual-title{
+        padding: 0px 20px;
+      }
+
+      .ritual-grid .ritual-card:last-child {
+        max-width: 100%;
+      }
+
+      .ritual-info {
+        grid-template-columns: 1fr;
+
+      }
+
+      .button-group {
+        justify-content: start;
+      }
+
+      .benefit-card {
+        min-width: 240px;
+        height: 320px;
+      }
+
+      .benefits-cards-wrapper {
+        padding: 20px 10px 30px;
+      }
+    }
+
+    @media (max-width: 480px) {
+
+      .info-block{
+        padding: 20px;
+      }
+      .dose-badge{
+          font-size: 12px;
+      }
+      .daily-ritual-container {
+        padding: 0 15px;
+      }
+
+      .ritual-card-header {
+        padding: 15px;
+      }
+      .ritual-card-footer{
+          padding: 15px 80px;
+      }
+
+      .ritual-card-image {
+        height: 150px;
+      }
+
+      .info-button {
+        font-size: 11px;
+        padding: 6px 12px;
+      }
+
+      .benefit-card {
+        min-width: 220px;
+        height: 300px;
+      }
+
+      .benefit-card-front,
+      .benefit-card-back {
+        padding: 20px;
+      }
+
+      .benefit-icon {
+        width: 60px;
+        height: 60px;
+      }
+    }
+</style>
+
+<section class="daily-ritual-section">
+  <div class="daily-ritual-container">
+    <!-- Part 1: Daily Ritual -->
+    {% if section.settings.show_ritual_section %}
+      <div class="ritual-header">
+        <h2 class="ritual-title">{{ section.settings.ritual_title }}</h2>
+      </div>
+
+      <div class="ritual-grid">
+        {% for block in section.blocks %}
+          {% if block.type == 'ritual_card' %}
+            <div class="ritual-card" {{ block.shopify_attributes }}>
+              <div class="ritual-card-header">
+                <h3 class="ritual-card-title">{{ block.settings.card_title }}</h3>
+                <p class="ritual-card-subtitle">{{ block.settings.card_subtitle }}</p>
+              </div>
+              {% if block.settings.card_image %}
+                <img
+                  src="{{ block.settings.card_image | img_url: '400x400' }}"
+                  alt="{{ block.settings.card_title }}"
+                  class="ritual-card-image"
+                  loading="lazy"
+                  width=""
+                  height=""
+                >
+              {% endif %}
+              {% if block.settings.card_footer %}
+                <div class="ritual-card-footer">{{ block.settings.card_footer }}</div>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <div class="ritual-info">
+        {% for block in section.blocks %}
+          {% if block.type == 'info_block' %}
+            <div class="info-block" {{ block.shopify_attributes }}>
+              <div class="info-block-tile-one">
+                <h3>{{ block.settings.info_title }}</h3>
+
+                {% if block.settings.show_buttons %}
+                  <div class="button-group">
+                    {% if block.settings.button_1_text != blank %}
+                      <span class="info-button {% if block.settings.button_1_active %}active{% endif %}">
+                        {% if block.settings.button_1_icon %}
+                          <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                          </svg>
+                        {% endif %}
+                        {{ block.settings.button_1_text }}
+                      </span>
+                    {% endif %}
+
+                    {% if block.settings.button_2_text != blank %}
+                      <span class="info-button {% if block.settings.button_2_active %}active{% endif %}">
+                        {% if block.settings.button_2_icon %}
+                          <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/>
+                            <line x1="6" y1="1" x2="6" y2="4"/>
+                            <line x1="10" y1="1" x2="10" y2="4"/>
+                            <line x1="14" y1="1" x2="14" y2="4"/>
+                          </svg>
+                        {% endif %}
+                        {{ block.settings.button_2_text }}
+                      </span>
+                    {% endif %}
+
+                    {% if block.settings.button_3_text != blank %}
+                      <span class="info-button {% if block.settings.button_3_active %}active{% endif %}">
+                        {% if block.settings.button_3_icon %}
+                          <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                          </svg>
+                        {% endif %}
+                        {{ block.settings.button_3_text }}
+                      </span>
+                    {% endif %}
+                  </div>
+                {% endif %}
+
+                {% if block.settings.show_dose_badge %}
+                  <div class="dose-badge">
+                    <span>{{ block.settings.dose_badge_text }}</span>
+                  </div>
+                {% endif %}
+
+                <p class="info-text">{{ block.settings.info_description }}</p>
+
+                {% if block.settings.show_dose_badge %}
+                  <div class="dose-badge">
+                    <span>{{ block.settings.dose_badge_text_additional }}</span>
+                  </div>
+                {% endif %}
+
+                <p class="info-text">{{ block.settings.info_description_additional }}</p>
+              </div>
+              {% if block.settings.show_info_card %}
+              <div class="info-block-tile-two">
+                <h3>{{ block.settings.info_card_title }}</h3>
+                <p class="info-text">{{ block.settings.info_card_text }}</p>
+              </div>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Part 2: Benefits Section -->
+    {% if section.settings.show_benefits_section %}
+      <div class="benefits-section">
+        <div class="benefits-header">
+          <h2 class="benefits-title">{{ section.settings.benefits_title }}</h2>
+          {% if section.settings.benefits_subtitle != blank %}
+            <p class="benefits-subtitle">{{ section.settings.benefits_subtitle }}</p>
+          {% endif %}
+        </div>
+
+        <div class="benefits-scroll-container">
+          <div class="benefits-cards-wrapper" id="benefitsCards">
+            {% for block in section.blocks %}
+              {% if block.type == 'benefit_card' %}
+                <div class="benefit-card" data-card-id="{{ block.id }}" {{ block.shopify_attributes }}>
+                  <div class="benefit-card-inner">
+                    <!-- Front of Card -->
+                    <div class="benefit-card-front">
+                      <div class="benefit-card-header">
+                        <div style="flex: 1;"></div>
+                        <div class="flip-icon">+</div>
+                      </div>
+                      <div class="benefit-icon-wrapper">
+                        {% if block.settings.benefit_icon %}
+                          <img
+                            src="{{ block.settings.benefit_icon | img_url: '150x150' }}"
+                            alt="{{ block.settings.benefit_title }}"
+                            class="benefit-icon"
+                            loading="lazy"
+                            width=""
+                            height=""
+                          >
+                        {% else %}
+                          <svg
+                            class="benefit-icon"
+                            viewBox="0 0 100 100"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <circle cx="50" cy="50" r="40"/>
+                            <path d="M30 50h40M50 30v40"/>
+                          </svg>
+                        {% endif %}
+                      </div>
+                      <div class="benefit-content">
+                        <h3 class="benefit-title">{{ block.settings.benefit_title }}</h3>
+                        <p class="benefit-description">{{ block.settings.benefit_description }}</p>
+                      </div>
+                    </div>
+
+                    <!-- Back of Card -->
+                    <div class="benefit-card-back">
+                      <div class="benefit-card-header">
+                        <div style="flex: 1;"></div>
+                        <div class="flip-icon">×</div>
+                      </div>
+                      <div
+                        class="benefit-content"
+                        style="flex: 1; display: flex; flex-direction: column; justify-content: center;"
+                      >
+                        <div class="benefit-icon-wrapper">
+                        {% if block.settings.benefit_icon %}
+                          <img
+                            src="{{ block.settings.benefit_icon | img_url: '150x150' }}"
+                            alt="{{ block.settings.benefit_title }}"
+                            class="benefit-icon"
+                            loading="lazy"
+                            width=""
+                            height=""
+                          >
+                        {% else %}
+                          <svg
+                            class="benefit-icon"
+                            viewBox="0 0 100 100"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <circle cx="50" cy="50" r="40"/>
+                            <path d="M30 50h40M50 30v40"/>
+                          </svg>
+                        {% endif %}
+                      </div>
+                        <p class="benefit-description">{{ block.settings.benefit_back_description }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        {% if section.settings.show_cta_button %}
+          <div class="benefit-cta">
+            <a href="{{ section.settings.cta_link }}" class="benefit-cta-button">
+              {{ section.settings.cta_text }}
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<script>
+  // Flip card functionality
+  document.addEventListener('DOMContentLoaded', function () {
+    const benefitCards = document.querySelectorAll('.benefit-card');
+
+    benefitCards.forEach((card) => {
+      card.addEventListener('click', function () {
+        this.classList.toggle('flipped');
+      });
+    });
+
+    // Optional: Auto-scroll functionality for better UX on mobile
+    const scrollContainer = document.querySelector('.benefits-cards-wrapper');
+    if (scrollContainer) {
+      let isDown = false;
+      let startX;
+      let scrollLeft;
+
+      scrollContainer.addEventListener('mousedown', (e) => {
+        isDown = true;
+        scrollContainer.style.cursor = 'grabbing';
+        startX = e.pageX - scrollContainer.offsetLeft;
+        scrollLeft = scrollContainer.scrollLeft;
+      });
+
+      scrollContainer.addEventListener('mouseleave', () => {
+        isDown = false;
+        scrollContainer.style.cursor = 'grab';
+      });
+
+      scrollContainer.addEventListener('mouseup', () => {
+        isDown = false;
+        scrollContainer.style.cursor = 'grab';
+      });
+
+      scrollContainer.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - scrollContainer.offsetLeft;
+        const walk = (x - startX) * 2;
+        scrollContainer.scrollLeft = scrollLeft - walk;
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Daily Ritual & Benefits",
+  "class": "daily-ritual-benefits-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_img",
+      "label": "Background Image"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "text",
+      "id": "heading_font",
+      "label": "Heading Font Family",
+      "default": "Georgia"
+    },
+    {
+      "type": "text",
+      "id": "card_title_font",
+      "label": "Card Title Font Family",
+      "default": "Arial"
+    },
+    {
+      "type": "text",
+      "id": "body_font",
+      "label": "Body Font Family",
+      "default": "Arial"
+    },
+    {
+      "type": "header",
+      "content": "Part 1: Daily Ritual Section"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_ritual_section",
+      "label": "Show Ritual Section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "ritual_title",
+      "label": "Ritual Title",
+      "default": "DAILY RITUAL"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "min": 24,
+      "max": 72,
+      "step": 2,
+      "default": 42,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_title_color",
+      "label": "Card Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "card_subtitle_color",
+      "label": "Card Subtitle Color",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Info Block Settings"
+    },
+    {
+      "type": "color",
+      "id": "info_background",
+      "label": "Info Block Background",
+      "default": "#A52A2A"
+    },
+    {
+      "type": "color",
+      "id": "info_heading_color",
+      "label": "Info Heading Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "info_text_color",
+      "label": "Info Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button Background",
+      "default": "transparent"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button Border Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Button Hover Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Button Hover Text Color",
+      "default": "#8B1A1A"
+    },
+    {
+      "type": "color",
+      "id": "button_active_background",
+      "label": "Active Button Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_active_text_color",
+      "label": "Active Button Text Color",
+      "default": "#8B1A1A"
+    },
+    {
+      "type": "color",
+      "id": "badge_background",
+      "label": "Badge Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Badge Text Color",
+      "default": "#8B1A1A"
+    },
+    {
+      "type": "header",
+      "content": "Part 2: Benefits Section"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_benefits_section",
+      "label": "Show Benefits Section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "benefits_title",
+      "label": "Benefits Title",
+      "default": "NOT JUST OLIVE OIL. A HEALTH UPGRADE"
+    },
+    {
+      "type": "textarea",
+      "id": "benefits_subtitle",
+      "label": "Benefits Subtitle",
+      "default": "Explore the proven ways that different polyphenols found in our oil support your health"
+    },
+    {
+      "type": "range",
+      "id": "benefits_heading_size",
+      "label": "Benefits Heading Size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "default": 36,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#CCCCCC"
+    },
+    {
+      "type": "color",
+      "id": "benefit_card_background",
+      "label": "Benefit Card Background (Front)",
+      "default": "#F5F5F5"
+    },
+    {
+      "type": "color",
+      "id": "benefit_card_text_color",
+      "label": "Benefit Card Text Color (Front)",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "benefit_card_back_background",
+      "label": "Benefit Card Background (Back)",
+      "default": "#8B1A1A"
+    },
+    {
+      "type": "color",
+      "id": "benefit_card_back_text_color",
+      "label": "Benefit Card Text Color (Back)",
+      "default": "#FFFFFF"
+    },
+
+    {
+      "type": "header",
+      "content": "CTA Button"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta_button",
+      "label": "Show CTA Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Button Text",
+      "default": "TAKE THE 3-MINUTE POLYPHENOLS JOURNEY"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA Button Link"
+    },
+    {
+      "type": "color",
+      "id": "cta_background",
+      "label": "CTA Background",
+      "default": "transparent"
+    },
+    {
+      "type": "color",
+      "id": "cta_text_color",
+      "label": "CTA Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "cta_border_color",
+      "label": "CTA Border Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "cta_hover_background",
+      "label": "CTA Hover Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "cta_hover_text_color",
+      "label": "CTA Hover Text Color",
+      "default": "#8B1A1A"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "ritual_card",
+      "name": "Ritual Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "card_title",
+          "label": "Card Title",
+          "default": "Take it Straight."
+        },
+        {
+          "type": "text",
+          "id": "card_subtitle",
+          "label": "Card Subtitle",
+          "default": "For a Pure, Powerful Boost"
+        },
+        {
+          "type": "image_picker",
+          "id": "card_image",
+          "label": "Card Image"
+        },
+        {
+          "type": "text",
+          "id": "card_footer",
+          "label": "Card Footer Text",
+          "default": "PURE POLYPHENOLS. NO COMPROMISE."
+        }
+      ]
+    },
+    {
+      "type": "info_block",
+      "name": "Info Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "info_title",
+          "label": "Info Title",
+          "default": "WHEN"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_buttons",
+          "label": "Show Buttons",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "button_1_text",
+          "label": "Button 1 Text",
+          "default": "MORNING"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_1_icon",
+          "label": "Show Button 1 Icon",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "button_1_active",
+          "label": "Button 1 Active",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "button_2_text",
+          "label": "Button 2 Text",
+          "default": "WITH MEALS"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_2_icon",
+          "label": "Show Button 2 Icon",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "button_2_active",
+          "label": "Button 2 Active",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "button_3_text",
+          "label": "Button 3 Text",
+          "default": "AFTER EXERCISE"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_3_icon",
+          "label": "Show Button 3 Icon",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "button_3_active",
+          "label": "Button 3 Active",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_dose_badge",
+          "label": "Show Dose Badge",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "dose_badge_text",
+          "label": "Dose Badge Text (1st)",
+          "default": "✓ 1 TABLESPOON (15ML)"
+        },
+        {
+          "type": "textarea",
+          "id": "info_description",
+          "label": "Info Description (1st)",
+          "default": "Supports optimal nutrient absorption and helps the body maintain balance, and helps improve absorption of fat-soluble supplements like curcumin, D, E, and K."
+        },
+        {
+          "type": "text",
+          "id": "dose_badge_text_additional",
+          "label": "Dose Badge Text (2nd)",
+          "default": "✓ 1 TABLESPOON (15ML)"
+        },
+        {
+          "type": "textarea",
+          "id": "info_description_additional",
+          "label": "Info Description (2nd)",
+          "default": "Supports optimal nutrient absorption and helps the body maintain balance, and helps improve absorption of fat-soluble supplements like curcumin, D, E, and K."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_info_card",
+          "label": "Show Info Card",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "info_card_title",
+          "label": "Info Card Title",
+          "default": "Info Card Title"
+        },
+        {
+          "type": "textarea",
+          "id": "info_card_text",
+          "label": "Info Card Text",
+          "default": "This is the info card text."
+        },
+      ]
+    },
+    {
+      "type": "benefit_card",
+      "name": "Benefit Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "benefit_icon",
+          "label": "Benefit Icon"
+        },
+        {
+          "type": "text",
+          "id": "benefit_title",
+          "label": "Title (Front)",
+          "default": "Cognition"
+        },
+        {
+          "type": "textarea",
+          "id": "benefit_description",
+          "label": "Description (Front)",
+          "default": "Supports focus, clarity, and mental sharpness"
+        },
+        {
+          "type": "text",
+          "id": "benefit_back_title",
+          "label": "Title (Back)",
+          "default": "Enhanced Cognition"
+        },
+        {
+          "type": "textarea",
+          "id": "benefit_back_description",
+          "label": "Description (Back)",
+          "default": "Polyphenols support brain health by protecting neurons and enhancing cognitive function. Studies show improved memory and focus."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Daily Ritual & Benefits",
+      "blocks": [
+        {
+          "type": "ritual_card",
+          "settings": {
+            "card_title": "Take it Straight.",
+            "card_subtitle": "For a Pure, Powerful Boost",
+            "card_footer": "PURE POLYPHENOLS. NO COMPROMISE."
+          }
+        },
+        {
+          "type": "ritual_card",
+          "settings": {
+            "card_title": "Mix it in.",
+            "card_subtitle": "Add it to your favourite drink",
+            "card_footer": "SMOOTHIES. COFFEE. JUICE."
+          }
+        },
+        {
+          "type": "ritual_card",
+          "settings": {
+            "card_title": "Drizzle it.",
+            "card_subtitle": "Drizzle Over Your Favourite Meals",
+            "card_footer": "BREAKFAST. LUNCH OR DINNER."
+          }
+        },
+        {
+          "type": "info_block",
+          "settings": {
+            "info_title": "WHEN",
+            "show_buttons": true,
+            "button_1_text": "MORNING",
+            "button_1_active": true,
+            "button_2_text": "WITH MEALS",
+            "button_3_text": "AFTER EXERCISE",
+            "info_description": "Supports optimal nutrient absorption on an empty stomach, and helps the body maintain balance, and helps improve absorption of fat-soluble supplements like curcumin, D, E, and K."
+          }
+        },
+        {
+          "type": "info_block",
+          "settings": {
+            "info_title": "DOSE",
+            "show_buttons": false,
+            "show_dose_badge": true,
+            "dose_badge_text": "✓ 1 TABLESPOON (15ML)",
+            "info_description": "per day to support overall health! Start with 1 tablespoon daily for extra support"
+          }
+        },
+        {
+          "type": "benefit_card",
+          "settings": {
+            "benefit_title": "Cognition",
+            "benefit_description": "Supports focus, clarity, and mental sharpness",
+            "benefit_back_title": "Brain Power",
+            "benefit_back_description": "Polyphenols protect neurons and enhance cognitive function for better memory and focus."
+          }
+        },
+        {
+          "type": "benefit_card",
+          "settings": {
+            "benefit_title": "Immunity",
+            "benefit_description": "Supports your body's natural immune responses",
+            "benefit_back_title": "Immune Support",
+            "benefit_back_description": "Rich in antioxidants that help strengthen your immune system naturally."
+          }
+        },
+        {
+          "type": "benefit_card",
+          "settings": {
+            "benefit_title": "Skin",
+            "benefit_description": "Supports hydration, elasticity, a natural glow",
+            "benefit_back_title": "Radiant Skin",
+            "benefit_back_description": "Polyphenols help protect and nourish your skin from within."
+          }
+        },
+        {
+          "type": "benefit_card",
+          "settings": {
+            "benefit_title": "Vitality",
+            "benefit_description": "Supports sustained energy and drive",
+            "benefit_back_title": "Energy Boost",
+            "benefit_back_description": "Natural compounds that support sustained energy throughout your day."
+          }
+        },
+        {
+          "type": "benefit_card",
+          "settings": {
+            "benefit_title": "Repair",
+            "benefit_description": "Aids inflammation response, tissue repair",
+            "benefit_back_title": "Recovery",
+            "benefit_back_description": "Supports your body's natural healing and recovery processes."
+          }
+        },
+        {
+          "type": "benefit_card",
+          "settings": {
+            "benefit_title": "Hormones",
+            "benefit_description": "Supports hormonal balance",
+            "benefit_back_title": "Balance",
+            "benefit_back_description": "Helps maintain healthy hormonal balance naturally."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
