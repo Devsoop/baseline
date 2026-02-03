@@ -230,6 +230,19 @@ product-info {
 .product__info-container .icon-with-text {
   margin: 2.5rem 0;
 }
+.description-text{
+  background-color: #9E011E33;
+  border-radius: 50px;
+  border: 1px solid #9E011E33;
+  padding: 2px 8px;
+  color: #9E011E;
+  font-weight: 600;
+}
+.description-block{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 
 .product__text {
   margin-bottom: 0;

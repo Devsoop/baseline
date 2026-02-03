@@ -50,7 +50,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  border-radius: 0.9rem;
+  
   border: 0.1rem solid;
   padding: 3.6rem 0.4rem 2.2rem;
   text-align: center;
@@ -72,7 +72,7 @@
 
 /* Selected state */
 .product-form__input--bundle .bundle-variant-option--selected {
-  background-color: rgba(255, 255, 0, 0.15);
+  background-color: #F6F7F6;
   opacity: 1;
   border-color: rgb(var(--color-foreground));
   border-width: 0.15rem;
@@ -104,8 +104,8 @@
   align-items: center;
   justify-content: center;
   white-space: nowrap;
-  border-radius: 2rem;
-  background-color: #8db600;
+  /* border-radius: 2rem; */
+  background-color: #9E011E;
   padding: 0.6rem 1rem;
   text-align: center;
   font-size: 1.4rem;
@@ -116,12 +116,12 @@
   position: relative;
   z-index: 1;
   position: absolute;
-    top: 8px;
+  top: 8px;
 }
 
 @media screen and (min-width: 750px) {
   .product-form__input--bundle .bundle-discount-badge {
-    max-width: 12rem;
+    max-width: 10rem;
     padding-top: 0.6rem;
     padding-bottom: 0.6rem;
   }
@@ -208,7 +208,7 @@
   margin-top: -2rem;
   margin-bottom: -2rem;
   display: flex;
-  width: auto;
+  width: 14rem;
   align-items: center;
   justify-content: center;
   white-space: nowrap;

@@ -65,7 +65,7 @@
             height="15" 
             decoding="async" 
             class="selling-plan-option__check" 
-            src="{{ 'green-tick.svg' | asset_url }}"
+            src="{{ 'black-tick.svg' | asset_url }}"
           >
         </div>
         <div class="selling-plan-option__content">
@@ -77,7 +77,7 @@
                
                 {%- assign benefits = block.settings.subscription_benefits | split: ',' -%}
                 {%- for benefit in benefits -%}
-                  <li>+ {{ benefit | strip }}</li>
+                  <li>{{ benefit | strip }}</li>
                 {%- endfor -%}
               </ul>
             {%- endif -%}
@@ -109,7 +109,7 @@
             height="15" 
             decoding="async" 
             class="selling-plan-option__check" 
-            src="{{ 'green-tick.svg' | asset_url }}"
+            src="{{ 'black-tick.svg' | asset_url }}"
           >
         </div>
         <div class="selling-plan-option__content">

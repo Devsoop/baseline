@@ -9,12 +9,15 @@
   {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
 {% endcomment %}
 {%- unless product.has_only_default_variant -%}
-  {%- liquid
+  {% comment %} {%- liquid
     assign is_bundle_template = false
     if template.name == 'product.bundle' or template.suffix == 'bundle'
       assign is_bundle_template = true
     endif
-  -%}
+  -%} {% endcomment %}
+    {%- liquid
+      assign is_bundle_template = true
+    -%}
   
   {%- if is_bundle_template -%}
     {% render 'product-variant-picker-bundle', product: product, block: block, product_form_id: product_form_id %}
