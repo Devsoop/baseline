@@ -1,0 +1,308 @@
+{% schema %}
+{
+  "name": "Product Comparison Table",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "brand_logo",
+      "label": "Brand Logo Image",
+      "info": "Upload your brand logo (e.g., baseline logo)"
+    },
+    {
+      "type": "text",
+      "id": "competitor_name",
+      "label": "Competitor Name",
+      "default": "REGULAR OIL"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent/Dot Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "min": 600,
+      "max": 1400,
+      "step": 50,
+      "unit": "px",
+      "label": "Content Width",
+      "default": 1100
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 80,
+      "max": 250,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo Width",
+      "default": 150
+    }
+  ],
+  "blocks": [
+    {
+      "type": "comparison_row",
+      "name": "Comparison Row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "category",
+          "label": "Category Name",
+          "default": "POLYPHENOLS"
+        },
+        {
+          "type": "text",
+          "id": "brand_value",
+          "label": "Your Brand Value",
+          "default": "500+ mg/kg"
+        },
+        {
+          "type": "text",
+          "id": "competitor_value",
+          "label": "Competitor Value",
+          "default": "50 mg/kg"
+        },
+        {
+          "type": "checkbox",
+          "id": "brand_selected",
+          "label": "Highlight Your Brand (fills the dot)",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Comparison",
+      "blocks": [
+        {
+          "type": "comparison_row",
+          "settings": {
+            "category": "POLYPHENOLS",
+            "brand_value": "500+ mg/kg",
+            "competitor_value": "50 mg/kg",
+            "brand_selected": true
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "category": "LAB TESTING",
+            "brand_value": "Every Batch",
+            "competitor_value": "Not Tested",
+            "brand_selected": true
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "category": "PROCESSING",
+            "brand_value": "Natural Extraction",
+            "competitor_value": "Blended & Refined",
+            "brand_selected": true
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "category": "QR CODE FOR LAB REPORT",
+            "brand_value": "Yes",
+            "competitor_value": "No",
+            "brand_selected": true
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "category": "HEALTH IMPACT",
+            "brand_value": "Skin, Energy, Recovery and More",
+            "competitor_value": "Very Few Proven Benefits",
+            "brand_selected": true
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  .comparison-section {
+    background-color: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+    padding: clamp(40px, 8vw, 80px) clamp(10px, 2vw, 20px);
+    font-family: var(--font-body-family), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    width: 100%;
+  }
+
+  .comparison-container {
+    max-width: min({{ section.settings.content_width }}px, 95%);
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .comparison-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(15px, 3vw, 40px);
+    margin-bottom: clamp(25px, 4vw, 50px);
+    align-items: center;
+    padding: 0 clamp(5px, 1.5vw, 20px);
+  }
+
+  .brand-logo {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .brand-logo-img {
+    width: clamp(80px, 15vw, {{ section.settings.logo_width }}px);
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .competitor-name {
+    text-align: right;
+    font-size: clamp(11px, 2vw, 18px);
+    font-weight: 600;
+    text-decoration: line-through;
+    opacity: 0.6;
+    font-family: var(--font-heading-family), var(--font-body-family);
+    letter-spacing: clamp(0.3px, 0.1vw, 1px);
+  }
+
+  .comparison-table {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .comparison-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: clamp(18px, 3vw, 32px) clamp(5px, 1.5vw, 20px);
+    border-bottom: 3px solid rgba(255, 255, 255, 0.08);
+    gap: clamp(15px, 5vw, 60px);
+  }
+
+  .comparison-row:last-child {
+    border-bottom: none;
+  }
+
+  .value-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(8px, 1.2vw, 12px);
+    font-size: clamp(10px, 1.5vw, 15px);
+    opacity: 0.6;
+    line-height: 1.4;
+  }
+
+  .value-cell.left {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .value-cell.right {
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .dot-indicator {
+    width: clamp(10px, 1.2vw, 14px);
+    height: clamp(10px, 1.2vw, 14px);
+    flex-shrink: 0;
+  }
+
+  .dot-indicator circle {
+    transition: all 0.3s ease;
+  }
+
+  .category-cell {
+    text-align: center;
+    font-size: clamp(10px, 1.5vw, 15px);
+    font-weight: 700;
+    letter-spacing: clamp(0.3px, 0.12vw, 1.5px);
+    font-family: var(--font-heading-family), var(--font-body-family);
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.3;
+    padding: 0 clamp(5px, 1vw, 10px);
+  }
+
+  /* Ensure text wraps properly on small screens */
+  .value-cell span {
+    word-break: break-word;
+    hyphens: auto;
+  }
+</style>
+
+<div class="comparison-section">
+  <div class="comparison-container">
+    <div class="comparison-header">
+      <div class="brand-logo">
+        {% if section.settings.brand_logo %}
+          <img src="{{ section.settings.brand_logo | image_url: width: 400 }}" 
+               alt="Brand Logo" 
+               class="brand-logo-img"
+               loading="lazy"
+               width=""
+               height=""
+            >
+               
+        {% else %}
+          <div style="opacity: 0.5; font-size: clamp(10px, 2vw, 14px);">Upload your logo in settings</div>
+        {% endif %}
+      </div>
+      <div class="competitor-name">{{ section.settings.competitor_name }}</div>
+    </div>
+
+    <div class="comparison-table">
+      {% for block in section.blocks %}
+        <div class="comparison-row" {{ block.shopify_attributes }}>
+          <div class="value-cell left">
+            <svg class="dot-indicator" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {% if block.settings.brand_selected %}
+                <circle cx="10" cy="10" r="8" fill="{{ section.settings.accent_color }}" stroke="{{ section.settings.accent_color }}" stroke-width="2"/>
+              {% else %}
+                <circle cx="10" cy="10" r="8" fill="none" stroke="{{ section.settings.accent_color }}" stroke-width="2"/>
+              {% endif %}
+            </svg>
+            <span>{{ block.settings.brand_value }}</span>
+          </div>
+          
+          <div class="category-cell">{{ block.settings.category }}</div>
+          
+          <div class="value-cell right">
+            <svg class="dot-indicator" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {% unless block.settings.brand_selected %}
+                <circle cx="10" cy="10" r="8" fill="{{ section.settings.accent_color }}" stroke="{{ section.settings.accent_color }}" stroke-width="2"/>
+              {% else %}
+                <circle cx="10" cy="10" r="8" fill="none" stroke="{{ section.settings.accent_color }}" stroke-width="2"/>
+              {% endunless %}
+            </svg>
+            <span>{{ block.settings.competitor_value }}</span>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
