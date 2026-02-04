@@ -208,7 +208,7 @@
   margin-top: -2rem;
   margin-bottom: -2rem;
   display: flex;
-  width: 14rem;
+  width: max-content;
   align-items: center;
   justify-content: center;
   white-space: nowrap;
@@ -260,7 +260,7 @@
 
 .product-form__input--bundle .bundle-unit-price-amount {
   margin-right: 0.4rem;
-  font-size: 1.4rem;
+  font-size: 10px;
 }
 
 @media screen and (min-width: 990px) {
