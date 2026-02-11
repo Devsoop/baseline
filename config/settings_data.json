@@ -24,7 +24,7 @@
     "animations_hover_elements": "none",
     "buttons_border_thickness": 1,
     "buttons_border_opacity": 100,
-    "buttons_radius": 0,
+    "buttons_radius": 40,
     "buttons_shadow_opacity": 0,
     "buttons_shadow_horizontal_offset": 0,
     "buttons_shadow_vertical_offset": 4,
@@ -109,6 +109,7 @@
     "sold_out_badge_color_scheme": "scheme-3",
     "brand_headline": "",
     "brand_description": "<p></p>",
+    "brand_image": "shopify://shop_images/Layer_1_1_1.svg",
     "brand_image_width": 100,
     "social_facebook_link": "",
     "social_instagram_link": "",
@@ -180,7 +181,7 @@
       },
       "scheme-4": {
         "settings": {
-          "background": "#121212",
+          "background": "#000000",
           "background_gradient": "",
           "text": "#ffffff",
           "button": "#ffffff",
