@@ -27,6 +27,7 @@
       <fieldset class="js product-form__input product-form__input--bundle">
         <legend class="form__label visually-hidden">{{ option.name }}</legend>
         <span data-selected-value class="visually-hidden">{{ option.selected_value }}</span>
+        <span class="bundle-variant-heading">Quantity</span>
         <div class="bundle-variant-grid">
           {%- for value in option.values -%}
           {%- liquid

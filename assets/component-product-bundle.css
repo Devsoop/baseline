@@ -11,6 +11,13 @@
   max-width: 100%;
   min-width: fit-content;
 }
+.bundle-variant-heading{
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  position: relative;
+    top: 45px;
+}
 
 
 .product-form__input--bundle .form__label {

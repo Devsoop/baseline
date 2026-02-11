@@ -4,6 +4,7 @@
 
 .selling-plan-picker {
   display: block;
+  margin-top: 6px;
 }
 
 .selling-plan-picker__container {
@@ -11,6 +12,12 @@
   flex-direction: column-reverse;
   gap: 1.2rem;
 
+}
+.selling-plan-picker-heading{
+  font-size: 12px;
+  font-weight: 800;
+  margin-bottom: 10px;
+  text-transform: uppercase;
 }
 
 /* Selling Plan Option Base Styles */
