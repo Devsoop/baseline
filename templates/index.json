@@ -16,7 +16,7 @@
         "hero_heading": "Health in every drop",
         "hero_button_text": "Try baseline",
         "hero_button_link": "",
-        "hero_banner_image": "shopify://shop_images/banner-3.png",
+        "hero_banner_image": "shopify://shop_images/Hero_2.png",
         "polyphenols_heading": "Powered by polyphenols",
         "polyphenols_text": "<p><em><strong>Polyphenols</strong></em> are powerful plant compounds found naturally in olives. These micronutrients act as <em><strong>potent antioxidants</strong></em>, protecting your cells from damage caused by <em><strong>free radicals</strong></em> and <em><strong>oxidative stress</strong></em>. At baseline we craft high polyphenol olive oil that contains significantly more of these beneficial compounds than regular olive oil — <em><strong>making every drop a concentrated source of nature's protection.</strong></em></p>",
         "polyphenols_button_text": "Take the 3-minute polyphenol journey",
@@ -46,6 +46,7 @@
         "card_lab_xWRGb8": {
           "type": "card_lab",
           "settings": {
+            "background_color": "#9e011e",
             "title": "Lab\nVerified",
             "description": "Every batch is independently tested and certified. Full transparency from farm to bottle.",
             "button_text": "See Example Lab Report",
@@ -55,6 +56,7 @@
         "card_try_dGknHK": {
           "type": "card_try",
           "settings": {
+            "background_color": "#000000",
             "title": "Try\nBaseline\nToday",
             "button_text": "Try Baseline",
             "button_url": ""

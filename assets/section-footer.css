@@ -435,7 +435,7 @@
 }
 
 .footer-block__brand-info .footer__list-social.list-social {
-  justify-content: flex-start;
+  justify-content: flex-end;
 }
 
 .footer-block__details-content .placeholder-svg {
