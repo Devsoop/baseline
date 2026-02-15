@@ -5,7 +5,8 @@
   - Part 2: Horizontally scrollable flip cards with expandable content
 {% endcomment %}
 
-<style>
+{% style %}
+    
   .daily-ritual-section {
       {% if section.settings.background_img != blank %}
           background-image: url('{{ section.settings.background_img | img_url: '2000x' }}');
@@ -521,7 +522,8 @@
         height: 60px;
       }
     }
-</style>
+
+{% endstyle %}
 
 <section class="daily-ritual-section">
   <div class="daily-ritual-container">
