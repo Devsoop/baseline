@@ -9,6 +9,23 @@
  */
 {
   "sections": {
+    "animation_hero_hDAxm4": {
+      "type": "animation-hero",
+      "name": "Animation hero",
+      "settings": {
+        "hero_heading": "Health in every drop",
+        "hero_button_text": "Try baseline",
+        "hero_button_link": "",
+        "hero_banner_image": "shopify://shop_images/Hero_2.png",
+        "polyphenols_heading": "Powered by polyphenols",
+        "polyphenols_text": "<p>Polyphenols are <strong>potent antioxidants</strong> that help protect your body from <strong>free radicals</strong> and <strong>oxidative stress</strong>.</p>",
+        "polyphenols_button_text": "Take the 3-minute polyphenol journey",
+        "polyphenols_button_link": "",
+        "polyphenols_image": "shopify://shop_images/ammerjul_httpss.mj.runC87QmKGeljg_Liquid_transformation_--ar__2c8fb68b-5178-415c-bdbc-d91f98f1d31e_2_1_1.png",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
     "image_banner": {
       "type": "image-banner",
       "blocks": {
@@ -35,6 +52,7 @@
         "heading",
         "button"
       ],
+      "disabled": true,
       "custom_css": [
         "{margin-top: -110px;}"
       ],
@@ -82,6 +100,7 @@
     }
   },
   "order": [
+    "animation_hero_hDAxm4",
     "image_banner",
     "featured_collection"
   ]
