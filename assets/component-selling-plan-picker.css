@@ -1,0 +1,226 @@
+/* ============================================
+   Selling Plan Picker Styles
+   ============================================ */
+
+.selling-plan-picker {
+  display: block;
+  margin-top: 6px;
+}
+
+.selling-plan-picker__container {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 1.2rem;
+
+}
+.selling-plan-picker-heading{
+  font-size: 12px;
+  font-weight: 800;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+/* Selling Plan Option Base Styles */
+.selling-plan-option {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  /* border-radius: 1.2rem; */
+  border: 0.1rem solid;
+  padding: 1.2rem;
+  cursor: pointer;
+  transition: all var(--duration-short, 0.3s) ease;
+  /* background-color: #F6F7F6; */
+  border-color: rgba(var(--color-foreground), 0.2);
+}
+.selling-plan-option:not(.selected) .selling-plan-option__price-container{
+  display: none;
+}
+.packaging-size{
+  margin-top: 0px;
+  margin-bottom: 0px;
+  line-height: 1;
+  font-size: 14px;
+}
+@media screen and (min-width: 990px) {
+  .selling-plan-option {
+    gap: 1.6rem;
+    padding: 1.2rem;
+  }
+}
+
+.selling-plan-option:hover {
+  opacity: 0.9;
+}
+
+.selling-plan-option:focus-visible {
+  outline: 0.2rem solid rgba(var(--color-foreground), 0.5);
+  outline-offset: 0.2rem;
+}
+
+/* Subscription Option */
+.selling-plan-option--subscription {
+  width: 100%;
+}
+
+/* One-time Purchase Option */
+.selling-plan-option--onetime {
+  width: 100%;
+}
+
+/* Selected State */
+.selling-plan-option.selected {
+  background-color: #F6F7F6 !important;
+  border-color: #000 !important;
+}
+
+.selling-plan-option.selected .selling-plan-option__check {
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+.selling-plan-option:not(.selected) .selling-plan-option__check {
+  opacity: 0 !important;
+}
+
+/* Check Icon Container */
+.selling-plan-option__check-wrapper {
+  margin-top: 0.2rem;
+  height: 1.5rem;
+  width: 1.5rem;
+  overflow: hidden;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  flex-shrink: 0;
+  border: 1px solid;
+}
+
+@media screen and (min-width: 990px) {
+  .selling-plan-option__check-wrapper {
+    height: 1.8rem;
+    width: 1.8rem;
+  }
+}
+
+.selling-plan-option__check {
+  height: auto;
+  width: 100%;
+  display: block;
+  transition: opacity var(--duration-short, 0.3s) ease,
+              filter var(--duration-short, 0.3s) ease;
+}
+
+.selling-plan-option:not(.selected) .selling-plan-option__check {
+  filter: grayscale(100%);
+}
+
+/* Content Container */
+.selling-plan-option__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  flex: 1;
+}
+
+/* Title and Benefits Container */
+.selling-plan-option__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.selling-plan-option__title {
+  font-size: 16px !important;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+}
+
+@media screen and (min-width: 990px) {
+  .selling-plan-option__title {
+    font-size: 1.8rem;
+    line-height: 1.1;
+  }
+}
+
+/* Benefits List */
+.selling-plan-option__benefits {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 1.4rem;
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+@media screen and (max-width: 1000px){
+  .selling-plan-option__benefits{
+    flex-direction: column;
+  }
+
+}
+
+.selling-plan-option__benefits li {
+  width: max-content;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #000000;
+  border: 1px solid lightgray;
+  padding: 4px 12px;
+  border-radius: 50px;
+  text-transform: uppercase;
+}
+
+@media screen and (min-width: 990px) {
+  .selling-plan-option__benefits li {
+    font-size: 8px !important;
+  }
+}
+
+/* Price Container */
+.selling-plan-option__price-container {
+  display: flex;
+  justify-content: end;
+  gap: 1rem;
+  align-items: center;
+}
+
+.selling-plan-option__compare-price {
+  font-size: 16px !important;
+  font-weight: 600;
+  line-height: 1;
+  color: rgba(var(--color-foreground), 0.8);
+  text-decoration: line-through;
+}
+
+@media screen and (min-width: 990px) {
+  .selling-plan-option__compare-price {
+    font-size: 1.8rem;
+  }
+}
+
+.selling-plan-option__price {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+@media screen and (min-width: 990px) {
+  .selling-plan-option__price {
+    font-size: 1.8rem;
+  }
+}
+
+/* Hidden Input */
+.selling-plan-input {
+  display: none;
+}
+
+/* Focus state for accessibility */
+@media (forced-colors: active) {
+  .selling-plan-option:focus-visible {
+    outline: 0.2rem solid;
+  }
+}
+

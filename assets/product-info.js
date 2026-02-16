@@ -59,9 +59,12 @@ if (!customElements.get('product-info')) {
           window?.ProductModel?.loadShopifyXR();
         });
       }
-
       handleOptionValueChange({ data: { event, target, selectedOptionValues } }) {
         if (!this.contains(event.target)) return;
+
+        // Save scroll position BEFORE any DOM changes (critical for mobile)
+        const savedScrollY = window.pageYOffset || document.documentElement.scrollTop;
+        this._savedScrollPosition = savedScrollY;
 
         this.resetProductFormState();
 
@@ -113,29 +116,64 @@ if (!customElements.get('product-info')) {
         };
       }
 
-      renderProductInfo({ requestUrl, targetId, callback }) {
-        this.abortController?.abort();
-        this.abortController = new AbortController();
+renderProductInfo({ requestUrl, targetId, callback }) {
+  this.abortController?.abort();
+  this.abortController = new AbortController();
 
-        fetch(requestUrl, { signal: this.abortController.signal })
-          .then((response) => response.text())
-          .then((responseText) => {
-            this.pendingRequestUrl = null;
-            const html = new DOMParser().parseFromString(responseText, 'text/html');
-            callback(html);
-          })
-          .then(() => {
-            // set focus to last clicked option value
-            document.querySelector(`#${targetId}`)?.focus();
-          })
-          .catch((error) => {
-            if (error.name === 'AbortError') {
-              console.log('Fetch aborted by user');
-            } else {
-              console.error(error);
-            }
-          });
+  // Get saved scroll position
+  const savedScrollY = this._savedScrollPosition || (window.pageYOffset || document.documentElement.scrollTop);
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+  fetch(requestUrl, { signal: this.abortController.signal })
+    .then((response) => response.text())
+    .then((responseText) => {
+      this.pendingRequestUrl = null;
+      const html = new DOMParser().parseFromString(responseText, 'text/html');
+      callback(html);
+    })
+    .then(() => {
+      // Restore scroll position immediately after DOM update
+      const restoreScroll = () => {
+        window.scrollTo({
+          top: savedScrollY,
+          behavior: 'instant'
+        });
+      };
+      
+      restoreScroll();
+
+      // On mobile, DON'T focus at all - it causes scroll
+      // On desktop, focus with preventScroll
+      const targetElement = document.querySelector(`#${targetId}`);
+      if (targetElement) {
+        if (isMobile) {
+          // Don't focus on mobile - just restore scroll multiple times
+          setTimeout(restoreScroll, 0);
+          setTimeout(restoreScroll, 10);
+          setTimeout(restoreScroll, 50);
+          setTimeout(restoreScroll, 100);
+          setTimeout(restoreScroll, 200);
+        } else {
+          // Desktop: focus with preventScroll
+          targetElement.focus({ preventScroll: true });
+        }
+      } else {
+        // Even if element not found, restore scroll on mobile
+        if (isMobile) {
+          setTimeout(restoreScroll, 0);
+          setTimeout(restoreScroll, 50);
+          setTimeout(restoreScroll, 100);
+        }
       }
+    })
+    .catch((error) => {
+      if (error.name === 'AbortError') {
+        console.log('Fetch aborted by user');
+      } else {
+        console.error(error);
+      }
+    });
+}
 
       getSelectedVariant(productInfoNode) {
         const selectedVariant = productInfoNode.querySelector('variant-selects [data-selected-variant]')?.innerHTML;
@@ -191,6 +229,48 @@ if (!customElements.get('product-info')) {
           updateSourceFromDestination('Inventory', ({ innerText }) => innerText === '');
           updateSourceFromDestination('Volume');
           updateSourceFromDestination('Price-Per-Item', ({ classList }) => classList.contains('hidden'));
+          updateSourceFromDestination('selling-plan-picker');
+          updateSourceFromDestination('gifts', (source) => source.style.display === 'none' || !source.querySelector('.product-gifts__container'));
+          
+          // Update variant features div (now outside the gifts element)
+             // Update variant features div (now outside the gifts element)
+             const giftsElement = this.querySelector(`#gifts-${this.dataset.section}`);
+             const featuresContainer = this.querySelector('.product-variant-features');
+             const newGiftsElement = html.getElementById(`gifts-${this.sectionId}`);
+             if (featuresContainer && newGiftsElement) {
+               // Find the features container as a sibling of the gifts element in the new HTML
+               // It could be nextElementSibling or we need to search in the parent
+               
+               let newFeaturesContainer = newGiftsElement.nextElementSibling;
+               
+               // Check if next sibling is the features container
+               if (!newFeaturesContainer || !newFeaturesContainer.classList.contains('product-variant-features')) {
+                 // If not, search in the parent container
+                 const parentElement = newGiftsElement.parentElement;
+                 if (parentElement) {
+                   newFeaturesContainer = parentElement.querySelector('.product-variant-features');
+                 }
+               }
+               
+               if (newFeaturesContainer && newFeaturesContainer.classList.contains('product-variant-features')) {
+                 // Update data attributes
+                 const newVariantFeatures = newFeaturesContainer.getAttribute('data-variant-features');
+                 console.log("newVariantFeatures", newVariantFeatures);
+                 const newUpsellText = newFeaturesContainer.getAttribute('data-upsell-text');
+                 if (newVariantFeatures !== null) {
+                   featuresContainer.setAttribute('data-variant-features', newVariantFeatures);
+                 }
+                 if (newUpsellText !== null) {
+                   featuresContainer.setAttribute('data-upsell-text', newUpsellText);
+                 }
+                 
+                 // Trigger updateFeaturesDisplay if ProductGifts element exists
+                 // This will update the display based on isSubscriptionSelected
+                 if (giftsElement && giftsElement.updateFeaturesDisplay && typeof giftsElement.updateFeaturesDisplay === 'function') {
+                  giftsElement.updateFeaturesDisplay();
+                 }
+               }
+             }
 
           this.updateQuantityRules(this.sectionId, html);
           this.querySelector(`#Quantity-Rules-${this.dataset.section}`)?.classList.remove('hidden');
@@ -299,10 +379,16 @@ if (!customElements.get('product-info')) {
         }
 
         // set featured media as active in the media gallery
-        this.querySelector(`media-gallery`)?.setActiveMedia?.(
-          `${this.dataset.section}-${variantFeaturedMediaId}`,
-          true
-        );
+        const mediaGallery = this.querySelector(`media-gallery`);
+        if (mediaGallery && typeof mediaGallery.setActiveMedia === 'function') {
+          // Check if the media exists in the gallery before trying to set it active
+          const mediaId = `${this.dataset.section}-${variantFeaturedMediaId}`;
+          const mediaExists = mediaGallery.querySelector(`[data-media-id="${mediaId}"]`) || 
+                             mediaGallery.querySelector('[data-media-id]');
+          if (mediaExists) {
+            mediaGallery.setActiveMedia(mediaId, true);
+          }
+        }
 
         // update media modal
         const modalContent = this.productModal?.querySelector(`.product-media-modal__content`);
@@ -372,19 +458,6 @@ if (!customElements.get('product-info')) {
             }
           } else {
             current.innerHTML = updated.innerHTML;
-            if (selector === '.quantity__label') {
-              const updatedAriaLabelledBy = updated.getAttribute('aria-labelledby');
-              if (updatedAriaLabelledBy) {
-                current.setAttribute('aria-labelledby', updatedAriaLabelledBy);
-                // Update the referenced visually hidden element
-                const labelId = updatedAriaLabelledBy;
-                const currentHiddenLabel = document.getElementById(labelId);
-                const updatedHiddenLabel = html.getElementById(labelId);
-                if (currentHiddenLabel && updatedHiddenLabel) {
-                  currentHiddenLabel.textContent = updatedHiddenLabel.textContent;
-                }
-              }
-            }
           }
         }
       }

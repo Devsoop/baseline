@@ -674,6 +674,15 @@
                 </product-recommendations>
               {%- when 'icon-with-text' -%}
                 {% render 'icon-with-text', block: block %}
+
+              {%- when 'selling_plan_picker' -%}
+                <div class="selling-plan-picker-wrapper" {{ block.shopify_attributes }}>
+                  {%- render 'selling-plan-picker', product: product, block: block, product_form_id: product_form_id -%}
+                </div>
+              {%- when 'premium_info' -%}
+                <div class="premium-info-block-wrapper" {{ block.shopify_attributes }}>
+                  {%- render 'premium-info-block', product: product, block: block, product_form_id: product_form_id -%}
+                </div>
             {%- endcase -%}
           {%- endfor -%}
           <a href="{{ product.url }}" class="link product__view-details animate-arrow">
@@ -2084,6 +2093,246 @@
           "default": "t:sections.main-product.blocks.icon_with_text.settings.heading_3.default",
           "label": "t:sections.main-product.blocks.icon_with_text.settings.heading_3.label",
           "info": "t:sections.main-product.blocks.icon_with_text.settings.heading.info"
+        }
+      ]
+    },
+    {
+      "type": "selling_plan_picker",
+      "name": "Selling Plan Picker",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "subscription_benefits",
+          "label": "Subscription Benefits",
+          "info": "Comma-separated list of benefits (e.g., 'FREE Shipping, FREE Bowl & spoon')",
+          "default": "FREE Shipping, FREE Bowl & spoon"
+        }
+      ]
+    },
+    {
+      "type": "premium_info",
+      "name": "Premium Product Info",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Offer Section"
+        },
+        {
+          "type": "text",
+          "id": "offer_title",
+          "label": "Offer Title",
+          "default": "Premium Refillable Clay Bottle"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_original_price",
+          "label": "Show Original Price",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "original_price",
+          "label": "Original Price",
+          "default": "£20.00"
+        },
+        {
+          "type": "text",
+          "id": "free_text",
+          "label": "Free Text",
+          "default": "FREE"
+        },
+        {
+          "type": "image_picker",
+          "id": "product_image",
+          "label": "Main Product Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "accessory_image",
+          "label": "Accessory Image"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_plus_icon",
+          "label": "Show Plus Icon Between Images",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Badges"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_badges",
+          "label": "Show Product Badges",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "badge_1",
+          "label": "Badge 1",
+          "default": "100% NATURAL CLAY"
+        },
+        {
+          "type": "text",
+          "id": "badge_2",
+          "label": "Badge 2",
+          "default": "STAINLESS STEEL POURER"
+        },
+        {
+          "type": "text",
+          "id": "badge_3",
+          "label": "Badge 3",
+          "default": "LIMITED EDITION"
+        },
+        {
+          "type": "text",
+          "id": "badge_4",
+          "label": "Badge 4",
+          "default": "WORTH £20"
+        },
+        {
+          "type": "header",
+          "content": "Benefits"
+        },
+        {
+          "type": "text",
+          "id": "benefit_1",
+          "label": "Benefit 1",
+          "default": "Save on every order"
+        },
+        {
+          "type": "text",
+          "id": "benefit_2",
+          "label": "Benefit 2",
+          "default": "From the Latest Harvest"
+        },
+        {
+          "type": "text",
+          "id": "benefit_3",
+          "label": "Benefit 3",
+          "default": "Skip or cancel anytime"
+        },
+        {
+          "type": "text",
+          "id": "benefit_4",
+          "label": "Benefit 4",
+          "default": "Free Shipping"
+        },
+        {
+          "type": "header",
+          "content": "Delivery Information"
+        },
+        {
+          "type": "text",
+          "id": "delivery_text",
+          "label": "Delivery Text",
+          "default": "DELIVERED EVERY 4 WEEKS"
+        },
+        {
+          "type": "header",
+          "content": "Colors"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background Color",
+          "default": "#8B1538"
+        },
+        {
+          "type": "color",
+          "id": "offer_bg_color",
+          "label": "Offer Box Background",
+          "default": "#6B1028"
+        },
+        {
+          "type": "color",
+          "id": "showcase_bg",
+          "label": "Product Showcase Background",
+          "default": "#6B1028"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "free_text_color",
+          "label": "FREE Text Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "badge_border_color",
+          "label": "Badge Border Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "badge_text_color",
+          "label": "Badge Text Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "header",
+          "content": "Typography"
+        },
+        {
+          "type": "range",
+          "id": "title_font_size",
+          "label": "Title Font Size",
+          "min": 14,
+          "max": 28,
+          "step": 1,
+          "default": 18,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "benefit_font_size",
+          "label": "Benefit Font Size",
+          "min": 12,
+          "max": 18,
+          "step": 1,
+          "default": 14,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "delivery_font_size",
+          "label": "Delivery Font Size",
+          "min": 11,
+          "max": 16,
+          "step": 1,
+          "default": 13,
+          "unit": "px"
+        },
+        {
+          "type": "header",
+          "content": "Spacing"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "label": "Top Margin",
+          "min": 0,
+          "max": 80,
+          "step": 4,
+          "default": 24,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "border_radius",
+          "label": "Border Radius",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "default": 8,
+          "unit": "px"
         }
       ]
     }
