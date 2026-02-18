@@ -571,10 +571,10 @@
                     {% if block.settings.button_1_text != blank %}
                       <span class="info-button {% if block.settings.button_1_active %}active{% endif %}">
                         {% if block.settings.button_1_icon %}
-                          <svg width="16" height="16" viewBox="0 0 11 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M1.36363 1.875C1.36363 2.45865 1.6409 2.96075 2.05683 3.29732C0.846108 5.57996 0 7.66425 0 10.4392V15.625C0 16.8907 1.02602 17.9167 2.29167 17.9167H9.15575C9.22225 17.9167 9.28817 17.9138 9.35317 17.9083C8.03025 16.9287 7.08333 15.4064 7.08333 13.4455C7.08333 11.8782 7.59883 10.5127 8.37508 9.50958C8.98208 8.72525 9.89233 7.99892 10.9742 7.78658L10.8123 7.17863L10.8107 7.17252C10.4411 5.83892 9.86183 4.60349 9.17508 3.31172C9.60117 2.97516 9.88633 2.46718 9.88633 1.875C9.88633 0.789383 8.94375 0 7.89775 0H3.35227C2.30628 0 1.36363 0.789383 1.36363 1.875Z" fill="white"/>
-</svg>
-
+                          <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                          </svg>
                         {% endif %}
                         {{ block.settings.button_1_text }}
                       </span>
