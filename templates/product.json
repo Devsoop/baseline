@@ -307,9 +307,10 @@
         "benefit_card_z6gmmQ": {
           "type": "benefit_card",
           "settings": {
-            "benefit_title": "Cognition",
-            "benefit_description": "Supports focus, clarity, and mental sharpness",
-            "benefit_back_title": "Enhanced Cognition",
+            "benefit_icon": "shopify://shop_images/ed559ca68750c4aff255ca849f38314c4cc91851_2.png",
+            "benefit_title": "Anti-Cancer.",
+            "benefit_description": " Linked to long-termcellular health",
+            "benefit_back_title": "Anti-Cancer",
             "benefit_back_description": "Polyphenols support brain health by protecting neurons and enhancing cognitive function. Studies show improved memory and focus.",
             "benifit_card_button_text": "Learn More",
             "benifit_card_button_link": ""
