@@ -1,3 +1,14 @@
+{% comment %} Hiding Announcement Bar Other Than Pdp {% endcomment %}
+{% unless request.page_type == 'product' %}
+  <style>
+    .your-class-name {
+      display: none !important;
+    }
+  </style>
+{% endunless %}
+
+
+
 {{ 'component-slideshow.css' | asset_url | stylesheet_tag }}
 {{ 'component-slider.css' | asset_url | stylesheet_tag }}
 
