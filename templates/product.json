@@ -239,7 +239,7 @@
             "benefit_title": "Immunity",
             "benefit_description": "Supports your body’s\nnatural immune response",
             "benefit_back_title": "Immune Support",
-            "benefit_back_description": "Rich in antioxidants that help strengthen your immune system naturally.",
+            "benefit_back_description": "Improves cholesterol, supports circulation, and lowers heart disease risk.",
             "benifit_card_button_text": "Learn More",
             "benifit_card_button_link": ""
           }
@@ -251,7 +251,7 @@
             "benefit_title": "Cognition",
             "benefit_description": "Supports focus, clarity,\nand mental sharpness",
             "benefit_back_title": "Cognition",
-            "benefit_back_description": "Polyphenols help protect and nourish your skin from within.",
+            "benefit_back_description": "Improves cholesterol, supports circulation, and lowers heart disease risk.",
             "benifit_card_button_text": "Learn More",
             "benifit_card_button_link": ""
           }
@@ -263,7 +263,7 @@
             "benefit_title": "Protection",
             "benefit_description": "Fights oxidative stress\nat the cellular level",
             "benefit_back_title": "Protection",
-            "benefit_back_description": "Natural compounds that support sustained energy throughout your day.",
+            "benefit_back_description": "Improves cholesterol, supports circulation, and lowers heart disease risk.",
             "benifit_card_button_text": "Learn More",
             "benifit_card_button_link": ""
           }
@@ -275,7 +275,7 @@
             "benefit_title": "Repair",
             "benefit_description": "Aids inflammation response, tissue repair",
             "benefit_back_title": "Repair",
-            "benefit_back_description": "Supports your body's natural healing and recovery processes.",
+            "benefit_back_description": "Improves cholesterol, supports circulation, and lowers heart disease risk.",
             "benifit_card_button_text": "Learn More",
             "benifit_card_button_link": ""
           }
@@ -287,7 +287,7 @@
             "benefit_title": "Heart",
             "benefit_description": "Supports cardiovascular\nhealth and circulation",
             "benefit_back_title": "Heart",
-            "benefit_back_description": "Helps maintain healthy hormonal balance naturally.",
+            "benefit_back_description": "Improves cholesterol, supports circulation, and lowers heart disease risk.",
             "benifit_card_button_text": "Learn More",
             "benifit_card_button_link": ""
           }
@@ -299,7 +299,7 @@
             "benefit_title": "Vitality",
             "benefit_description": "Supports sustained energy and drive",
             "benefit_back_title": "Vitality",
-            "benefit_back_description": "Polyphenols support brain health by protecting neurons and enhancing cognitive function. Studies show improved memory and focus.",
+            "benefit_back_description": "Improves cholesterol, supports circulation, and lowers heart disease risk.",
             "benifit_card_button_text": "Learn More",
             "benifit_card_button_link": ""
           }
@@ -311,7 +311,7 @@
             "benefit_title": "Anti-Cancer.",
             "benefit_description": " Linked to long-termcellular health",
             "benefit_back_title": "Anti-Cancer",
-            "benefit_back_description": "Polyphenols support brain health by protecting neurons and enhancing cognitive function. Studies show improved memory and focus.",
+            "benefit_back_description": "Improves cholesterol, supports circulation, and lowers heart disease risk.",
             "benifit_card_button_text": "Learn More",
             "benifit_card_button_link": ""
           }
@@ -319,10 +319,11 @@
         "benefit_card_gfGQAG": {
           "type": "benefit_card",
           "settings": {
-            "benefit_title": "Cognition",
-            "benefit_description": "Supports focus, clarity, and mental sharpness",
-            "benefit_back_title": "Enhanced Cognition",
-            "benefit_back_description": "Polyphenols support brain health by protecting neurons and enhancing cognitive function. Studies show improved memory and focus.",
+            "benefit_icon": "shopify://shop_images/5337f7ccbbb47d3fb38ec67088e1ce18b25e666a_2.png",
+            "benefit_title": "Hormones.",
+            "benefit_description": " Supports natural hormonal balance",
+            "benefit_back_title": "Hormones.",
+            "benefit_back_description": "Improves cholesterol, supports circulation, and lowers heart disease risk.",
             "benifit_card_button_text": "Learn More",
             "benifit_card_button_link": ""
           }
