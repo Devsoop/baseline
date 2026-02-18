@@ -87,166 +87,240 @@
   ],
   "presets": [
     {
-      "name": "Product Comparison"
+      "name": "Product Comparison",
+      "blocks": [
+        {
+          "type": "comparison_row",
+          "settings": {
+            "category": "POLYPHENOLS",
+            "brand_value": "500+ mg/kg",
+            "competitor_value": "50 mg/kg",
+            "brand_selected": true
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "category": "LAB TESTING",
+            "brand_value": "Every Batch",
+            "competitor_value": "Not Tested",
+            "brand_selected": true
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "category": "PROCESSING",
+            "brand_value": "Natural Extraction",
+            "competitor_value": "Blended & Refined",
+            "brand_selected": true
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "category": "QR CODE FOR LAB REPORT",
+            "brand_value": "Yes",
+            "competitor_value": "No",
+            "brand_selected": true
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "category": "HEALTH IMPACT",
+            "brand_value": "Skin, Energy, Recovery and More",
+            "competitor_value": "Very Few Proven Benefits",
+            "brand_selected": true
+          }
+        }
+      ]
     }
   ]
 }
 {% endschema %}
 
 <style>
-.comparison-section {
-  background-color: {{ section.settings.bg_color }};
-  color: {{ section.settings.text_color }};
-  padding: clamp(40px, 8vw, 80px) clamp(10px, 2vw, 20px);
-  width: 100%;
-}
+  .comparison-section {
+    background-color: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+    padding: clamp(40px, 8vw, 80px) clamp(10px, 2vw, 20px);
+    font-family: var(--font-body-family), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    width: 100%;
+  }
 
-.comparison-container {
-  max-width: min({{ section.settings.content_width }}px, 95%);
-  margin: 0 auto;
-}
+  .comparison-container {
+    max-width: min({{ section.settings.content_width }}px, 95%);
+    margin: 0 auto;
+    width: 100%;
+  }
 
-/* HEADER — SAME GRID AS ROWS */
-.comparison-header {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: clamp(15px, 3vw, 40px);
-  margin-bottom: clamp(25px, 4vw, 50px);
-  padding: 0 clamp(5px, 1.5vw, 20px);
-}
+  .comparison-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(15px, 3vw, 40px);
+    margin-bottom: clamp(25px, 4vw, 50px);
+    align-items: center;
+    padding: 0 clamp(5px, 1.5vw, 20px);
+  }
 
-.brand-logo {
-  display: flex;
-  justify-content: center;
-}
+  .brand-logo {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
 
-.brand-logo-img {
-  width: clamp(80px, 15vw, {{ section.settings.logo_width }}px);
-  height: auto;
-  object-fit: contain;
-}
+  .brand-logo-img {
+    width: clamp(80px, 15vw, {{ section.settings.logo_width }}px);
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
 
-.competitor-name {
-  text-align: center;
-  font-size: 25px;
-  line-height: 140%;
-  font-weight: 500;
-  text-decoration: line-through;
-  opacity: 0.6;
-}
+  .competitor-name {
+    text-align: right;
+    font-size:25px;
+    line-height:140%;
+    font-weight: 500;
+    text-decoration: line-through;
+    opacity: 0.6;
+    font-family: var(--font-heading-family), var(--font-body-family);
+    letter-spacing: clamp(0.3px, 0.1vw, 1px);
+  }
+  @media screen and (max-width: 550px){
+    .competitor-name {
+    font-size:12px !important;
+   }
+   .category-cell{
+    font-size:12px !important;
+    }
+    .value-cell{
+    font-size:12px !important;
+    }
+  }
 
-.comparison-table {
-  display: flex;
-  flex-direction: column;
-}
 
-.comparison-row {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  padding: clamp(18px, 3vw, 32px) clamp(5px, 1.5vw, 20px);
-  border-bottom: 3px solid rgba(255,255,255,0.08);
-  gap: clamp(15px, 5vw, 60px);
-}
+  .comparison-table {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
 
-/* VALUE CELLS PERFECTLY CENTERED */
-.value-cell {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 10px;
-  font-size: 16px;
-  opacity: 0.6;
-}
+  .comparison-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: clamp(18px, 3vw, 32px) clamp(5px, 1.5vw, 20px);
+    border-bottom: 3px solid rgba(255, 255, 255, 0.08);
+    gap: clamp(15px, 5vw, 60px);
+  }
 
-.category-cell {
-  text-align: center;
-  font-size: 20px;
-  font-weight: 500;
-  padding: 0 10px;
-}
+  .comparison-row:last-child {
+    border-bottom: none;
+  }
 
-.dot-indicator {
-  width: 14px;
-  height: 14px;
-}
+  .value-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(8px, 1.2vw, 12px);
+    font-size:16px;
+    font-weight:400;
+    line-height:140%;
+    opacity: 0.6;
+  }
 
-/* MOBILE */
-@media screen and (max-width: 550px){
-  .competitor-name { font-size: 12px; }
-  .category-cell { font-size: 12px; }
-  .value-cell { font-size: 12px; }
-}
+  .value-cell.left {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .value-cell.right {
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .dot-indicator {
+    width: clamp(10px, 1.2vw, 14px);
+    height: clamp(10px, 1.2vw, 14px);
+    flex-shrink: 0;
+  }
+
+  .dot-indicator circle {
+    transition: all 0.3s ease;
+  }
+
+  .category-cell {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 140%;
+    letter-spacing: 2%;
+    text-align: center;
+    {% comment %} font-size: clamp(10px, 1.5vw, 15px); {% endcomment %}
+    {% comment %} font-weight: 700; {% endcomment %}
+    {% comment %} letter-spacing: clamp(0.3px, 0.12vw, 1.5px); {% endcomment %}
+    font-family: var(--font-heading-family), var(--font-body-family);
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.3;
+    padding: 0 clamp(5px, 1vw, 10px);
+  }
+
+  /* Ensure text wraps properly on small screens */
+  .value-cell span {
+    word-break: break-word;
+    hyphens: auto;
+  }
 </style>
 
 <div class="comparison-section">
   <div class="comparison-container">
-
-    <!-- HEADER -->
     <div class="comparison-header">
-
-      <!-- BRAND -->
       <div class="brand-logo">
         {% if section.settings.brand_logo %}
-          <img src="{{ section.settings.brand_logo | image_url: width: 400 }}"
-               alt="Brand Logo"
+          <img src="{{ section.settings.brand_logo | image_url: width: 400 }}" 
+               alt="Brand Logo" 
                class="brand-logo-img"
-               loading="lazy">
+               loading="lazy"
+               width=""
+               height=""
+            >
+               
         {% else %}
-          <div style="opacity:.5;">Upload your logo</div>
+          <div style="opacity: 0.5; font-size: clamp(10px, 2vw, 14px);">Upload your logo in settings</div>
         {% endif %}
       </div>
-
-      <!-- EMPTY CENTER COLUMN FOR ALIGNMENT -->
-      <div></div>
-
-      <!-- COMPETITOR -->
-      <div class="competitor-name">
-        {{ section.settings.competitor_name }}
-      </div>
-
+      <div class="competitor-name">{{ section.settings.competitor_name }}</div>
     </div>
 
-    <!-- ROWS -->
     <div class="comparison-table">
       {% for block in section.blocks %}
-      <div class="comparison-row" {{ block.shopify_attributes }}>
-
-        <!-- BRAND VALUE -->
-        <div class="value-cell">
-          <svg class="dot-indicator" viewBox="0 0 20 20">
-            {% if block.settings.brand_selected %}
-              <circle cx="10" cy="10" r="8" fill="{{ section.settings.accent_color }}" stroke="{{ section.settings.accent_color }}" stroke-width="2"/>
-            {% else %}
-              <circle cx="10" cy="10" r="8" fill="none" stroke="{{ section.settings.accent_color }}" stroke-width="2"/>
-            {% endif %}
-          </svg>
-          <span>{{ block.settings.brand_value }}</span>
+        <div class="comparison-row" {{ block.shopify_attributes }}>
+          <div class="value-cell left">
+            <svg class="dot-indicator" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {% if block.settings.brand_selected %}
+                <circle cx="10" cy="10" r="8" fill="{{ section.settings.accent_color }}" stroke="{{ section.settings.accent_color }}" stroke-width="2"/>
+              {% else %}
+                <circle cx="10" cy="10" r="8" fill="none" stroke="{{ section.settings.accent_color }}" stroke-width="2"/>
+              {% endif %}
+            </svg>
+            <span>{{ block.settings.brand_value }}</span>
+          </div>
+          
+          <div class="category-cell">{{ block.settings.category }}</div>
+          
+          <div class="value-cell right">
+            <svg class="dot-indicator" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {% unless block.settings.brand_selected %}
+                <circle cx="10" cy="10" r="8" fill="{{ section.settings.accent_color }}" stroke="{{ section.settings.accent_color }}" stroke-width="2"/>
+              {% else %}
+                <circle cx="10" cy="10" r="8" fill="none" stroke="{{ section.settings.accent_color }}" stroke-width="2"/>
+              {% endunless %}
+            </svg>
+            <span>{{ block.settings.competitor_value }}</span>
+          </div>
         </div>
-
-        <!-- CATEGORY -->
-        <div class="category-cell">
-          {{ block.settings.category }}
-        </div>
-
-        <!-- COMPETITOR VALUE -->
-        <div class="value-cell">
-          <svg class="dot-indicator" viewBox="0 0 20 20">
-            {% unless block.settings.brand_selected %}
-              <circle cx="10" cy="10" r="8" fill="{{ section.settings.accent_color }}" stroke="{{ section.settings.accent_color }}" stroke-width="2"/>
-            {% else %}
-              <circle cx="10" cy="10" r="8" fill="none" stroke="{{ section.settings.accent_color }}" stroke-width="2"/>
-            {% endunless %}
-          </svg>
-          <span>{{ block.settings.competitor_value }}</span>
-        </div>
-
-      </div>
       {% endfor %}
     </div>
-
   </div>
 </div>
