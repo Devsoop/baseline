@@ -1,144 +1,3 @@
-{% schema %}
-{
-  "name": "Product Comparison Table",
-  "settings": [
-    {
-      "type": "image_picker",
-      "id": "brand_logo",
-      "label": "Brand Logo Image",
-      "info": "Upload your brand logo (e.g., baseline logo)"
-    },
-    {
-      "type": "text",
-      "id": "competitor_name",
-      "label": "Competitor Name",
-      "default": "REGULAR OIL"
-    },
-    {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Background Color",
-      "default": "#000000"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text Color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "accent_color",
-      "label": "Accent/Dot Color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "range",
-      "id": "content_width",
-      "min": 600,
-      "max": 1400,
-      "step": 50,
-      "unit": "px",
-      "label": "Content Width",
-      "default": 1100
-    },
-    {
-      "type": "range",
-      "id": "logo_width",
-      "min": 80,
-      "max": 250,
-      "step": 10,
-      "unit": "px",
-      "label": "Logo Width",
-      "default": 150
-    }
-  ],
-  "blocks": [
-    {
-      "type": "comparison_row",
-      "name": "Comparison Row",
-      "settings": [
-        {
-          "type": "text",
-          "id": "category",
-          "label": "Category Name",
-          "default": "POLYPHENOLS"
-        },
-        {
-          "type": "text",
-          "id": "brand_value",
-          "label": "Your Brand Value",
-          "default": "500+ mg/kg"
-        },
-        {
-          "type": "text",
-          "id": "competitor_value",
-          "label": "Competitor Value",
-          "default": "50 mg/kg"
-        },
-        {
-          "type": "checkbox",
-          "id": "brand_selected",
-          "label": "Highlight Your Brand (fills the dot)",
-          "default": true
-        }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "Product Comparison",
-      "blocks": [
-        {
-          "type": "comparison_row",
-          "settings": {
-            "category": "POLYPHENOLS",
-            "brand_value": "500+ mg/kg",
-            "competitor_value": "50 mg/kg",
-            "brand_selected": true
-          }
-        },
-        {
-          "type": "comparison_row",
-          "settings": {
-            "category": "LAB TESTING",
-            "brand_value": "Every Batch",
-            "competitor_value": "Not Tested",
-            "brand_selected": true
-          }
-        },
-        {
-          "type": "comparison_row",
-          "settings": {
-            "category": "PROCESSING",
-            "brand_value": "Natural Extraction",
-            "competitor_value": "Blended & Refined",
-            "brand_selected": true
-          }
-        },
-        {
-          "type": "comparison_row",
-          "settings": {
-            "category": "QR CODE FOR LAB REPORT",
-            "brand_value": "Yes",
-            "competitor_value": "No",
-            "brand_selected": true
-          }
-        },
-        {
-          "type": "comparison_row",
-          "settings": {
-            "category": "HEALTH IMPACT",
-            "brand_value": "Skin, Energy, Recovery and More",
-            "competitor_value": "Very Few Proven Benefits",
-            "brand_selected": true
-          }
-        }
-      ]
-    }
-  ]
-}
-{% endschema %}
 
 <style>
   .comparison-section {
@@ -327,3 +186,147 @@
 
   </div>
 </div>
+
+
+
+{% schema %}
+{
+  "name": "Product Comparison Table",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "brand_logo",
+      "label": "Brand Logo Image",
+      "info": "Upload your brand logo (e.g., baseline logo)"
+    },
+    {
+      "type": "text",
+      "id": "competitor_name",
+      "label": "Competitor Name",
+      "default": "REGULAR OIL"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent/Dot Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "min": 600,
+      "max": 1400,
+      "step": 50,
+      "unit": "px",
+      "label": "Content Width",
+      "default": 1100
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 80,
+      "max": 250,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo Width",
+      "default": 150
+    }
+  ],
+  "blocks": [
+    {
+      "type": "comparison_row",
+      "name": "Comparison Row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "category",
+          "label": "Category Name",
+          "default": "POLYPHENOLS"
+        },
+        {
+          "type": "text",
+          "id": "brand_value",
+          "label": "Your Brand Value",
+          "default": "500+ mg/kg"
+        },
+        {
+          "type": "text",
+          "id": "competitor_value",
+          "label": "Competitor Value",
+          "default": "50 mg/kg"
+        },
+        {
+          "type": "checkbox",
+          "id": "brand_selected",
+          "label": "Highlight Your Brand (fills the dot)",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Comparison",
+      "blocks": [
+        {
+          "type": "comparison_row",
+          "settings": {
+            "category": "POLYPHENOLS",
+            "brand_value": "500+ mg/kg",
+            "competitor_value": "50 mg/kg",
+            "brand_selected": true
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "category": "LAB TESTING",
+            "brand_value": "Every Batch",
+            "competitor_value": "Not Tested",
+            "brand_selected": true
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "category": "PROCESSING",
+            "brand_value": "Natural Extraction",
+            "competitor_value": "Blended & Refined",
+            "brand_selected": true
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "category": "QR CODE FOR LAB REPORT",
+            "brand_value": "Yes",
+            "competitor_value": "No",
+            "brand_selected": true
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "category": "HEALTH IMPACT",
+            "brand_value": "Skin, Energy, Recovery and More",
+            "competitor_value": "Very Few Proven Benefits",
+            "brand_selected": true
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
