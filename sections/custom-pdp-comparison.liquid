@@ -155,19 +155,26 @@
     width: 100%;
   }
 
-  .comparison-header {
+  /* Header and rows share the same 3-column grid so columns align perfectly */
+  .comparison-header,
+  .comparison-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(15px, 3vw, 40px);
-    margin-bottom: clamp(25px, 4vw, 50px);
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    padding: 0 clamp(5px, 1.5vw, 20px);
+    gap: clamp(15px, 5vw, 60px);
+    padding-left: clamp(5px, 1.5vw, 20px);
+    padding-right: clamp(5px, 1.5vw, 20px);
+  }
+
+  /* ── Header ── */
+  .comparison-header {
+    margin-bottom: clamp(25px, 4vw, 50px);
   }
 
   .brand-logo {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center; /* centred under its column */
   }
 
   .brand-logo-img {
@@ -177,29 +184,23 @@
     object-fit: contain;
   }
 
+  /* Empty centre cell in the header – keeps column widths identical to rows */
+  .comparison-header .header-spacer {
+    /* no content needed */
+  }
+
   .competitor-name {
-    text-align: right;
-    font-size:25px;
-    line-height:140%;
+    text-align: center; /* centred under its column */
+    font-size: 25px;
+    line-height: 140%;
     font-weight: 500;
     text-decoration: line-through;
     opacity: 0.6;
     font-family: var(--font-heading-family), var(--font-body-family);
     letter-spacing: clamp(0.3px, 0.1vw, 1px);
   }
-  @media screen and (max-width: 550px){
-    .competitor-name {
-    font-size:12px !important;
-   }
-   .category-cell{
-    font-size:12px !important;
-    }
-    .value-cell{
-    font-size:12px !important;
-    }
-  }
 
-
+  /* ── Rows ── */
   .comparison-table {
     display: flex;
     flex-direction: column;
@@ -207,37 +208,26 @@
   }
 
   .comparison-row {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    padding: clamp(18px, 3vw, 32px) clamp(5px, 1.5vw, 20px);
+    padding-top: clamp(18px, 3vw, 32px);
+    padding-bottom: clamp(18px, 3vw, 32px);
     border-bottom: 3px solid rgba(255, 255, 255, 0.08);
-    gap: clamp(15px, 5vw, 60px);
   }
 
   .comparison-row:last-child {
     border-bottom: none;
   }
 
+  /* Both value cells are centred — dot above value, both centred in column */
   .value-cell {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center;   /* horizontally centred in column */
+    text-align: center;
     gap: clamp(8px, 1.2vw, 12px);
-    font-size:16px;
-    font-weight:400;
-    line-height:140%;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 140%;
     opacity: 0.6;
-  }
-
-  .value-cell.left {
-    align-items: flex-start;
-    text-align: left;
-  }
-
-  .value-cell.right {
-    align-items: flex-end;
-    text-align: right;
   }
 
   .dot-indicator {
@@ -256,47 +246,57 @@
     line-height: 140%;
     letter-spacing: 2%;
     text-align: center;
-    {% comment %} font-size: clamp(10px, 1.5vw, 15px); {% endcomment %}
-    {% comment %} font-weight: 700; {% endcomment %}
-    {% comment %} letter-spacing: clamp(0.3px, 0.12vw, 1.5px); {% endcomment %}
     font-family: var(--font-heading-family), var(--font-body-family);
     white-space: normal;
     word-break: break-word;
-    line-height: 1.3;
     padding: 0 clamp(5px, 1vw, 10px);
   }
 
-  /* Ensure text wraps properly on small screens */
   .value-cell span {
     word-break: break-word;
     hyphens: auto;
+  }
+
+  /* ── Mobile ── */
+  @media screen and (max-width: 550px) {
+    .competitor-name {
+      font-size: 12px !important;
+    }
+    .category-cell {
+      font-size: 12px !important;
+    }
+    .value-cell {
+      font-size: 12px !important;
+    }
   }
 </style>
 
 <div class="comparison-section">
   <div class="comparison-container">
+
     <div class="comparison-header">
       <div class="brand-logo">
         {% if section.settings.brand_logo %}
-          <img src="{{ section.settings.brand_logo | image_url: width: 400 }}" 
-               alt="Brand Logo" 
+          <img src="{{ section.settings.brand_logo | image_url: width: 400 }}"
+               alt="Brand Logo"
                class="brand-logo-img"
-               loading="lazy"
-               width=""
-               height=""
-            >
-               
+               loading="lazy">
         {% else %}
           <div style="opacity: 0.5; font-size: clamp(10px, 2vw, 14px);">Upload your logo in settings</div>
         {% endif %}
       </div>
+
+      <!-- Keeps the centre column consistent with rows -->
+      <div class="header-spacer"></div>
+
       <div class="competitor-name">{{ section.settings.competitor_name }}</div>
     </div>
 
     <div class="comparison-table">
       {% for block in section.blocks %}
         <div class="comparison-row" {{ block.shopify_attributes }}>
-          <div class="value-cell left">
+
+          <div class="value-cell">
             <svg class="dot-indicator" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               {% if block.settings.brand_selected %}
                 <circle cx="10" cy="10" r="8" fill="{{ section.settings.accent_color }}" stroke="{{ section.settings.accent_color }}" stroke-width="2"/>
@@ -306,10 +306,10 @@
             </svg>
             <span>{{ block.settings.brand_value }}</span>
           </div>
-          
+
           <div class="category-cell">{{ block.settings.category }}</div>
-          
-          <div class="value-cell right">
+
+          <div class="value-cell">
             <svg class="dot-indicator" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               {% unless block.settings.brand_selected %}
                 <circle cx="10" cy="10" r="8" fill="{{ section.settings.accent_color }}" stroke="{{ section.settings.accent_color }}" stroke-width="2"/>
@@ -319,8 +319,10 @@
             </svg>
             <span>{{ block.settings.competitor_value }}</span>
           </div>
+
         </div>
       {% endfor %}
     </div>
+
   </div>
 </div>
