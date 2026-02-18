@@ -7,9 +7,11 @@
   .faq-section-{{ section.id }} {
     position: relative;
     min-height: 560px;
-    background-color: {{ section.settings.background_color }};
+    {% comment %} background-color: {{ section.settings.background_color }}; {% endcomment %}
     overflow: hidden;
     font-family: {{ section.settings.font_family }}, sans-serif;
+    background-color: #0a0a0a;
+    background-image: radial-gradient(ellipse 80% 50% at 50% 28%, #81091b 0%, #690212 25%, #560410 55%, rgb(99 4 17 / 41%) 85%, transparent 100%);
   }
 
   /* Background image — right half */
