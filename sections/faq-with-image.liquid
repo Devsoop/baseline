@@ -31,12 +31,12 @@
     right: 0;
     width: 65%;
     height: 100%;
-    background: linear-gradient(
+    {% comment %} background: linear-gradient(
       to right,
       {{ section.settings.background_color }} 0%,
       {{ section.settings.background_color }}cc 18%,
       transparent 50%
-    );
+    ); {% endcomment %}
     pointer-events: none;
     z-index: 1;
   }
