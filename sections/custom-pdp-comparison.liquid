@@ -237,10 +237,14 @@
   }
 
   .category-cell {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 140%;
+    letter-spacing: 2%;
     text-align: center;
-    font-size: clamp(10px, 1.5vw, 15px);
-    font-weight: 700;
-    letter-spacing: clamp(0.3px, 0.12vw, 1.5px);
+    {% comment %} font-size: clamp(10px, 1.5vw, 15px); {% endcomment %}
+    {% comment %} font-weight: 700; {% endcomment %}
+    {% comment %} letter-spacing: clamp(0.3px, 0.12vw, 1.5px); {% endcomment %}
     font-family: var(--font-heading-family), var(--font-body-family);
     white-space: normal;
     word-break: break-word;
