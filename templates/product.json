@@ -224,10 +224,10 @@
           "type": "benefit_card",
           "settings": {
             "benefit_icon": "shopify://shop_images/22d6767d11b87bf6f3f60e3084536941513b5326_2.png",
-            "benefit_title": "Cognition",
+            "benefit_title": "Skin",
             "benefit_description": "Supports hydration, elasticity, a natural glow",
-            "benefit_back_title": "Brain Power",
-            "benefit_back_description": "Polyphenols protect neurons and enhance cognitive function for better memory and focus.",
+            "benefit_back_title": "Skin",
+            "benefit_back_description": "Improves cholesterol, supports circulation, and lowers heart disease risk.",
             "benifit_card_button_text": "Learn More",
             "benifit_card_button_link": ""
           }
@@ -237,7 +237,7 @@
           "settings": {
             "benefit_icon": "shopify://shop_images/e482962fc65deb2274d79c83fcf3b6b335925089_2.png",
             "benefit_title": "Immunity",
-            "benefit_description": "Supports your body's natural immune responses",
+            "benefit_description": "Supports your body’s\nnatural immune response",
             "benefit_back_title": "Immune Support",
             "benefit_back_description": "Rich in antioxidants that help strengthen your immune system naturally.",
             "benifit_card_button_text": "Learn More",
@@ -248,9 +248,9 @@
           "type": "benefit_card",
           "settings": {
             "benefit_icon": "shopify://shop_images/72b30e81af377f60d3617fc8ccbff9dc0c4b32c7_2.png",
-            "benefit_title": "Skin",
-            "benefit_description": "Supports hydration, elasticity, a natural glow",
-            "benefit_back_title": "Radiant Skin",
+            "benefit_title": "Cognition",
+            "benefit_description": "Supports focus, clarity,\nand mental sharpness",
+            "benefit_back_title": "Cognition",
             "benefit_back_description": "Polyphenols help protect and nourish your skin from within.",
             "benifit_card_button_text": "Learn More",
             "benifit_card_button_link": ""
