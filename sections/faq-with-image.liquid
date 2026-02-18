@@ -1,0 +1,513 @@
+{% comment %}
+  FAQ with Image Section
+  Pixel-perfect recreation of the baseline olive oil FAQ section
+{% endcomment %}
+
+<style>
+  .faq-section-{{ section.id }} {
+    position: relative;
+    min-height: 560px;
+    background-color: {{ section.settings.background_color }};
+    overflow: hidden;
+    font-family: {{ section.settings.font_family }}, sans-serif;
+  }
+
+  /* Background image — right half */
+  .faq-section-{{ section.id }} .faq-bg-image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 55%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+  }
+
+  /* Gradient overlay blending image into background */
+  .faq-section-{{ section.id }} .faq-bg-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 65%;
+    height: 100%;
+    background: linear-gradient(
+      to right,
+      {{ section.settings.background_color }} 0%,
+      {{ section.settings.background_color }}cc 18%,
+      transparent 50%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Content wrapper */
+  .faq-section-{{ section.id }} .faq-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: {{ section.settings.section_padding_top }}px {{ section.settings.section_padding_horizontal }}px {{ section.settings.section_padding_bottom }}px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* FAQ column — left 48% */
+  .faq-section-{{ section.id }} .faq-col {
+    width: 48%;
+    max-width: 480px;
+  }
+
+  /* Heading */
+  .faq-section-{{ section.id }} .faq-heading {
+    color: {{ section.settings.heading_color }};
+    font-size: {{ section.settings.heading_font_size }}px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    margin: 0 0 28px 0;
+    line-height: 1.1;
+  }
+
+  /* Accordion list */
+  .faq-section-{{ section.id }} .faq-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Each accordion item */
+  .faq-section-{{ section.id }} .faq-item {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .faq-section-{{ section.id }} .faq-item:last-child {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  /* Question button */
+  .faq-section-{{ section.id }} .faq-question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 18px 0;
+    cursor: pointer;
+    text-align: left;
+    color: {{ section.settings.question_color }};
+    font-size: {{ section.settings.question_font_size }}px;
+    font-weight: 400;
+    line-height: 1.4;
+    gap: 12px;
+    transition: opacity 0.2s ease;
+  }
+
+  .faq-section-{{ section.id }} .faq-question:hover {
+    opacity: 0.85;
+  }
+
+  .faq-section-{{ section.id }} .faq-question-text {
+    flex: 1;
+  }
+
+  /* Chevron icon */
+  .faq-section-{{ section.id }} .faq-icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+  }
+
+  .faq-section-{{ section.id }} .faq-icon svg {
+    width: 16px;
+    height: 16px;
+    stroke: {{ section.settings.question_color }};
+    fill: none;
+  }
+
+  .faq-section-{{ section.id }} .faq-item.is-open .faq-icon {
+    transform: rotate(180deg);
+  }
+
+  /* Answer panel */
+  .faq-section-{{ section.id }} .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.35s ease;
+  }
+
+  .faq-section-{{ section.id }} .faq-item.is-open .faq-answer {
+    max-height: 600px;
+  }
+
+  .faq-section-{{ section.id }} .faq-answer-inner {
+    padding-bottom: 18px;
+    color: {{ section.settings.answer_color }};
+    font-size: {{ section.settings.answer_font_size }}px;
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  .faq-section-{{ section.id }} .faq-answer-inner a {
+    color: {{ section.settings.answer_color }};
+    text-decoration: underline;
+  }
+
+  /* ===================== RESPONSIVE ===================== */
+  @media screen and (max-width: 900px) {
+    .faq-section-{{ section.id }} .faq-bg-image {
+      width: 100%;
+      opacity: 0.25;
+    }
+    .faq-section-{{ section.id }} .faq-bg-overlay {
+      display: none;
+    }
+    .faq-section-{{ section.id }} .faq-col {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .faq-section-{{ section.id }} .faq-content {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    .faq-section-{{ section.id }} .faq-heading {
+      font-size: {{ section.settings.heading_font_size | times: 0.8 | round }}px;
+    }
+    .faq-section-{{ section.id }} .faq-question {
+      font-size: {{ section.settings.question_font_size | minus: 1 }}px;
+    }
+  }
+</style>
+
+<section
+  class="faq-section-{{ section.id }}"
+  id="faq-section-{{ section.id }}"
+>
+  {%- if section.settings.background_image != blank -%}
+    <img
+      class="faq-bg-image"
+      src="{{ section.settings.background_image | image_url: width: 1400 }}"
+      alt="{{ section.settings.background_image.alt | escape }}"
+      loading="lazy"
+      width="{{ section.settings.background_image.width }}"
+      height="{{ section.settings.background_image.height }}"
+    >
+    <div class="faq-bg-overlay"></div>
+  {%- endif -%}
+
+  <div class="faq-content">
+    <div class="faq-col">
+
+      {%- if section.settings.heading != blank -%}
+        <h2 class="faq-heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+
+      <ul class="faq-list" role="list">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'faq_item' -%}
+            <li
+              class="faq-item"
+              {{ block.shopify_attributes }}
+            >
+              <button
+                class="faq-question"
+                aria-expanded="false"
+                aria-controls="faq-answer-{{ block.id }}"
+                id="faq-btn-{{ block.id }}"
+              >
+                <span class="faq-question-text">{{ block.settings.question }}</span>
+                <span class="faq-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </span>
+              </button>
+              <div
+                class="faq-answer"
+                id="faq-answer-{{ block.id }}"
+                role="region"
+                aria-labelledby="faq-btn-{{ block.id }}"
+              >
+                <div class="faq-answer-inner">
+                  {{ block.settings.answer }}
+                </div>
+              </div>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var section = document.getElementById('faq-section-{{ section.id }}');
+  if (!section) return;
+
+  var buttons = section.querySelectorAll('.faq-question');
+
+  buttons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var item = btn.closest('.faq-item');
+      var isOpen = item.classList.contains('is-open');
+
+      {% if section.settings.accordion_mode == 'single' %}
+      // Close all other items
+      section.querySelectorAll('.faq-item.is-open').forEach(function (openItem) {
+        openItem.classList.remove('is-open');
+        openItem.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+      });
+      {% endif %}
+
+      if (!isOpen) {
+        item.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+      } else {
+        item.classList.remove('is-open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+
+  // Open first item by default if setting enabled
+  {% if section.settings.open_first %}
+  var firstItem = section.querySelector('.faq-item');
+  if (firstItem) {
+    firstItem.classList.add('is-open');
+    firstItem.querySelector('.faq-question').setAttribute('aria-expanded', 'true');
+  }
+  {% endif %}
+})();
+</script>
+
+{% schema %}
+{
+  "name": "FAQ with Image",
+  "tag": "section",
+  "class": "section-faq-image",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "FAQ"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image (right side)"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background colour",
+      "default": "#6B0F1A"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font family",
+      "options": [
+        { "value": "inherit", "label": "Theme default" },
+        { "value": "Georgia", "label": "Georgia" },
+        { "value": "Inter", "label": "Inter" },
+        { "value": "Helvetica Neue", "label": "Helvetica Neue" }
+      ],
+      "default": "inherit"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading colour",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading font size (px)",
+      "min": 24,
+      "max": 80,
+      "step": 2,
+      "default": 48
+    },
+    {
+      "type": "color",
+      "id": "question_color",
+      "label": "Question colour",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "question_font_size",
+      "label": "Question font size (px)",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "default": 15
+    },
+    {
+      "type": "color",
+      "id": "answer_color",
+      "label": "Answer colour",
+      "default": "#e5d5d5"
+    },
+    {
+      "type": "range",
+      "id": "answer_font_size",
+      "label": "Answer font size (px)",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Behaviour"
+    },
+    {
+      "type": "select",
+      "id": "accordion_mode",
+      "label": "Accordion mode",
+      "options": [
+        { "value": "single", "label": "Open one at a time" },
+        { "value": "multi", "label": "Allow multiple open" }
+      ],
+      "default": "single"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_first",
+      "label": "Open first item by default",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Padding top (px)",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Padding bottom (px)",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "section_padding_horizontal",
+      "label": "Padding horizontal (px)",
+      "min": 16,
+      "max": 80,
+      "step": 4,
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "What makes this product different?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Enter your answer here. You can use rich text to format the content.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ with Image",
+      "blocks": [
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What makes baseline different from other olive oils?",
+            "answer": "<p>baseline is a high-polyphenol extra virgin olive oil that's lab-tested by batch. We guarantee at least 500 mg/kg of polyphenols – compounds linked to a range of health benefits. Every bottle is traceable and verified with a QR code.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What are polyphenols and why do they matter?",
+            "answer": "<p>Polyphenols are naturally occurring antioxidants found in olive oil. High concentrations are associated with anti-inflammatory and cardiovascular benefits. Most commercial olive oils lose polyphenols during processing – we preserve them.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What does it taste like?",
+            "answer": "<p>Our olive oil has a robust, peppery finish with fresh grassy notes – a sign of high polyphenol content. It's bold and complex, unlike refined or blended oils.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is baseline suitable for cooking?",
+            "answer": "<p>Yes, it's great for low to medium-heat cooking, drizzling, and dressings. For maximum polyphenol benefit, use raw or add at the end of cooking.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is it organic?",
+            "answer": "<p>Our olives are grown without synthetic pesticides. Certified organic status varies by harvest location – check the batch QR code for full provenance details.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How should I take it?",
+            "answer": "<p>Many customers take 1–2 tablespoons daily, straight or drizzled on food. There's no strict rule – use it however suits your lifestyle.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "When will my order arrive?",
+            "answer": "<p>Orders typically dispatch within 1–2 business days. Delivery times depend on your location – standard shipping is 3–5 business days.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
