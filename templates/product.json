@@ -326,7 +326,7 @@
         "button_hover_background": "#ffffff",
         "button_hover_text_color": "#8b1a1a",
         "button_active_background": "#ffffff",
-        "button_active_text_color": "#8b1a1a",
+        "button_active_text_color": "#000000",
         "badge_background": "#ffffff",
         "badge_text_color": "#8b1a1a",
         "show_benefits_section": true,
