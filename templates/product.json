@@ -260,9 +260,9 @@
           "type": "benefit_card",
           "settings": {
             "benefit_icon": "shopify://shop_images/73e74f0561c38b8fc28f74c82b5bb939e4766321_2.png",
-            "benefit_title": "Vitality",
-            "benefit_description": "Supports sustained energy and drive",
-            "benefit_back_title": "Energy Boost",
+            "benefit_title": "Protection",
+            "benefit_description": "Fights oxidative stress\nat the cellular level",
+            "benefit_back_title": "Protection",
             "benefit_back_description": "Natural compounds that support sustained energy throughout your day.",
             "benifit_card_button_text": "Learn More",
             "benifit_card_button_link": ""
