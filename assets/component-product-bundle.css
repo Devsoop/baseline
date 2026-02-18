@@ -238,7 +238,7 @@
 .gift-indicator{
   width:39px;
   height:39px;
-  font-size: 9px;
+  /* font-size: 9px; */
   position: absolute;
   bottom: 45px;
   right: 0px;
