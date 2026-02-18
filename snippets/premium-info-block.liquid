@@ -267,6 +267,17 @@
     <div class="premium-offer-left-{{ block.id }}">
       <div class="premium-offer-text-{{ block.id }}">
         <h3>{{ block.settings.offer_title }}</h3>
+        {%- if block.settings.product_image != blank -%}
+      <div class="product-image-container-{{ block.id }}">
+        {%- assign img_url = block.settings.product_image | image_url: width: 400 -%}
+        <img 
+          src="{{ img_url }}" 
+          alt="{{ block.settings.product_image.alt | default: 'Premium Product' }}"
+          width="400"
+          height="400"
+          loading="lazy">
+      </div>
+      {%- endif -%}
         
       </div>
     </div>
