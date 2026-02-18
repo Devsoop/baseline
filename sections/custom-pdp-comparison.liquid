@@ -287,7 +287,8 @@
       </div>
 
       <!-- Keeps the centre column consistent with rows -->
-      <div class="header-spacer"></div>
+      {% comment %} <div class="header-spacer"></div> {% endcomment %}
+      <div class="competitor-name">{{ section.settings.competitor_name }}</div>
 
       <div class="competitor-name">{{ section.settings.competitor_name }}</div>
     </div>
