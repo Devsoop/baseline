@@ -1,76 +1,89 @@
 {% comment %}
   FAQ with Image Section
-  Uses store theme typography — no font overrides
+  Desktop: FAQ left | Image right
+  Mobile:  FAQ top  | Image bottom
 {% endcomment %}
 
 <style>
   .faq-section-{{ section.id }} {
-    position: relative;
-    min-height: 560px;
     overflow: hidden;
     background-color: #0a0a0a;
     background-image: radial-gradient(ellipse 80% 50% at 50% 28%, #81091b 0%, #690212 25%, #560410 55%, rgb(99 4 17 / 41%) 85%, transparent 100%);
+    font-family: var(--font-body-family), sans-serif;
   }
 
-  /* Background image — right half */
+  /* ── Two-column shell ── */
+  .faq-section-{{ section.id }} .faq-inner {
+    display: flex;
+    align-items: stretch;
+    min-height: 560px;
+  }
+
+  /* ── Left: FAQ content ── */
+  .faq-section-{{ section.id }} .faq-col {
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding: {{ section.settings.section_padding_top }}px {{ section.settings.section_padding_horizontal }}px {{ section.settings.section_padding_bottom }}px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* ── Right: Image ── */
+  .faq-section-{{ section.id }} .faq-image-col {
+    flex: 0 0 50%;
+    max-width: 50%;
+    position: relative;
+    overflow: hidden;
+  }
+
   .faq-section-{{ section.id }} .faq-bg-image {
     position: absolute;
-    top: 0;
-    right: 0;
-    width: 65%;
+    inset: 0;
+    width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center center;
     display: block;
   }
 
-  /* Gradient overlay blending image into background colour */
-  .faq-section-{{ section.id }} .faq-bg-overlay {
+  /* Subtle left-edge fade blending image into section bg */
+  .faq-section-{{ section.id }} .faq-image-col::before {
+    content: '';
     position: absolute;
-    top: 0;
-    right: 0;
-    width: 65%;
-    height: 100%;
-    pointer-events: none;
+    inset: 0;
+    width: 35%;
+    background: linear-gradient(to right, #0a0a0a, transparent);
     z-index: 1;
+    pointer-events: none;
   }
 
-  /* Content wrapper */
-  .faq-section-{{ section.id }} .faq-content {
-    position: relative;
-    z-index: 2;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: {{ section.settings.section_padding_top }}px {{ section.settings.section_padding_horizontal }}px {{ section.settings.section_padding_bottom }}px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  /* FAQ column — left ~48% */
-  .faq-section-{{ section.id }} .faq-col {
-    width: 48%;
-    max-width: 480px;
-  }
-
-  /* Heading — inherits theme h2 styles, only colour overridden */
+  /* ── Heading ── */
   .faq-section-{{ section.id }} .faq-heading {
     color: {{ section.settings.heading_color }};
     margin: 0 0 28px 0;
     line-height: 120%;
     font-size: 52px;
-    font-weight:500;
-    
+    font-weight: 500;
   }
 
-  /* Accordion list */
+  /* ── Accordion list ── */
   .faq-section-{{ section.id }} .faq-list {
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
+  .faq-section-{{ section.id }} .faq-item {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+  }
 
-  /* Question button — inherits body font/size/weight from theme */
+  .faq-section-{{ section.id }} .faq-item:last-child {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  /* ── Question button ── */
   .faq-section-{{ section.id }} .faq-question {
     display: flex;
     align-items: center;
@@ -95,13 +108,14 @@
 
   .faq-section-{{ section.id }} .faq-question-text {
     flex: 1;
-    font-size:20px;
-    font-weight:500;
-    line-height:100%;
-    color:white;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 100%;
+    color: white;
+    margin: 0;
   }
 
-  /* Chevron icon */
+  /* ── Chevron ── */
   .faq-section-{{ section.id }} .faq-icon {
     flex-shrink: 0;
     width: 20px;
@@ -116,13 +130,14 @@
     width: 16px;
     height: 16px;
     stroke: white;
+    fill: none;
   }
 
   .faq-section-{{ section.id }} .faq-item.is-open .faq-icon {
     transform: rotate(180deg);
   }
 
-  /* Answer panel */
+  /* ── Answer panel ── */
   .faq-section-{{ section.id }} .faq-answer {
     max-height: 0;
     overflow: hidden;
@@ -133,15 +148,13 @@
     max-height: 600px;
   }
 
-  /* Answer inner — inherits theme body font/size entirely */
   .faq-section-{{ section.id }} .faq-answer-inner {
     padding-bottom: 18px;
     color: rgba(255, 255, 255, 0.8);
     font-family: inherit;
-    font-size:16px;
-    font-weight:400;
-    line-height:160%;
-
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 160%;
   }
 
   .faq-section-{{ section.id }} .faq-answer-inner p {
@@ -149,29 +162,62 @@
   }
 
   .faq-section-{{ section.id }} .faq-answer-inner a {
-    color: {{ section.settings.answer_color }};
+    color: rgba(255, 255, 255, 0.8);
     text-decoration: underline;
   }
 
   /* ===================== RESPONSIVE ===================== */
-  @media screen and (max-width: 900px) {
-    .faq-section-{{ section.id }} .faq-bg-image {
-      width: 100%;
-      opacity: 0.2;
-    }
-    .faq-section-{{ section.id }} .faq-bg-overlay {
-      display: none;
-    }
+
+  /* Tablet: keep side-by-side but resize proportions */
+  @media screen and (max-width: 900px) and (min-width: 601px) {
     .faq-section-{{ section.id }} .faq-col {
-      width: 100%;
-      max-width: 100%;
+      flex: 0 0 55%;
+      max-width: 55%;
+    }
+    .faq-section-{{ section.id }} .faq-image-col {
+      flex: 0 0 45%;
+      max-width: 45%;
+    }
+    .faq-section-{{ section.id }} .faq-heading {
+      font-size: 38px;
     }
   }
 
+  /* Mobile: FAQ on top, image strip below */
   @media screen and (max-width: 600px) {
-    .faq-section-{{ section.id }} .faq-content {
-      padding-left: 20px;
-      padding-right: 20px;
+    .faq-section-{{ section.id }} .faq-inner {
+      flex-direction: column;
+      min-height: unset;
+    }
+
+    .faq-section-{{ section.id }} .faq-col {
+      flex: unset;
+      max-width: 100%;
+      width: 100%;
+      padding: 40px 20px;
+    }
+
+    .faq-section-{{ section.id }} .faq-image-col {
+      flex: unset;
+      max-width: 100%;
+      width: 100%;
+      height: 280px;
+      position: relative;
+    }
+
+    /* On mobile, fade from the top so image blends with FAQ above */
+    .faq-section-{{ section.id }} .faq-image-col::before {
+      width: 100%;
+      height: 40%;
+      background: linear-gradient(to bottom, #0a0a0a, transparent);
+    }
+
+    .faq-section-{{ section.id }} .faq-heading {
+      font-size: 36px;
+    }
+
+    .faq-section-{{ section.id }} .faq-question-text {
+      font-size: 17px;
     }
   }
 </style>
@@ -180,21 +226,10 @@
   class="faq-section-{{ section.id }}"
   id="faq-section-{{ section.id }}"
 >
-  {%- if section.settings.background_image != blank -%}
-    <img
-      class="faq-bg-image"
-      src="{{ section.settings.background_image | image_url: width: 1400 }}"
-      alt="{{ section.settings.background_image.alt | escape }}"
-      loading="lazy"
-      width="{{ section.settings.background_image.width }}"
-      height="{{ section.settings.background_image.height }}"
-    >
-    <div class="faq-bg-overlay"></div>
-  {%- endif -%}
+  <div class="faq-inner">
 
-  <div class="faq-content">
+    <!-- LEFT / TOP: FAQ -->
     <div class="faq-col">
-
       {%- if section.settings.heading != blank -%}
         <h2 class="faq-heading">{{ section.settings.heading }}</h2>
       {%- endif -%}
@@ -202,17 +237,14 @@
       <ul class="faq-list" role="list">
         {%- for block in section.blocks -%}
           {%- if block.type == 'faq_item' -%}
-            <li
-              class="faq-item"
-              {{ block.shopify_attributes }}
-            >
+            <li class="faq-item" {{ block.shopify_attributes }}>
               <button
                 class="faq-question"
                 aria-expanded="false"
                 aria-controls="faq-answer-{{ block.id }}"
                 id="faq-btn-{{ block.id }}"
               >
-                <h2 class="faq-question-text">{{ block.settings.question }}</h2>
+                <span class="faq-question-text">{{ block.settings.question }}</span>
                 <span class="faq-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="6 9 12 15 18 9"></polyline>
@@ -233,8 +265,22 @@
           {%- endif -%}
         {%- endfor -%}
       </ul>
-
     </div>
+
+    <!-- RIGHT / BOTTOM: Image -->
+    {%- if section.settings.background_image != blank -%}
+      <div class="faq-image-col">
+        <img
+          class="faq-bg-image"
+          src="{{ section.settings.background_image | image_url: width: 1400 }}"
+          alt="{{ section.settings.background_image.alt | escape }}"
+          loading="lazy"
+          width="{{ section.settings.background_image.width }}"
+          height="{{ section.settings.background_image.height }}"
+        >
+      </div>
+    {%- endif -%}
+
   </div>
 </section>
 
@@ -302,7 +348,6 @@
       "id": "background_image",
       "label": "Background image (right side)"
     },
-    
     {
       "type": "header",
       "content": "Colours"
