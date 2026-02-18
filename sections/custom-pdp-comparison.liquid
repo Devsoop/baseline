@@ -9,7 +9,8 @@
   }
 
   .comparison-container {
-    max-width: min(864px, 95%);
+    {% comment %} max-width: min(864px, 95%); {% endcomment %}
+     max-width:864px;
     margin: 0 auto;
     width: 100%;
   }
@@ -223,16 +224,7 @@
       "label": "Accent/Dot Color",
       "default": "#ffffff"
     },
-    {
-      "type": "range",
-      "id": "content_width",
-      "min": 600,
-      "max": 1400,
-      "step": 100,
-      "unit": "px",
-      "label": "Content Width",
-      "default": 1100
-    },
+  
     {
       "type": "range",
       "id": "logo_width",
