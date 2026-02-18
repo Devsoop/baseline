@@ -236,18 +236,29 @@
   position: relative;
 }
 .gift-indicator{
-  font-size: 9px;
+  width:39px;
+  height:39px;
+  /* font-size: 9px; */
   position: absolute;
   bottom: 45px;
   right: 0px;
-  border: 2px solid #000;
+  border: 1px solid black;
+  color: white;
   border-radius: 50%;
   padding: 6.4px 4px;
-  background: #fff;
-  line-height: 1;
+  background: #9E011E;
+  /* line-height: 1; */
   display: flex;
-  font-weight: bold;
+  /* font-weight: bold; */
   text-transform: uppercase;
+}
+.gift-indicator-text{
+  font-size:12px;
+  font-weight:700;
+  font-style:bold;
+  text-transform:uppercase;
+  line-height:90%;
+  letter-spacing:2%;
 }
 
 @media screen and (min-width: 750px) {

@@ -23,8 +23,8 @@
         "vendor": {
           "type": "text",
           "settings": {
-            "text": "{{ product.vendor }}",
-            "text_style": "uppercase"
+            "text": "A natural alternative to supplements. High-polyphenol olive oil, lab tested and gently extracted — fresher and more powerful than supermarket olive oil.",
+            "text_style": "body"
           }
         },
         "description": {
@@ -87,6 +87,13 @@
             "border_radius": 8
           }
         },
+        "text_w8BDBx": {
+          "type": "text",
+          "settings": {
+            "text": "<em><strong>Try 100% Risk Free</strong></em><em>  30 Day Money Back Guarantee</em>",
+            "text_style": "body"
+          }
+        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
@@ -112,8 +119,12 @@
         "variant_picker",
         "quantity_selector",
         "premium_info_pVYCiM",
+        "text_w8BDBx",
         "buy_buttons",
         "share"
+      ],
+      "custom_css": [
+        ".product__text:nth-of-type(2) {text-align: center; color: #9e011e;}"
       ],
       "settings": {
         "enable_sticky_info": true,

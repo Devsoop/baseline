@@ -14,7 +14,15 @@
     "footer": {
       "type": "footer",
       "blocks": {
-        "brand_information_ppDQE3": {
+        "image_3GKpH3": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Layer_1.png",
+            "image_width": 100,
+            "alignment": ""
+          }
+        },
+        "brand_information_VREiwh": {
           "type": "brand_information",
           "settings": {
             "show_social": true
@@ -22,10 +30,11 @@
         }
       },
       "block_order": [
-        "brand_information_ppDQE3"
+        "image_3GKpH3",
+        "brand_information_VREiwh"
       ],
       "settings": {
-        "color_scheme": "scheme-4",
+        "color_scheme": "scheme-1",
         "newsletter_enable": false,
         "newsletter_heading": "Subscribe to our emails",
         "enable_follow_on_shop": false,
