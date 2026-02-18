@@ -415,6 +415,87 @@
         "logo_width": 150
       }
     },
+    "faq_with_image_YCCtz3": {
+      "type": "faq-with-image",
+      "blocks": {
+        "faq_item_KnYf4P": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What makes baseline different from other olive oils?",
+            "answer": "<p>baseline is a high-polyphenol extra virgin olive oil that's lab-tested by batch. We guarantee at least 500 mg/kg of polyphenols – compounds linked to a range of health benefits. Every bottle is traceable and verified with a QR code.</p>"
+          }
+        },
+        "faq_item_EeJADL": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What are polyphenols and why do they matter?",
+            "answer": "<p>Polyphenols are naturally occurring antioxidants found in olive oil. High concentrations are associated with anti-inflammatory and cardiovascular benefits. Most commercial olive oils lose polyphenols during processing – we preserve them.</p>"
+          }
+        },
+        "faq_item_LQpzEF": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What does it taste like?",
+            "answer": "<p>Our olive oil has a robust, peppery finish with fresh grassy notes – a sign of high polyphenol content. It's bold and complex, unlike refined or blended oils.</p>"
+          }
+        },
+        "faq_item_78cK4H": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is baseline suitable for cooking?",
+            "answer": "<p>Yes, it's great for low to medium-heat cooking, drizzling, and dressings. For maximum polyphenol benefit, use raw or add at the end of cooking.</p>"
+          }
+        },
+        "faq_item_Vn93hf": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is it organic?",
+            "answer": "<p>Our olives are grown without synthetic pesticides. Certified organic status varies by harvest location – check the batch QR code for full provenance details.</p>"
+          }
+        },
+        "faq_item_bzGjbA": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How should I take it?",
+            "answer": "<p>Many customers take 1–2 tablespoons daily, straight or drizzled on food. There's no strict rule – use it however suits your lifestyle.</p>"
+          }
+        },
+        "faq_item_UPTfiV": {
+          "type": "faq_item",
+          "settings": {
+            "question": "When will my order arrive?",
+            "answer": "<p>Orders typically dispatch within 1–2 business days. Delivery times depend on your location – standard shipping is 3–5 business days.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_item_KnYf4P",
+        "faq_item_EeJADL",
+        "faq_item_LQpzEF",
+        "faq_item_78cK4H",
+        "faq_item_Vn93hf",
+        "faq_item_bzGjbA",
+        "faq_item_UPTfiV"
+      ],
+      "name": "FAQ with Image",
+      "settings": {
+        "heading": "FAQ",
+        "background_image": "shopify://shop_images/4479c9b23e11ecb21c25d5f6fe471ba1f6baadd3.png",
+        "background_color": "#6B0F1A",
+        "font_family": "inherit",
+        "heading_color": "#ffffff",
+        "heading_font_size": 48,
+        "question_color": "#ffffff",
+        "question_font_size": 15,
+        "answer_color": "#e5d5d5",
+        "answer_font_size": 14,
+        "accordion_mode": "single",
+        "open_first": true,
+        "section_padding_top": 64,
+        "section_padding_bottom": 64,
+        "section_padding_horizontal": 40
+      }
+    },
     "related-products": {
       "type": "related-products",
       "disabled": true,
@@ -439,6 +520,7 @@
     "main",
     "custom_pdp_section_U7WAkj",
     "custom_pdp_comparison_rc7BMw",
+    "faq_with_image_YCCtz3",
     "related-products"
   ]
 }
