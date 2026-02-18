@@ -418,12 +418,19 @@
     const toggleBtn = block.querySelector('[data-info-toggle]');
     const offerContainer = block.querySelector('[data-offer-toggle]');
     const productVisual = block.querySelector('[data-product-visual]');
+    const smallImg = document.querySelector('.product_small_img'); // 👈 target image
 
     if (toggleBtn && offerContainer && productVisual) {
       const toggleIcon = toggleBtn.querySelector('.toggle-icon');
 
       function toggleVisual() {
         productVisual.classList.toggle('active');
+
+        // 👇 hide/show small image
+        if (smallImg) {
+          smallImg.style.display =
+            productVisual.classList.contains('active') ? 'none' : '';
+        }
 
         if (productVisual.classList.contains('active')) {
           toggleIcon.textContent = '×';
