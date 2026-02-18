@@ -274,7 +274,7 @@
             "benefit_icon": "shopify://shop_images/0338b24e5d99df8e7bc1a55d44d337b5b48a9de3_2.png",
             "benefit_title": "Repair",
             "benefit_description": "Aids inflammation response, tissue repair",
-            "benefit_back_title": "Recovery",
+            "benefit_back_title": "Repair",
             "benefit_back_description": "Supports your body's natural healing and recovery processes.",
             "benifit_card_button_text": "Learn More",
             "benifit_card_button_link": ""
@@ -284,10 +284,44 @@
           "type": "benefit_card",
           "settings": {
             "benefit_icon": "shopify://shop_images/d98281a35e289eefba9b01f2b0ac7172e1e0cddf_2.png",
-            "benefit_title": "Hormones",
-            "benefit_description": "Supports hormonal balance",
-            "benefit_back_title": "Balance",
+            "benefit_title": "Heart",
+            "benefit_description": "Supports cardiovascular\nhealth and circulation",
+            "benefit_back_title": "Heart",
             "benefit_back_description": "Helps maintain healthy hormonal balance naturally.",
+            "benifit_card_button_text": "Learn More",
+            "benifit_card_button_link": ""
+          }
+        },
+        "benefit_card_VnQPMW": {
+          "type": "benefit_card",
+          "settings": {
+            "benefit_icon": "shopify://shop_images/70f31b98afc5ede3f6ce1bd098b15704b117a309_2.png",
+            "benefit_title": "Vitality",
+            "benefit_description": "Supports sustained energy and drive",
+            "benefit_back_title": "Vitality",
+            "benefit_back_description": "Polyphenols support brain health by protecting neurons and enhancing cognitive function. Studies show improved memory and focus.",
+            "benifit_card_button_text": "Learn More",
+            "benifit_card_button_link": ""
+          }
+        },
+        "benefit_card_z6gmmQ": {
+          "type": "benefit_card",
+          "settings": {
+            "benefit_title": "Cognition",
+            "benefit_description": "Supports focus, clarity, and mental sharpness",
+            "benefit_back_title": "Enhanced Cognition",
+            "benefit_back_description": "Polyphenols support brain health by protecting neurons and enhancing cognitive function. Studies show improved memory and focus.",
+            "benifit_card_button_text": "Learn More",
+            "benifit_card_button_link": ""
+          }
+        },
+        "benefit_card_gfGQAG": {
+          "type": "benefit_card",
+          "settings": {
+            "benefit_title": "Cognition",
+            "benefit_description": "Supports focus, clarity, and mental sharpness",
+            "benefit_back_title": "Enhanced Cognition",
+            "benefit_back_description": "Polyphenols support brain health by protecting neurons and enhancing cognitive function. Studies show improved memory and focus.",
             "benifit_card_button_text": "Learn More",
             "benifit_card_button_link": ""
           }
@@ -304,7 +338,10 @@
         "benefit_card_RPBnrW",
         "benefit_card_Gzgw6d",
         "benefit_card_CxpYtj",
-        "benefit_card_d6Ygbm"
+        "benefit_card_d6Ygbm",
+        "benefit_card_VnQPMW",
+        "benefit_card_z6gmmQ",
+        "benefit_card_gfGQAG"
       ],
       "name": "Daily Ritual & Benefits",
       "settings": {
