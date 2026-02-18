@@ -38,6 +38,8 @@
   .premium-offer-text-{{ block.id }} h3 {
     color: {{ block.settings.text_color }};
     font-size: {{ block.settings.title_font_size }}px;
+    line-height:22px;
+    letter-spacing:2%;
     margin: 0 0 4px 0;
     font-weight: 600;
     font-family: var(--font-heading-family);
@@ -47,12 +49,6 @@
     align-items:center;
     gap:20px;
   }
-  {% comment %} @media (max-width: 1000px){
-    .premium-offer-text-{{ block.id }}{
-    flex-direction:column;
-    align-items:start;
-    }
-  } {% endcomment %}
 
   .premium-offer-right-{{ block.id }} {
     display: flex;
