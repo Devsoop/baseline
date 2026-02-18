@@ -252,6 +252,12 @@
   font-weight: bold;
   text-transform: uppercase;
 }
+.gift-indicator-text{
+  font-size:12px;
+  font-weight:700;
+  font-style:bold;
+  text-transform:uppercase;
+}
 
 @media screen and (min-width: 750px) {
   .product-form__input--bundle .bundle-unit-price {
