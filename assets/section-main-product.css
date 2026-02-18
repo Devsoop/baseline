@@ -230,14 +230,20 @@ product-info {
 .product__info-container .icon-with-text {
   margin: 2.5rem 0;
 }
-.description-text{
-  background-color: #9E011E33;
-  border-radius: 50px;
-  border: 1px solid #9E011E33;
-  padding: 2px 8px;
-  color: #9E011E;
-  font-weight: 600;
+.description-text {
+    background-color: rgba(158, 1, 30, 0.1);
+    border-radius: 50px;
+    border: 1px solid rgba(158, 1, 30, 0.2);
+    padding: 4px 12px 2px 12px;
+    color: #9e011e;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 22px;
+    align-items: center;
+    text-transform: uppercase;
+    letter-spacing: 6%;
 }
+
 .description-block{
   display: flex;
   flex-wrap: wrap;
