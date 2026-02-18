@@ -1,15 +1,13 @@
 {% comment %}
   FAQ with Image Section
-  Pixel-perfect recreation of the baseline olive oil FAQ section
+  Uses store theme typography — no font overrides
 {% endcomment %}
 
 <style>
   .faq-section-{{ section.id }} {
     position: relative;
     min-height: 560px;
-    {% comment %} background-color: {{ section.settings.background_color }}; {% endcomment %}
     overflow: hidden;
-    font-family: {{ section.settings.font_family }}, sans-serif;
     background-color: #0a0a0a;
     background-image: radial-gradient(ellipse 80% 50% at 50% 28%, #81091b 0%, #690212 25%, #560410 55%, rgb(99 4 17 / 41%) 85%, transparent 100%);
   }
@@ -26,7 +24,7 @@
     display: block;
   }
 
-  /* Gradient overlay blending image into background */
+  /* Gradient overlay blending image into background colour */
   .faq-section-{{ section.id }} .faq-bg-overlay {
     position: absolute;
     top: 0;
@@ -54,18 +52,15 @@
     box-sizing: border-box;
   }
 
-  /* FAQ column — left 48% */
+  /* FAQ column — left ~48% */
   .faq-section-{{ section.id }} .faq-col {
     width: 48%;
     max-width: 480px;
   }
 
-  /* Heading */
+  /* Heading — inherits theme h2 styles, only colour overridden */
   .faq-section-{{ section.id }} .faq-heading {
     color: {{ section.settings.heading_color }};
-    font-size: {{ section.settings.heading_font_size }}px;
-    font-weight: 700;
-    letter-spacing: 0.01em;
     margin: 0 0 28px 0;
     line-height: 1.1;
   }
@@ -86,7 +81,7 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   }
 
-  /* Question button */
+  /* Question button — inherits body font/size/weight from theme */
   .faq-section-{{ section.id }} .faq-question {
     display: flex;
     align-items: center;
@@ -98,8 +93,9 @@
     cursor: pointer;
     text-align: left;
     color: {{ section.settings.question_color }};
-    font-size: {{ section.settings.question_font_size }}px;
-    font-weight: 400;
+    font-size: inherit;
+    font-family: inherit;
+    font-weight: inherit;
     line-height: 1.4;
     gap: 12px;
     transition: opacity 0.2s ease;
@@ -139,19 +135,24 @@
   .faq-section-{{ section.id }} .faq-answer {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.35s ease, padding 0.35s ease;
+    transition: max-height 0.35s ease;
   }
 
   .faq-section-{{ section.id }} .faq-item.is-open .faq-answer {
     max-height: 600px;
   }
 
+  /* Answer inner — inherits theme body font/size entirely */
   .faq-section-{{ section.id }} .faq-answer-inner {
     padding-bottom: 18px;
     color: {{ section.settings.answer_color }};
-    font-size: {{ section.settings.answer_font_size }}px;
+    font-family: inherit;
+    font-size: inherit;
     line-height: 1.65;
-    font-weight: 300;
+  }
+
+  .faq-section-{{ section.id }} .faq-answer-inner p {
+    margin: 0;
   }
 
   .faq-section-{{ section.id }} .faq-answer-inner a {
@@ -163,7 +164,7 @@
   @media screen and (max-width: 900px) {
     .faq-section-{{ section.id }} .faq-bg-image {
       width: 100%;
-      opacity: 0.25;
+      opacity: 0.2;
     }
     .faq-section-{{ section.id }} .faq-bg-overlay {
       display: none;
@@ -178,12 +179,6 @@
     .faq-section-{{ section.id }} .faq-content {
       padding-left: 20px;
       padding-right: 20px;
-    }
-    .faq-section-{{ section.id }} .faq-heading {
-      font-size: {{ section.settings.heading_font_size | times: 0.8 | round }}px;
-    }
-    .faq-section-{{ section.id }} .faq-question {
-      font-size: {{ section.settings.question_font_size | minus: 1 }}px;
     }
   }
 </style>
@@ -263,7 +258,6 @@
       var isOpen = item.classList.contains('is-open');
 
       {% if section.settings.accordion_mode == 'single' %}
-      // Close all other items
       section.querySelectorAll('.faq-item.is-open').forEach(function (openItem) {
         openItem.classList.remove('is-open');
         openItem.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
@@ -280,7 +274,6 @@
     });
   });
 
-  // Open first item by default if setting enabled
   {% if section.settings.open_first %}
   var firstItem = section.querySelector('.faq-item');
   if (firstItem) {
@@ -316,22 +309,15 @@
       "id": "background_image",
       "label": "Background image (right side)"
     },
-
     {
-      "type": "header",
-      "content": "Typography"
+      "type": "color",
+      "id": "background_color",
+      "label": "Background colour (used for gradient blend)",
+      "default": "#6B0F1A"
     },
     {
-      "type": "select",
-      "id": "font_family",
-      "label": "Font family",
-      "options": [
-        { "value": "inherit", "label": "Theme default" },
-        { "value": "Georgia", "label": "Georgia" },
-        { "value": "Inter", "label": "Inter" },
-        { "value": "Helvetica Neue", "label": "Helvetica Neue" }
-      ],
-      "default": "inherit"
+      "type": "header",
+      "content": "Colours"
     },
     {
       "type": "color",
@@ -340,43 +326,16 @@
       "default": "#ffffff"
     },
     {
-      "type": "range",
-      "id": "heading_font_size",
-      "label": "Heading font size (px)",
-      "min": 24,
-      "max": 80,
-      "step": 2,
-      "default": 48
-    },
-    {
       "type": "color",
       "id": "question_color",
       "label": "Question colour",
       "default": "#ffffff"
     },
     {
-      "type": "range",
-      "id": "question_font_size",
-      "label": "Question font size (px)",
-      "min": 12,
-      "max": 22,
-      "step": 1,
-      "default": 15
-    },
-    {
       "type": "color",
       "id": "answer_color",
       "label": "Answer colour",
       "default": "#e5d5d5"
-    },
-    {
-      "type": "range",
-      "id": "answer_font_size",
-      "label": "Answer font size (px)",
-      "min": 12,
-      "max": 20,
-      "step": 1,
-      "default": 14
     },
     {
       "type": "header",
