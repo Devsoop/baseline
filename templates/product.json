@@ -34,7 +34,7 @@
         "selling_plan_picker_thmKQB": {
           "type": "selling_plan_picker",
           "settings": {
-            "subscription_benefits": "FREE Shipping, FREE Clay Bottle"
+            "subscription_benefits": "FREE Shipping, 🎁 FREE Clay Bottle"
           }
         },
         "price": {
@@ -411,7 +411,6 @@
         "bg_color": "#000000",
         "text_color": "#ffffff",
         "accent_color": "#ffffff",
-        "content_width": 850,
         "logo_width": 150
       }
     },
