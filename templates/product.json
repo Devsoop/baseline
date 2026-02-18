@@ -123,6 +123,9 @@
         "buy_buttons",
         "share"
       ],
+      "custom_css": [
+        ".product__text:nth-of-type(2) {text-align: center; color: #9e011e;}"
+      ],
       "settings": {
         "enable_sticky_info": true,
         "color_scheme": "scheme-1",
