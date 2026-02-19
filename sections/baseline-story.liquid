@@ -4,6 +4,8 @@
 {%- style -%}
   #BaselineStory-{{ section.id }} {
     position: relative;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
   }
 
   #BaselineStory-{{ section.id }}.baseline-story {
@@ -20,6 +22,8 @@
     justify-content: center;
     overflow: hidden;
     background: linear-gradient(180deg, #6B0211 0%, #000000 100%);
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
 
   #BaselineStory-{{ section.id }} .baseline-story__banner-bg {
@@ -73,10 +77,12 @@
 
   #BaselineStory-{{ section.id }} .baseline-story__slider-zone {
     position: relative;
-    height: 100vh;
+    height: 103vh;
     min-height: 400px;
     overflow: hidden;
     background: linear-gradient(180deg, #000000 0%, #6B0211 100%);
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
 
   #BaselineStory-{{ section.id }} .baseline-story__app {
@@ -409,6 +415,7 @@
   const section = document.getElementById('BaselineStory-{{ section.id }}');
   if (!section) return;
 
+  const banner = section.querySelector('[data-banner]');
   const sliderZone = section.querySelector('[data-slider-zone]');
   const app = section.querySelector('.baseline-story__app');
   const ruler = section.querySelector('[data-ruler]');
@@ -420,12 +427,24 @@
   if (TOTAL === 0) return;
 
   let sliderZoneActive = false;
-  const io = new IntersectionObserver(function(entries) {
+  let bannerActive = false;
+  let isJumpingToSlider = false;
+
+  // Observe banner visibility
+  const bannerIO = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) {
-      sliderZoneActive = e.isIntersecting && e.intersectionRatio >= 0.5;
+      bannerActive = e.isIntersecting && e.intersectionRatio >= 0.8;
     });
-  }, { threshold: 0.5 });
-  if (sliderZone) io.observe(sliderZone);
+  }, { threshold: 0.8 });
+  if (banner) bannerIO.observe(banner);
+
+  // Observe slider zone visibility
+  const sliderIO = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      sliderZoneActive = e.isIntersecting && e.intersectionRatio >= 0.9;
+    });
+  }, { threshold: 0.9 });
+  if (sliderZone) sliderIO.observe(sliderZone);
 
   // Ruler ticks (use slider zone height)
   const rulerParent = sliderZone || section;
@@ -497,20 +516,74 @@
     enterSlide(next, tl, 0.3);
   }
 
+  function jumpToSliderZone() {
+    if (isJumpingToSlider || !sliderZone) return;
+    isJumpingToSlider = true;
+    
+    const startY = window.pageYOffset || window.scrollY;
+    const sliderTop = sliderZone.getBoundingClientRect().top + startY;
+    const distance = sliderTop - startY;
+    const duration = 800;
+    const startTime = performance.now();
+
+    function animateScroll(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const ease = progress < 0.5 
+        ? 2 * progress * progress 
+        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+      
+      window.scrollTo(0, startY + distance * ease);
+      
+      if (progress < 1) {
+        requestAnimationFrame(animateScroll);
+      } else {
+        isJumpingToSlider = false;
+      }
+    }
+    
+    requestAnimationFrame(animateScroll);
+  }
+
   let lastWheel = 0;
   window.addEventListener('wheel', e => {
-    if (!sliderZone || !sliderZone.contains(e.target)) return;
-    if (!sliderZoneActive) return;
-    e.preventDefault();
-    const now = Date.now();
-    if (isAnimating || now - lastWheel < 120) return;
-    lastWheel = now;
-    goTo(current + (e.deltaY > 0 ? 1 : -1));
+    // If banner is active and scrolling down, jump to slider zone
+    if (bannerActive && e.deltaY > 0 && !isJumpingToSlider) {
+      e.preventDefault();
+      jumpToSliderZone();
+      return;
+    }
+
+    // If slider zone is active, handle slide navigation
+    if (sliderZoneActive && sliderZone.contains(e.target)) {
+      e.preventDefault();
+      const now = Date.now();
+      if (isAnimating || now - lastWheel < 120) return;
+      lastWheel = now;
+      goTo(current + (e.deltaY > 0 ? 1 : -1));
+      return;
+    }
+
+    // If slider zone is not fully active but user is in it, allow normal scroll
   }, { passive: false });
 
   let touchY = 0;
-  section.addEventListener('touchstart', e => { touchY = e.touches[0].clientY; }, { passive: true });
+  let touchStartElement = null;
+  section.addEventListener('touchstart', e => {
+    touchY = e.touches[0].clientY;
+    touchStartElement = e.target;
+  }, { passive: true });
   section.addEventListener('touchend', e => {
+    // If banner is active and swiping down, jump to slider zone
+    if (bannerActive && banner.contains(touchStartElement)) {
+      const dy = touchY - e.changedTouches[0].clientY;
+      if (dy > 40) {
+        jumpToSliderZone();
+        return;
+      }
+    }
+
+    // If slider zone is active, handle slide navigation
     if (!sliderZoneActive) return;
     const dy = touchY - e.changedTouches[0].clientY;
     if (Math.abs(dy) < 40) return;
@@ -521,6 +594,14 @@
   }, { passive: true });
 
   section.addEventListener('keydown', e => {
+    // If banner is active and pressing down/space, jump to slider
+    if (bannerActive && (e.key === 'ArrowDown' || e.key === ' ')) {
+      e.preventDefault();
+      jumpToSliderZone();
+      return;
+    }
+
+    // If slider zone is active, handle slide navigation
     if (!sliderZoneActive) return;
     if (!app.contains(document.activeElement) && !section.contains(document.activeElement)) return;
     if (e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
