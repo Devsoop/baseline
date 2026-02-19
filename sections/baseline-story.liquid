@@ -1,0 +1,730 @@
+{%- assign block_then = section.blocks | where: 'type', 'slide_then' | first -%}
+{%- assign block_now = section.blocks | where: 'type', 'slide_now' | first -%}
+{%- if block_then != blank -%}
+  {%- assign lines_then_str = block_then.settings.lines | default: '' -%}
+{%- else -%}
+  {%- assign lines_then_str = '' -%}
+{%- endif -%}
+{%- if block_now != blank -%}
+  {%- assign lines_now_str = block_now.settings.lines | default: '' -%}
+{%- else -%}
+  {%- assign lines_now_str = '' -%}
+{%- endif -%}
+{%- comment -%} Split by newline: newline_to_br converts \n to <br />, then split gives proper lines (not per-char) {%- endcomment -%}
+{%- assign lines_then = lines_then_str | newline_to_br | split: '<br />' -%}
+{%- assign lines_now = lines_now_str | newline_to_br | split: '<br />' -%}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+
+{%- style -%}
+  #BaselineStory-{{ section.id }} {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    background: #0a0005;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__app {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 90% 80% at 50% 100%, #7a0020 0%, #3d0010 40%, #0a0005 100%);
+    z-index: 0;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__ruler {
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 32px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 12px 0;
+    overflow: hidden;
+  }
+
+  #BaselineStory-{{ section.id }} .ruler-line {
+    position: absolute;
+    right: 0;
+    top: 12px; bottom: 12px;
+    width: 1px;
+    background: rgba(255,255,255,0.06);
+  }
+
+  #BaselineStory-{{ section.id }} .tick {
+    position: absolute;
+    right: 0;
+    height: 1px;
+    background: rgba(255,255,255,0.18);
+  }
+  #BaselineStory-{{ section.id }} .tick.major { width: 10px; }
+  #BaselineStory-{{ section.id }} .tick.minor { width: 5px; }
+
+  #BaselineStory-{{ section.id }} .baseline-story__ruler-fill {
+    position: absolute;
+    right: 0;
+    top: 12px;
+    width: 2px;
+    height: 0%;
+    background: #c0392b;
+    transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 6px rgba(192,57,43,0.6);
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__slides {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__slide {
+    position: absolute;
+    inset: 0;
+    padding: 60px clamp(24px, 5vw, 80px) 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(40px, 8vw, 80px);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__slide-inner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: clamp(40px, 8vw, 80px);
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__slide-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__slide-media {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (max-width: 749px) {
+    #BaselineStory-{{ section.id }} .baseline-story__slide,
+    #BaselineStory-{{ section.id }} .baseline-story__slide-inner {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+    #BaselineStory-{{ section.id }} .baseline-story__slide-media {
+      width: 100%;
+      justify-content: flex-start;
+    }
+  }
+
+  #BaselineStory-{{ section.id }} .slide-eyebrow {
+    font-size: 18px;
+    font-weight: 700;
+    font-style: italic;
+    color: #fff;
+    margin-bottom: 24px;
+    display: block;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  #BaselineStory-{{ section.id }} .slide-lines {
+    display: flex;
+    gap: 0;
+    flex-direction: column;
+  }
+
+  #BaselineStory-{{ section.id }} .line-wrap {
+    overflow: hidden;
+    padding-bottom: 2px;
+    width: 100%;
+  }
+
+  #BaselineStory-{{ section.id }} .line-inner {
+    display: inline-block;
+    width: 100%;
+    font-size: clamp(18px, 4.5vw, 24px);
+    font-weight: 400;
+    color: #fff;
+    line-height: 1.55;
+    opacity: 0;
+    transform: translateY(100%);
+    white-space: normal;
+  }
+
+  #BaselineStory-{{ section.id }} .line-inner strong { font-weight: 700; color: #fff; }
+  #BaselineStory-{{ section.id }} .line-inner em { font-style: italic; font-weight: 700; }
+
+  #BaselineStory-{{ section.id }} .underlined {
+    position: relative;
+    display: inline;
+    white-space: nowrap;
+  }
+  #BaselineStory-{{ section.id }} .underline-svg {
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 100%;
+    height: 10px;
+    overflow: visible;
+    pointer-events: none;
+  }
+  #BaselineStory-{{ section.id }} .underline-path {
+    stroke: #c0392b;
+    stroke-width: 2.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  #BaselineStory-{{ section.id }} .slide-img-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  #BaselineStory-{{ section.id }} .illus-img,
+  #BaselineStory-{{ section.id }} .illus-img.placeholder-svg {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    object-fit: contain;
+    opacity: 0;
+    transform: translateY(50px);
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.7));
+    display: block;
+  }
+
+  #BaselineStory-{{ section.id }} .polaroid .placeholder-svg,
+  #BaselineStory-{{ section.id }} .polaroid img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+  }
+
+  #BaselineStory-{{ section.id }} .polaroids {
+    position: relative;
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  #BaselineStory-{{ section.id }} .polaroid {
+    position: relative;
+    background: #fff;
+    padding: 10px 10px 36px 10px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.55);
+    opacity: 0;
+    transform: translateY(60px) rotate(0deg);
+    width: 140px;
+    flex-shrink: 0;
+  }
+
+  #BaselineStory-{{ section.id }} .polaroid:nth-child(1) {
+    transform: translateY(60px) rotate(-3deg);
+  }
+
+  #BaselineStory-{{ section.id }} .polaroid:nth-child(2) {
+    transform: translateY(60px) rotate(5deg);
+    margin-top: 40px;
+  }
+
+  #BaselineStory-{{ section.id }} .polaroid img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+  }
+
+  #BaselineStory-{{ section.id }} .polaroid-label {
+    text-align: center;
+    margin-top: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: #111;
+    text-transform: uppercase;
+  }
+
+  #BaselineStory-{{ section.id }} .tape {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-2deg);
+    width: 38px;
+    height: 24px;
+    background: #a51c30;
+    opacity: 0.88;
+    border-radius: 2px;
+  }
+
+  #BaselineStory-{{ section.id }} .polaroid:nth-child(2) .tape {
+    transform: translateX(-50%) rotate(3deg);
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__scroll-hint {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 80;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__scroll-hint span {
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+  }
+
+  #BaselineStory-{{ section.id }} .hint-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    animation: baselineStoryBounce 1.6s ease-in-out infinite;
+  }
+
+  #BaselineStory-{{ section.id }} .hint-arrow i {
+    display: block;
+    width: 1px;
+    height: 6px;
+    background: rgba(255,255,255,0.3);
+  }
+
+  #BaselineStory-{{ section.id }} .hint-arrow svg {
+    width: 10px;
+    height: 6px;
+    fill: none;
+    stroke: rgba(255,255,255,0.3);
+    stroke-width: 1.5;
+  }
+
+  @keyframes baselineStoryBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(5px); }
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__progress-dots {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 80;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  #BaselineStory-{{ section.id }} .pdot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.18);
+    transition: background 0.4s, transform 0.4s;
+  }
+  #BaselineStory-{{ section.id }} .pdot.active {
+    background: #fff;
+    transform: scale(1.5);
+  }
+{%- endstyle -%}
+
+<section id="BaselineStory-{{ section.id }}" class="baseline-story">
+  <div class="baseline-story__app">
+
+    <div class="baseline-story__bg"></div>
+
+    <div class="baseline-story__ruler" data-ruler>
+      <div class="ruler-line"></div>
+      <div class="baseline-story__ruler-fill" data-ruler-fill></div>
+    </div>
+
+    <div class="baseline-story__progress-dots" data-dots>
+      {%- for block in section.blocks -%}
+        <div class="pdot{% if forloop.first %} active{% endif %}" data-i="{{ forloop.index0 }}"></div>
+      {%- endfor -%}
+    </div>
+
+    <div class="baseline-story__slides">
+      {%- if block_then != blank -%}
+        <div class="baseline-story__slide text-slide" data-slide data-slide-index="0" {{ block_then.shopify_attributes }}>
+          <div class="baseline-story__slide-inner">
+            <div class="baseline-story__slide-content">
+              <span class="slide-eyebrow">{{ block_then.settings.eyebrow | default: 'Then.' }}</span>
+              <div class="slide-lines" data-lines>
+                {%- for line in lines_then -%}
+                  <div class="line-wrap">
+                    {%- if line != blank -%}
+                      <span class="line-inner">{{ line }}</span>
+                    {%- else -%}
+                      <span class="line-inner">&nbsp;</span>
+                    {%- endif -%}
+                  </div>
+                {%- endfor -%}
+                {%- if block_then.settings.underlined_phrase != blank -%}
+                  <div class="line-wrap"><span class="line-inner"><em><span class="underlined" data-underlined>{{ block_then.settings.underlined_phrase }}</span></em></span></div>
+                {%- endif -%}
+              </div>
+            </div>
+            <div class="baseline-story__slide-media">
+              <div class="slide-img-area">
+                {%- if block_then.settings.image != blank -%}
+                  <img
+                    class="illus-img"
+                    src="{{ block_then.settings.image | image_url: width: 640 }}"
+                    alt="{{ block_then.settings.image.alt | default: '' | escape }}"
+                    width="320"
+                    height="400"
+                    loading="lazy"
+                  >
+                {%- else -%}
+                  {{ 'image' | placeholder_svg_tag: 'illus-img placeholder-svg' }}
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- if block_now != blank -%}
+        <div class="baseline-story__slide text-slide" data-slide data-slide-index="1" {{ block_now.shopify_attributes }}>
+          <div class="baseline-story__slide-inner">
+            <div class="baseline-story__slide-content">
+              <span class="slide-eyebrow">{{ block_now.settings.eyebrow | default: 'Now.' }}</span>
+              <div class="slide-lines" data-lines>
+                {%- for line in lines_now -%}
+                  {%- if line != blank -%}
+                    <div class="line-wrap"><span class="line-inner">{{ line }}</span></div>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
+            <div class="baseline-story__slide-media">
+              <div class="polaroids">
+                <div class="polaroid" data-pol="0">
+                  <div class="tape"></div>
+                  {%- if block_now.settings.polaroid_1_image != blank -%}
+                    <img src="{{ block_now.settings.polaroid_1_image | image_url: width: 400 }}" alt="{{ block_now.settings.polaroid_1_label | default: '' | escape }}" width="200" height="200" loading="lazy">
+                  {%- else -%}
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+                  <div class="polaroid-label">{{ block_now.settings.polaroid_1_label | default: 'Press' }}</div>
+                </div>
+                <div class="polaroid" data-pol="1">
+                  <div class="tape"></div>
+                  {%- if block_now.settings.polaroid_2_image != blank -%}
+                    <img src="{{ block_now.settings.polaroid_2_image | image_url: width: 400 }}" alt="{{ block_now.settings.polaroid_2_label | default: '' | escape }}" width="200" height="200" loading="lazy">
+                  {%- else -%}
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+                  <div class="polaroid-label">{{ block_now.settings.polaroid_2_label | default: 'Lab' }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="baseline-story__scroll-hint" data-scroll-hint>
+      <span>{{ section.settings.scroll_hint_text | default: 'Scroll' }}</span>
+      <div class="hint-arrow">
+        <i></i><i></i>
+        <svg viewBox="0 0 10 6"><polyline points="1,1 5,5 9,1"/></svg>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function() {
+  const section = document.getElementById('BaselineStory-{{ section.id }}');
+  if (!section) return;
+
+  const app = section.querySelector('.baseline-story__app');
+  const ruler = section.querySelector('[data-ruler]');
+  const rulerFill = section.querySelector('[data-ruler-fill]');
+  const dots = section.querySelectorAll('.pdot');
+  const slides = section.querySelectorAll('[data-slide]');
+  const TOTAL = slides.length;
+
+  if (TOTAL === 0) return;
+
+  // Ruler ticks
+  const rulerHeight = section.offsetHeight;
+  const numTicks = 40;
+  for (let i = 0; i <= numTicks; i++) {
+    const t = document.createElement('div');
+    t.className = 'tick ' + (i % 5 === 0 ? 'major' : 'minor');
+    t.style.top = (12 + (i / numTicks) * (rulerHeight - 24)) + 'px';
+    ruler.appendChild(t);
+  }
+
+  let current = 0;
+  let isAnimating = false;
+
+  function updateRuler(idx) {
+    rulerFill.style.height = ((idx + 1) / TOTAL * 100) + '%';
+  }
+
+  function updateDots(idx) {
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  }
+
+  function exitSlide(idx, tl) {
+    const slide = slides[idx];
+    if (slide) tl.to(slide, { y: -30, opacity: 0, duration: 0.4, ease: 'power2.in' }, 0);
+  }
+
+  function enterSlide(idx, tl, offset) {
+    const slide = slides[idx];
+    if (!slide) return;
+
+    const eyebrow = slide.querySelector('.slide-eyebrow');
+    const lines = slide.querySelectorAll('.line-inner');
+    const underlined = slide.querySelector('[data-underlined]');
+    const illus = slide.querySelector('.illus-img');
+    const pol1 = slide.querySelector('[data-pol="0"]');
+    const pol2 = slide.querySelector('[data-pol="1"]');
+
+    if (idx === 0 && underlined) {
+      let underlinePath = underlined.querySelector('.underline-path');
+      if (!underlinePath) {
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.classList.add('underline-svg');
+        svg.setAttribute('viewBox', '0 0 100 10');
+        svg.setAttribute('preserveAspectRatio', 'none');
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.classList.add('underline-path');
+        path.setAttribute('d', 'M0,5 C8,2 18,7 30,5 C42,3 52,7 65,4.5 C76,2.5 87,6.5 100,5');
+        path.setAttribute('vector-effect', 'non-scaling-stroke');
+        svg.appendChild(path);
+        underlined.appendChild(svg);
+        underlinePath = path;
+      }
+      const pathLen = underlinePath.getTotalLength ? underlinePath.getTotalLength() : 200;
+      gsap.set(underlinePath, { strokeDasharray: pathLen, strokeDashoffset: pathLen, opacity: 1 });
+    }
+
+    gsap.set(slide, { opacity: 0, y: 0 });
+    if (eyebrow) gsap.set(eyebrow, { opacity: 0, y: 20 });
+    if (lines.length) gsap.set(lines, { opacity: 0, y: '100%' });
+    if (illus) gsap.set(illus, { opacity: 0, y: 50 });
+    if (pol1) gsap.set(pol1, { opacity: 0, y: 60, rotate: -3 });
+    if (pol2) gsap.set(pol2, { opacity: 0, y: 60, rotate: 5 });
+
+    tl.to(slide, { opacity: 1, duration: 0.01 }, offset)
+      .to(eyebrow, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, offset + 0.1);
+
+    if (lines.length) {
+      const linesDelay = offset + 0.2;
+      const staggerTime = 0.08;
+      const lineDuration = 0.3;
+      tl.to(lines, { opacity: 1, y: '0%', duration: lineDuration, stagger: staggerTime, ease: 'power2.out' }, linesDelay);
+
+      if (idx === 0 && underlined) {
+        const underlinePath = underlined.querySelector('.underline-path');
+        const underlineDelay = linesDelay + (lines.length - 1) * staggerTime + lineDuration + 0.1;
+        tl.to(underlinePath, { strokeDashoffset: 0, duration: 0.5, ease: 'power1.inOut' }, underlineDelay);
+        // Image appears earlier - start during text animation
+        if (illus) {
+          const imageStartDelay = linesDelay + Math.floor(lines.length / 2) * staggerTime + lineDuration * 0.5;
+          tl.to(illus, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, imageStartDelay);
+        }
+      } else if (idx === 0 && illus) {
+        // If no underlined text, show image earlier
+        const imageStartDelay = linesDelay + Math.floor(lines.length / 2) * staggerTime + lineDuration * 0.5;
+        tl.to(illus, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, imageStartDelay);
+      }
+    } else if (idx === 0 && illus) {
+      // No lines, show image immediately
+      tl.to(illus, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, offset + 0.3);
+    }
+
+    if (idx === 1 && pol1 && pol2) {
+      // Polaroids appear earlier - start during text animation
+      const polStartDelay = offset + 0.5;
+      tl.to(pol1, { opacity: 1, y: 0, duration: 0.5, ease: 'back.out(1.4)' }, polStartDelay)
+        .to(pol2, { opacity: 1, y: 0, duration: 0.5, ease: 'back.out(1.4)' }, polStartDelay + 0.15);
+    }
+  }
+
+  function goTo(next) {
+    if (isAnimating || next === current || next < 0 || next >= TOTAL) return;
+    isAnimating = true;
+    const prev = current;
+    current = next;
+    updateDots(next);
+    updateRuler(next);
+
+    const tl = gsap.timeline({ onComplete: () => { isAnimating = false; } });
+    exitSlide(prev, tl);
+    enterSlide(next, tl, 0.3);
+  }
+
+  let lastWheel = 0;
+  window.addEventListener('wheel', e => {
+    if (!app.contains(e.target)) return;
+    e.preventDefault();
+    const now = Date.now();
+    if (isAnimating || now - lastWheel < 120) return;
+    lastWheel = now;
+    goTo(current + (e.deltaY > 0 ? 1 : -1));
+  }, { passive: false });
+
+  let touchY = 0;
+  section.addEventListener('touchstart', e => { touchY = e.touches[0].clientY; }, { passive: true });
+  section.addEventListener('touchend', e => {
+    const dy = touchY - e.changedTouches[0].clientY;
+    if (Math.abs(dy) < 40) return;
+    const now = Date.now();
+    if (isAnimating || now - lastWheel < 400) return;
+    lastWheel = now;
+    goTo(current + (dy > 0 ? 1 : -1));
+  }, { passive: true });
+
+  section.addEventListener('keydown', e => {
+    if (!app.contains(document.activeElement) && !section.contains(document.activeElement)) return;
+    if (e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+  });
+
+  function init() {
+    if (typeof gsap === 'undefined') return setTimeout(init, 50);
+    gsap.set(slides, { opacity: 0 });
+    updateRuler(0);
+    updateDots(0);
+    const tl = gsap.timeline({ onComplete: () => { isAnimating = false; } });
+    isAnimating = true;
+    enterSlide(0, tl, 0.3);
+    const hint = section.querySelector('[data-scroll-hint]');
+    if (hint) gsap.to(hint, { opacity: 1, duration: 0.8, delay: 1.8, ease: 'power2.out' });
+  }
+
+  if (document.readyState === 'complete') setTimeout(init, 200);
+  else window.addEventListener('load', () => setTimeout(init, 200));
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Baseline Story",
+  "tag": "section",
+  "class": "section-baseline-story",
+  "settings": [
+    {
+      "type": "text",
+      "id": "scroll_hint_text",
+      "label": "Scroll hint text",
+      "default": "Scroll"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide_then",
+      "name": "Slide: Then",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow",
+          "default": "Then."
+        },
+        {
+          "type": "textarea",
+          "id": "lines",
+          "label": "Lines (one per line)",
+          "default": "For thousands of years, olive oil was used\nfor nourishment and wellbeing.\n\nHippocrates famously called it",
+          "info": "Each line animates in. Use blank lines for spacing."
+        },
+        {
+          "type": "text",
+          "id": "underlined_phrase",
+          "label": "Underlined quote (last line)",
+          "default": "\"the great healer.\""
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Illustration image"
+        }
+      ]
+    },
+    {
+      "type": "slide_now",
+      "name": "Slide: Now",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow",
+          "default": "Now."
+        },
+        {
+          "type": "textarea",
+          "id": "lines",
+          "label": "Lines (one per line)",
+          "default": "Modern science has helped explain why.\nOlive oil's benefits come from healthy fats\nand naturally occurring polyphenols."
+        },
+        {
+          "type": "image_picker",
+          "id": "polaroid_1_image",
+          "label": "Polaroid 1 image"
+        },
+        {
+          "type": "text",
+          "id": "polaroid_1_label",
+          "label": "Polaroid 1 label",
+          "default": "Press"
+        },
+        {
+          "type": "image_picker",
+          "id": "polaroid_2_image",
+          "label": "Polaroid 2 image"
+        },
+        {
+          "type": "text",
+          "id": "polaroid_2_label",
+          "label": "Polaroid 2 label",
+          "default": "Lab"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Baseline Story",
+      "blocks": [
+        { "type": "slide_then" },
+        { "type": "slide_now" }
+      ]
+    }
+  ]
+}
+{% endschema %}
