@@ -4,13 +4,79 @@
 {%- style -%}
   #BaselineStory-{{ section.id }} {
     position: relative;
-    min-height: 100vh;
-    overflow: hidden;
-    background: linear-gradient(180deg, rgba(107, 2, 17, 0) 0%, #000000 70.02%) !important;
   }
-  
+
   #BaselineStory-{{ section.id }}.baseline-story {
-    background: linear-gradient(180deg, rgba(107, 2, 17, 0) 0%, #000000 70.02%) !important;
+    background: #6B0211;
+    margin-top: -110px;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__banner {
+    position: relative;
+    height: 100vh;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: linear-gradient(180deg, #6B0211 0%, #000000 100%);
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__banner-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    transform: translate(-50%, 0);
+    left: 50%;
+    top: unset;
+    bottom: 0;
+    z-index: 2;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__banner-bg img {
+    width: 100%;
+    height: fit-content;
+    object-fit: contain;
+    max-width: 650px;
+    margin: auto;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__banner-overlay {
+    position: absolute;
+    z-index: 1;
+    background: linear-gradient(180deg, #6B0211 0%, #000000 100%);
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__banner-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 2rem;
+    max-width: 800px;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__banner-heading {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    color: #fff;
+    margin: 0 0 1rem;
+    line-height: 1.2;
+    font-size: 112px;
+    text-transform: uppercase;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__banner-subheading {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: rgba(255,255,255,0.85);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__slider-zone {
+    position: relative;
+    height: 100vh;
+    min-height: 400px;
+    overflow: hidden;
+    background: linear-gradient(180deg, #000000 0%, #6B0211 100%);
   }
 
   #BaselineStory-{{ section.id }} .baseline-story__app {
@@ -250,6 +316,26 @@
 {%- endstyle -%}
 
 <section id="BaselineStory-{{ section.id }}" class="baseline-story">
+  <div class="baseline-story__banner" data-banner>
+    <div class="baseline-story__banner-bg">
+      {%- if section.settings.banner_image != blank -%}
+        <img src="{{ section.settings.banner_image | image_url: width: 1920 }}" alt="{{ section.settings.banner_heading | default: '' | escape }}" width="1920" height="1080" loading="eager">
+      {%- else -%}
+        <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a0508 0%,#0a0005 100%);"></div>
+      {%- endif -%}
+    </div>
+    <div class="baseline-story__banner-overlay"></div>
+    <div class="baseline-story__banner-content">
+      {%- if section.settings.banner_heading != blank -%}
+        <h1 class="baseline-story__banner-heading">{{ section.settings.banner_heading }}</h1>
+      {%- endif -%}
+      {%- if section.settings.banner_subheading != blank -%}
+        <p class="baseline-story__banner-subheading">{{ section.settings.banner_subheading }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="baseline-story__slider-zone" data-slider-zone>
   <div class="baseline-story__app">
 
     <div class="baseline-story__bg"></div>
@@ -315,6 +401,7 @@
     </div>
 
   </div>
+  </div>
 </section>
 
 <script>
@@ -322,6 +409,7 @@
   const section = document.getElementById('BaselineStory-{{ section.id }}');
   if (!section) return;
 
+  const sliderZone = section.querySelector('[data-slider-zone]');
   const app = section.querySelector('.baseline-story__app');
   const ruler = section.querySelector('[data-ruler]');
   const rulerFill = section.querySelector('[data-ruler-fill]');
@@ -331,8 +419,17 @@
 
   if (TOTAL === 0) return;
 
-  // Ruler ticks
-  const rulerHeight = section.offsetHeight;
+  let sliderZoneActive = false;
+  const io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      sliderZoneActive = e.isIntersecting && e.intersectionRatio >= 0.5;
+    });
+  }, { threshold: 0.5 });
+  if (sliderZone) io.observe(sliderZone);
+
+  // Ruler ticks (use slider zone height)
+  const rulerParent = sliderZone || section;
+  const rulerHeight = rulerParent.offsetHeight;
   const numTicks = 40;
   for (let i = 0; i <= numTicks; i++) {
     const t = document.createElement('div');
@@ -402,7 +499,8 @@
 
   let lastWheel = 0;
   window.addEventListener('wheel', e => {
-    if (!app.contains(e.target)) return;
+    if (!sliderZone || !sliderZone.contains(e.target)) return;
+    if (!sliderZoneActive) return;
     e.preventDefault();
     const now = Date.now();
     if (isAnimating || now - lastWheel < 120) return;
@@ -413,6 +511,7 @@
   let touchY = 0;
   section.addEventListener('touchstart', e => { touchY = e.touches[0].clientY; }, { passive: true });
   section.addEventListener('touchend', e => {
+    if (!sliderZoneActive) return;
     const dy = touchY - e.changedTouches[0].clientY;
     if (Math.abs(dy) < 40) return;
     const now = Date.now();
@@ -422,6 +521,7 @@
   }, { passive: true });
 
   section.addEventListener('keydown', e => {
+    if (!sliderZoneActive) return;
     if (!app.contains(document.activeElement) && !section.contains(document.activeElement)) return;
     if (e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
     if (e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
@@ -450,6 +550,30 @@
   "tag": "section",
   "class": "section-baseline-story",
   "settings": [
+    {
+      "type": "header",
+      "content": "Banner"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Banner image"
+    },
+    {
+      "type": "text",
+      "id": "banner_heading",
+      "label": "Banner heading",
+      "default": "Our Story"
+    },
+    {
+      "type": "textarea",
+      "id": "banner_subheading",
+      "label": "Banner subheading"
+    },
+    {
+      "type": "header",
+      "content": "Slider"
+    },
     {
       "type": "text",
       "id": "scroll_hint_text",
