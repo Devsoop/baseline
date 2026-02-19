@@ -12,6 +12,9 @@
     background: #6B0211;
     margin-top: -110px;
   }
+  #BaselineStory-{{ section.id }} div:empty{
+    display: block;
+  }
 
   #BaselineStory-{{ section.id }} .baseline-story__banner {
     position: relative;
@@ -107,6 +110,8 @@
     align-items: flex-end;
     padding: 12px 0;
     overflow: hidden;
+    max-height: 480px;
+    margin: auto;
   }
 
   #BaselineStory-{{ section.id }} .ruler-line {
