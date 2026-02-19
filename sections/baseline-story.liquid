@@ -1,18 +1,3 @@
-{%- assign block_then = section.blocks | where: 'type', 'slide_then' | first -%}
-{%- assign block_now = section.blocks | where: 'type', 'slide_now' | first -%}
-{%- if block_then != blank -%}
-  {%- assign lines_then_str = block_then.settings.lines | default: '' -%}
-{%- else -%}
-  {%- assign lines_then_str = '' -%}
-{%- endif -%}
-{%- if block_now != blank -%}
-  {%- assign lines_now_str = block_now.settings.lines | default: '' -%}
-{%- else -%}
-  {%- assign lines_now_str = '' -%}
-{%- endif -%}
-{%- comment -%} Split by newline: newline_to_br converts \n to <br />, then split gives proper lines (not per-char) {%- endcomment -%}
-{%- assign lines_then = lines_then_str | newline_to_br | split: '<br />' -%}
-{%- assign lines_now = lines_now_str | newline_to_br | split: '<br />' -%}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 
@@ -21,7 +6,11 @@
     position: relative;
     min-height: 100vh;
     overflow: hidden;
-    background: #0a0005;
+    background: linear-gradient(180deg, rgba(107, 2, 17, 0) 0%, #000000 70.02%) !important;
+  }
+  
+  #BaselineStory-{{ section.id }}.baseline-story {
+    background: linear-gradient(180deg, rgba(107, 2, 17, 0) 0%, #000000 70.02%) !important;
   }
 
   #BaselineStory-{{ section.id }} .baseline-story__app {
@@ -33,7 +22,6 @@
   #BaselineStory-{{ section.id }} .baseline-story__bg {
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse 90% 80% at 50% 100%, #7a0020 0%, #3d0010 40%, #0a0005 100%);
     z-index: 0;
   }
 
@@ -54,14 +42,14 @@
     right: 0;
     top: 12px; bottom: 12px;
     width: 1px;
-    background: rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.3);
   }
 
   #BaselineStory-{{ section.id }} .tick {
     position: absolute;
     right: 0;
     height: 1px;
-    background: rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.5);
   }
   #BaselineStory-{{ section.id }} .tick.major { width: 10px; }
   #BaselineStory-{{ section.id }} .tick.minor { width: 5px; }
@@ -101,7 +89,7 @@
     flex-direction: row;
     align-items: center;
     gap: clamp(40px, 8vw, 80px);
-    max-width: 1200px;
+    max-width: 850px;
     width: 100%;
     margin: 0 auto;
   }
@@ -109,6 +97,7 @@
   #BaselineStory-{{ section.id }} .baseline-story__slide-content {
     flex: 1;
     min-width: 0;
+    margin-top: -400px;
   }
 
   #BaselineStory-{{ section.id }} .baseline-story__slide-media {
@@ -137,7 +126,7 @@
     font-weight: 700;
     font-style: italic;
     color: #fff;
-    margin-bottom: 24px;
+    margin-bottom: 18px;
     display: block;
     opacity: 0;
     transform: translateY(20px);
@@ -158,7 +147,7 @@
   #BaselineStory-{{ section.id }} .line-inner {
     display: inline-block;
     width: 100%;
-    font-size: clamp(18px, 4.5vw, 24px);
+    font-size: 18px;
     font-weight: 400;
     color: #fff;
     line-height: 1.55;
@@ -169,28 +158,6 @@
 
   #BaselineStory-{{ section.id }} .line-inner strong { font-weight: 700; color: #fff; }
   #BaselineStory-{{ section.id }} .line-inner em { font-style: italic; font-weight: 700; }
-
-  #BaselineStory-{{ section.id }} .underlined {
-    position: relative;
-    display: inline;
-    white-space: nowrap;
-  }
-  #BaselineStory-{{ section.id }} .underline-svg {
-    position: absolute;
-    left: 0;
-    bottom: -5px;
-    width: 100%;
-    height: 10px;
-    overflow: visible;
-    pointer-events: none;
-  }
-  #BaselineStory-{{ section.id }} .underline-path {
-    stroke: #c0392b;
-    stroke-width: 2.5;
-    fill: none;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
 
   #BaselineStory-{{ section.id }} .slide-img-area {
     display: flex;
@@ -209,76 +176,6 @@
     transform: translateY(50px);
     filter: drop-shadow(0 20px 40px rgba(0,0,0,0.7));
     display: block;
-  }
-
-  #BaselineStory-{{ section.id }} .polaroid .placeholder-svg,
-  #BaselineStory-{{ section.id }} .polaroid img {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1;
-    object-fit: cover;
-    display: block;
-  }
-
-  #BaselineStory-{{ section.id }} .polaroids {
-    position: relative;
-    display: flex;
-    gap: 24px;
-    align-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  #BaselineStory-{{ section.id }} .polaroid {
-    position: relative;
-    background: #fff;
-    padding: 10px 10px 36px 10px;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.55);
-    opacity: 0;
-    transform: translateY(60px) rotate(0deg);
-    width: 140px;
-    flex-shrink: 0;
-  }
-
-  #BaselineStory-{{ section.id }} .polaroid:nth-child(1) {
-    transform: translateY(60px) rotate(-3deg);
-  }
-
-  #BaselineStory-{{ section.id }} .polaroid:nth-child(2) {
-    transform: translateY(60px) rotate(5deg);
-    margin-top: 40px;
-  }
-
-  #BaselineStory-{{ section.id }} .polaroid img {
-    width: 100%;
-    aspect-ratio: 1;
-    object-fit: cover;
-    display: block;
-  }
-
-  #BaselineStory-{{ section.id }} .polaroid-label {
-    text-align: center;
-    margin-top: 8px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    color: #111;
-    text-transform: uppercase;
-  }
-
-  #BaselineStory-{{ section.id }} .tape {
-    position: absolute;
-    top: -12px;
-    left: 50%;
-    transform: translateX(-50%) rotate(-2deg);
-    width: 38px;
-    height: 24px;
-    background: #a51c30;
-    opacity: 0.88;
-    border-radius: 2px;
-  }
-
-  #BaselineStory-{{ section.id }} .polaroid:nth-child(2) .tape {
-    transform: translateX(-50%) rotate(3deg);
   }
 
   #BaselineStory-{{ section.id }} .baseline-story__scroll-hint {
@@ -369,13 +266,15 @@
     </div>
 
     <div class="baseline-story__slides">
-      {%- if block_then != blank -%}
-        <div class="baseline-story__slide text-slide" data-slide data-slide-index="0" {{ block_then.shopify_attributes }}>
+      {%- for block in section.blocks -%}
+        {%- assign lines_str = block.settings.description | default: '' -%}
+        {%- assign lines = lines_str | newline_to_br | split: '<br />' -%}
+        <div class="baseline-story__slide text-slide" data-slide data-slide-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
           <div class="baseline-story__slide-inner">
             <div class="baseline-story__slide-content">
-              <span class="slide-eyebrow">{{ block_then.settings.eyebrow | default: 'Then.' }}</span>
+              <span class="slide-eyebrow">{{ block.settings.heading | default: 'Slide' }}</span>
               <div class="slide-lines" data-lines>
-                {%- for line in lines_then -%}
+                {%- for line in lines -%}
                   <div class="line-wrap">
                     {%- if line != blank -%}
                       <span class="line-inner">{{ line }}</span>
@@ -384,18 +283,15 @@
                     {%- endif -%}
                   </div>
                 {%- endfor -%}
-                {%- if block_then.settings.underlined_phrase != blank -%}
-                  <div class="line-wrap"><span class="line-inner"><em><span class="underlined" data-underlined>{{ block_then.settings.underlined_phrase }}</span></em></span></div>
-                {%- endif -%}
               </div>
             </div>
             <div class="baseline-story__slide-media">
               <div class="slide-img-area">
-                {%- if block_then.settings.image != blank -%}
+                {%- if block.settings.image != blank -%}
                   <img
                     class="illus-img"
-                    src="{{ block_then.settings.image | image_url: width: 640 }}"
-                    alt="{{ block_then.settings.image.alt | default: '' | escape }}"
+                    src="{{ block.settings.image | image_url: width: 640 }}"
+                    alt="{{ block.settings.image.alt | default: '' | escape }}"
                     width="320"
                     height="400"
                     loading="lazy"
@@ -407,46 +303,7 @@
             </div>
           </div>
         </div>
-      {%- endif -%}
-
-      {%- if block_now != blank -%}
-        <div class="baseline-story__slide text-slide" data-slide data-slide-index="1" {{ block_now.shopify_attributes }}>
-          <div class="baseline-story__slide-inner">
-            <div class="baseline-story__slide-content">
-              <span class="slide-eyebrow">{{ block_now.settings.eyebrow | default: 'Now.' }}</span>
-              <div class="slide-lines" data-lines>
-                {%- for line in lines_now -%}
-                  {%- if line != blank -%}
-                    <div class="line-wrap"><span class="line-inner">{{ line }}</span></div>
-                  {%- endif -%}
-                {%- endfor -%}
-              </div>
-            </div>
-            <div class="baseline-story__slide-media">
-              <div class="polaroids">
-                <div class="polaroid" data-pol="0">
-                  <div class="tape"></div>
-                  {%- if block_now.settings.polaroid_1_image != blank -%}
-                    <img src="{{ block_now.settings.polaroid_1_image | image_url: width: 400 }}" alt="{{ block_now.settings.polaroid_1_label | default: '' | escape }}" width="200" height="200" loading="lazy">
-                  {%- else -%}
-                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-                  {%- endif -%}
-                  <div class="polaroid-label">{{ block_now.settings.polaroid_1_label | default: 'Press' }}</div>
-                </div>
-                <div class="polaroid" data-pol="1">
-                  <div class="tape"></div>
-                  {%- if block_now.settings.polaroid_2_image != blank -%}
-                    <img src="{{ block_now.settings.polaroid_2_image | image_url: width: 400 }}" alt="{{ block_now.settings.polaroid_2_label | default: '' | escape }}" width="200" height="200" loading="lazy">
-                  {%- else -%}
-                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-                  {%- endif -%}
-                  <div class="polaroid-label">{{ block_now.settings.polaroid_2_label | default: 'Lab' }}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      {%- endif -%}
+      {%- endfor -%}
     </div>
 
     <div class="baseline-story__scroll-hint" data-scroll-hint>
@@ -506,36 +363,12 @@
 
     const eyebrow = slide.querySelector('.slide-eyebrow');
     const lines = slide.querySelectorAll('.line-inner');
-    const underlined = slide.querySelector('[data-underlined]');
     const illus = slide.querySelector('.illus-img');
-    const pol1 = slide.querySelector('[data-pol="0"]');
-    const pol2 = slide.querySelector('[data-pol="1"]');
-
-    if (idx === 0 && underlined) {
-      let underlinePath = underlined.querySelector('.underline-path');
-      if (!underlinePath) {
-        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        svg.classList.add('underline-svg');
-        svg.setAttribute('viewBox', '0 0 100 10');
-        svg.setAttribute('preserveAspectRatio', 'none');
-        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        path.classList.add('underline-path');
-        path.setAttribute('d', 'M0,5 C8,2 18,7 30,5 C42,3 52,7 65,4.5 C76,2.5 87,6.5 100,5');
-        path.setAttribute('vector-effect', 'non-scaling-stroke');
-        svg.appendChild(path);
-        underlined.appendChild(svg);
-        underlinePath = path;
-      }
-      const pathLen = underlinePath.getTotalLength ? underlinePath.getTotalLength() : 200;
-      gsap.set(underlinePath, { strokeDasharray: pathLen, strokeDashoffset: pathLen, opacity: 1 });
-    }
 
     gsap.set(slide, { opacity: 0, y: 0 });
     if (eyebrow) gsap.set(eyebrow, { opacity: 0, y: 20 });
     if (lines.length) gsap.set(lines, { opacity: 0, y: '100%' });
     if (illus) gsap.set(illus, { opacity: 0, y: 50 });
-    if (pol1) gsap.set(pol1, { opacity: 0, y: 60, rotate: -3 });
-    if (pol2) gsap.set(pol2, { opacity: 0, y: 60, rotate: 5 });
 
     tl.to(slide, { opacity: 1, duration: 0.01 }, offset)
       .to(eyebrow, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, offset + 0.1);
@@ -545,31 +378,12 @@
       const staggerTime = 0.08;
       const lineDuration = 0.3;
       tl.to(lines, { opacity: 1, y: '0%', duration: lineDuration, stagger: staggerTime, ease: 'power2.out' }, linesDelay);
-
-      if (idx === 0 && underlined) {
-        const underlinePath = underlined.querySelector('.underline-path');
-        const underlineDelay = linesDelay + (lines.length - 1) * staggerTime + lineDuration + 0.1;
-        tl.to(underlinePath, { strokeDashoffset: 0, duration: 0.5, ease: 'power1.inOut' }, underlineDelay);
-        // Image appears earlier - start during text animation
-        if (illus) {
-          const imageStartDelay = linesDelay + Math.floor(lines.length / 2) * staggerTime + lineDuration * 0.5;
-          tl.to(illus, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, imageStartDelay);
-        }
-      } else if (idx === 0 && illus) {
-        // If no underlined text, show image earlier
+      if (illus) {
         const imageStartDelay = linesDelay + Math.floor(lines.length / 2) * staggerTime + lineDuration * 0.5;
         tl.to(illus, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, imageStartDelay);
       }
-    } else if (idx === 0 && illus) {
-      // No lines, show image immediately
+    } else if (illus) {
       tl.to(illus, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, offset + 0.3);
-    }
-
-    if (idx === 1 && pol1 && pol2) {
-      // Polaroids appear earlier - start during text animation
-      const polStartDelay = offset + 0.5;
-      tl.to(pol1, { opacity: 1, y: 0, duration: 0.5, ease: 'back.out(1.4)' }, polStartDelay)
-        .to(pol2, { opacity: 1, y: 0, duration: 0.5, ease: 'back.out(1.4)' }, polStartDelay + 0.15);
     }
   }
 
@@ -645,74 +459,26 @@
   ],
   "blocks": [
     {
-      "type": "slide_then",
-      "name": "Slide: Then",
-      "limit": 1,
+      "type": "slide",
+      "name": "Slide",
       "settings": [
         {
           "type": "text",
-          "id": "eyebrow",
-          "label": "Eyebrow",
-          "default": "Then."
+          "id": "heading",
+          "label": "Heading",
+          "default": "Slide"
         },
         {
           "type": "textarea",
-          "id": "lines",
-          "label": "Lines (one per line)",
-          "default": "For thousands of years, olive oil was used\nfor nourishment and wellbeing.\n\nHippocrates famously called it",
+          "id": "description",
+          "label": "Description",
+          "default": "Add your content here.\nEach line animates in.",
           "info": "Each line animates in. Use blank lines for spacing."
-        },
-        {
-          "type": "text",
-          "id": "underlined_phrase",
-          "label": "Underlined quote (last line)",
-          "default": "\"the great healer.\""
         },
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Illustration image"
-        }
-      ]
-    },
-    {
-      "type": "slide_now",
-      "name": "Slide: Now",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "eyebrow",
-          "label": "Eyebrow",
-          "default": "Now."
-        },
-        {
-          "type": "textarea",
-          "id": "lines",
-          "label": "Lines (one per line)",
-          "default": "Modern science has helped explain why.\nOlive oil's benefits come from healthy fats\nand naturally occurring polyphenols."
-        },
-        {
-          "type": "image_picker",
-          "id": "polaroid_1_image",
-          "label": "Polaroid 1 image"
-        },
-        {
-          "type": "text",
-          "id": "polaroid_1_label",
-          "label": "Polaroid 1 label",
-          "default": "Press"
-        },
-        {
-          "type": "image_picker",
-          "id": "polaroid_2_image",
-          "label": "Polaroid 2 image"
-        },
-        {
-          "type": "text",
-          "id": "polaroid_2_label",
-          "label": "Polaroid 2 label",
-          "default": "Lab"
+          "label": "Image"
         }
       ]
     }
@@ -721,8 +487,8 @@
     {
       "name": "Baseline Story",
       "blocks": [
-        { "type": "slide_then" },
-        { "type": "slide_now" }
+        { "type": "slide" },
+        { "type": "slide" }
       ]
     }
   ]
