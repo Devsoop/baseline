@@ -100,46 +100,54 @@
     z-index: 0;
   }
 
+  /* Story ruler: __ (big 32px) then - - - - - (small 12px) 1px lines. Progress top→bottom, same pattern. */
   #BaselineStory-{{ section.id }} .baseline-story__ruler {
     position: absolute;
-    top: 0; left: 0; bottom: 0;
+    top: 0;
+    left: 0;
+    right: auto;
+    bottom: 0;
     width: 32px;
     z-index: 10;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
     padding: 12px 0;
     overflow: hidden;
     max-height: 480px;
     margin: auto;
   }
 
-  #BaselineStory-{{ section.id }} .ruler-line {
+  #BaselineStory-{{ section.id }} .baseline-story__ruler-track {
     position: absolute;
-    right: 0;
-    top: 12px; bottom: 12px;
-    width: 1px;
-    background: rgba(255,255,255,0.3);
+    top: 12px;
+    bottom: 12px;
+    left: 0;
+    width: 32px;
+    opacity: 0.4;
+    background-image:
+      /* big: full 32px, 1px every 60px. One step = 60px (1 big + 5 small). */
+      linear-gradient(to bottom, rgba(255,255,255,1) 0, rgba(255,255,255,1) 1px, transparent 1px, transparent 60px),
+      /* small: left 12px only, 5 lines at 10,20,30,40,50 in each 60px block */
+      linear-gradient(to right, rgba(255,255,255,1) 12px, transparent 12px),
+      linear-gradient(to bottom, transparent 9px, rgba(255,255,255,1) 9px, rgba(255,255,255,1) 10px, transparent 10px, transparent 19px, rgba(255,255,255,1) 19px, rgba(255,255,255,1) 20px, transparent 20px, transparent 29px, rgba(255,255,255,1) 29px, rgba(255,255,255,1) 30px, transparent 30px, transparent 39px, rgba(255,255,255,1) 39px, rgba(255,255,255,1) 40px, transparent 40px, transparent 49px, rgba(255,255,255,1) 49px, rgba(255,255,255,1) 50px, transparent 50px, transparent 60px);
+    background-size: 32px 60px, 32px 60px, 32px 60px;
+    background-position: 0 0, 0 0, 0 0;
+    background-repeat: repeat-y, repeat-y, repeat-y;
   }
-
-  #BaselineStory-{{ section.id }} .tick {
-    position: absolute;
-    right: 0;
-    height: 1px;
-    background: rgba(255,255,255,0.5);
-  }
-  #BaselineStory-{{ section.id }} .tick.major { width: 10px; }
-  #BaselineStory-{{ section.id }} .tick.minor { width: 5px; }
 
   #BaselineStory-{{ section.id }} .baseline-story__ruler-fill {
     position: absolute;
-    right: 0;
     top: 12px;
-    width: 2px;
+    left: 0;
+    width: 32px;
     height: 0%;
-    background: #c0392b;
     transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 0 6px rgba(192,57,43,0.6);
+    overflow: hidden;
+    background-image:
+      linear-gradient(to bottom, rgba(255,255,255,1) 0, rgba(255,255,255,1) 1px, transparent 1px, transparent 60px),
+      linear-gradient(to right, rgba(255,255,255,1) 12px, transparent 12px),
+      linear-gradient(to bottom, transparent 9px, rgba(255,255,255,1) 9px, rgba(255,255,255,1) 10px, transparent 10px, transparent 19px, rgba(255,255,255,1) 19px, rgba(255,255,255,1) 20px, transparent 20px, transparent 29px, rgba(255,255,255,1) 29px, rgba(255,255,255,1) 30px, transparent 30px, transparent 39px, rgba(255,255,255,1) 39px, rgba(255,255,255,1) 40px, transparent 40px, transparent 49px, rgba(255,255,255,1) 49px, rgba(255,255,255,1) 50px, transparent 50px, transparent 60px);
+    background-size: 32px 60px, 32px 60px, 32px 60px;
+    background-position: 0 0, 0 0, 0 0;
+    background-repeat: repeat-y, repeat-y, repeat-y;
   }
 
   #BaselineStory-{{ section.id }} .baseline-story__slides {
@@ -184,8 +192,23 @@
     align-items: center;
     justify-content: center;
   }
-
-  @media (max-width: 749px) {
+  
+  #BaselineStory-{{ section.id }} .baseline-story__slide.slide--full-width .baseline-story__slide-media {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    position: absolute;
+    right: 0;
+    width: 100%;
+  }
+  #BaselineStory-{{ section.id }} .baseline-story__slide.slide--full-width .illus-img{
+    width: 100%;
+    max-width: 100%;
+  }
+/* 
+  @media screen and (max-width: 749px) {
     #BaselineStory-{{ section.id }} .baseline-story__slide,
     #BaselineStory-{{ section.id }} .baseline-story__slide-inner {
       flex-direction: column;
@@ -196,7 +219,7 @@
       width: 100%;
       justify-content: flex-start;
     }
-  }
+  } */
 
   #BaselineStory-{{ section.id }} .slide-eyebrow {
     font-size: 18px;
@@ -312,6 +335,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    display: none;
   }
 
   #BaselineStory-{{ section.id }} .pdot {
@@ -324,6 +348,25 @@
     background: #fff;
     transform: scale(1.5);
   }
+  @media screen and (max-width: 991px) {
+    #BaselineStory-{{ section.id }} .baseline-story__slide-media{
+      margin-left: auto;
+    }
+    #BaselineStory-{{ section.id }} .baseline-story__slide-content {
+      margin-top: 0;
+      width: 100%;
+      margin-left: 60px;
+    }
+  #BaselineStory-{{ section.id }} .baseline-story__slide-inner {
+      flex-direction: column;
+    }
+  }
+  @media screen and (max-width: 749px) {
+    #BaselineStory-{{ section.id }} .baseline-story__slide-media{
+      margin-left: auto;
+      margin-right: auto;
+    }
+    }
 {%- endstyle -%}
 
 <section id="BaselineStory-{{ section.id }}" class="baseline-story">
@@ -352,7 +395,7 @@
     <div class="baseline-story__bg"></div>
 
     <div class="baseline-story__ruler" data-ruler>
-      <div class="ruler-line"></div>
+      <div class="baseline-story__ruler-track"></div>
       <div class="baseline-story__ruler-fill" data-ruler-fill></div>
     </div>
 
@@ -366,7 +409,7 @@
       {%- for block in section.blocks -%}
         {%- assign lines_str = block.settings.description | default: '' -%}
         {%- assign lines = lines_str | newline_to_br | split: '<br />' -%}
-        <div class="baseline-story__slide text-slide" data-slide data-slide-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+        <div class="baseline-story__slide text-slide{% if block.settings.full_width %} slide--full-width{% endif %}" data-slide data-slide-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
           <div class="baseline-story__slide-inner">
             <div class="baseline-story__slide-content">
               <span class="slide-eyebrow">{{ block.settings.heading | default: 'Slide' }}</span>
@@ -450,17 +493,6 @@
     });
   }, { threshold: 0.9 });
   if (sliderZone) sliderIO.observe(sliderZone);
-
-  // Ruler ticks (use slider zone height)
-  const rulerParent = sliderZone || section;
-  const rulerHeight = rulerParent.offsetHeight;
-  const numTicks = 40;
-  for (let i = 0; i <= numTicks; i++) {
-    const t = document.createElement('div');
-    t.className = 'tick ' + (i % 5 === 0 ? 'major' : 'minor');
-    t.style.top = (12 + (i / numTicks) * (rulerHeight - 24)) + 'px';
-    ruler.appendChild(t);
-  }
 
   let current = 0;
   let isAnimating = false;
@@ -740,6 +772,12 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image"
+        },
+        {
+          "type": "checkbox",
+          "id": "full_width",
+          "label": "Full width",
+          "default": false
         }
       ]
     }

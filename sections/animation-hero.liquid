@@ -75,6 +75,11 @@
   @media screen and (max-width: 500px) {
     .animation-hero-{{ section.id }} .animation-hero__title { font-size: 46px; }
   }
+  @media screen and (max-width: 749px) {
+    .animation-hero-{{ section.id }} .animation-hero__banner {
+      max-width: 100%;
+    }
+  }
 
   /* ── Word-split helpers ─────────────────────────────────────────────── */
   .anim-word-wrap {
@@ -113,18 +118,36 @@
         {%- endif -%}
       </div>
 
-      {%- if section.settings.hero_banner_image != blank -%}
+      {%- if section.settings.hero_banner_image != blank or section.settings.hero_banner_image_mobile != blank -%}
         <div class="animation-hero__banner">
           <div class="animation-hero__banner-img-wrap">
-            {{
-              section.settings.hero_banner_image
-              | image_url: width: 1200
-              | image_tag:
-                loading: 'lazy',
-                class: 'animation-hero__banner-img',
-                alt: section.settings.hero_banner_image.alt
-              | default: 'Hero banner'
-            }}
+            {%- assign mobile_img = section.settings.hero_banner_image_mobile -%}
+            {%- assign desktop_img = section.settings.hero_banner_image -%}
+            {%- if mobile_img != blank and desktop_img != blank -%}
+              <picture>
+                <source media="(max-width: 749px)" srcset="{{ mobile_img | image_url: width: 800 }}">
+                <img
+                  src="{{ desktop_img | image_url: width: 1200 }}"
+                  alt="{{ desktop_img.alt | default: 'Hero banner' }}"
+                  class="animation-hero__banner-img"
+                  loading="lazy"
+                  width="{{ desktop_img.width }}"
+                  height="{{ desktop_img.height }}"
+                >
+              </picture>
+            {%- elsif mobile_img != blank -%}
+              {{
+                mobile_img
+                | image_url: width: 800
+                | image_tag: loading: 'lazy', class: 'animation-hero__banner-img', alt: mobile_img.alt | default: 'Hero banner'
+              }}
+            {%- else -%}
+              {{
+                desktop_img
+                | image_url: width: 1200
+                | image_tag: loading: 'lazy', class: 'animation-hero__banner-img', alt: desktop_img.alt | default: 'Hero banner'
+              }}
+            {%- endif -%}
           </div>
         </div>
       {%- endif -%}
@@ -407,7 +430,8 @@
     { "type": "text", "id": "hero_button_text", "label": "Hero button text", "default": "Try baseline" },
     { "type": "url", "id": "hero_button_link", "label": "Hero button link" },
     { "type": "header", "content": "Hero banner image" },
-    { "type": "image_picker", "id": "hero_banner_image", "label": "Banner image" },
+    { "type": "image_picker", "id": "hero_banner_image", "label": "Banner image (desktop)" },
+    { "type": "image_picker", "id": "hero_banner_image_mobile", "label": "Banner image (mobile)" },
     { "type": "header", "content": "Powered by Polyphenols" },
     {
       "type": "text",
