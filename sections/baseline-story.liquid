@@ -123,14 +123,13 @@
     width: 32px;
     opacity: 0.4;
     background-image:
-      /* big: full 32px, 1px every 60px. One step = 60px (1 big + 5 small). */
+      /* big: full 32px, 1px every 60px */
       linear-gradient(to bottom, rgba(255,255,255,1) 0, rgba(255,255,255,1) 1px, transparent 1px, transparent 60px),
-      /* small: left 12px only, 5 lines at 10,20,30,40,50 in each 60px block */
-      linear-gradient(to right, rgba(255,255,255,1) 12px, transparent 12px),
+      /* small (center 5): 6px-wide tile so lines are short */
       linear-gradient(to bottom, transparent 9px, rgba(255,255,255,1) 9px, rgba(255,255,255,1) 10px, transparent 10px, transparent 19px, rgba(255,255,255,1) 19px, rgba(255,255,255,1) 20px, transparent 20px, transparent 29px, rgba(255,255,255,1) 29px, rgba(255,255,255,1) 30px, transparent 30px, transparent 39px, rgba(255,255,255,1) 39px, rgba(255,255,255,1) 40px, transparent 40px, transparent 49px, rgba(255,255,255,1) 49px, rgba(255,255,255,1) 50px, transparent 50px, transparent 60px);
-    background-size: 32px 60px, 32px 60px, 32px 60px;
-    background-position: 0 0, 0 0, 0 0;
-    background-repeat: repeat-y, repeat-y, repeat-y;
+    background-size: 32px 60px, 6px 60px;
+    background-position: 0 0, 0 0;
+    background-repeat: repeat-y, repeat-y;
   }
 
   #BaselineStory-{{ section.id }} .baseline-story__ruler-fill {
@@ -143,11 +142,10 @@
     overflow: hidden;
     background-image:
       linear-gradient(to bottom, rgba(255,255,255,1) 0, rgba(255,255,255,1) 1px, transparent 1px, transparent 60px),
-      linear-gradient(to right, rgba(255,255,255,1) 12px, transparent 12px),
       linear-gradient(to bottom, transparent 9px, rgba(255,255,255,1) 9px, rgba(255,255,255,1) 10px, transparent 10px, transparent 19px, rgba(255,255,255,1) 19px, rgba(255,255,255,1) 20px, transparent 20px, transparent 29px, rgba(255,255,255,1) 29px, rgba(255,255,255,1) 30px, transparent 30px, transparent 39px, rgba(255,255,255,1) 39px, rgba(255,255,255,1) 40px, transparent 40px, transparent 49px, rgba(255,255,255,1) 49px, rgba(255,255,255,1) 50px, transparent 50px, transparent 60px);
-    background-size: 32px 60px, 32px 60px, 32px 60px;
-    background-position: 0 0, 0 0, 0 0;
-    background-repeat: repeat-y, repeat-y, repeat-y;
+    background-size: 32px 60px, 6px 60px;
+    background-position: 0 0, 0 0;
+    background-repeat: repeat-y, repeat-y;
   }
 
   #BaselineStory-{{ section.id }} .baseline-story__slides {
