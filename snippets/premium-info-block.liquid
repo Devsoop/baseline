@@ -10,6 +10,8 @@
     {% comment %} border-radius: {{ block.settings.border_radius }}px; {% endcomment %}
     margin-top: {{ block.settings.margin_top }}px;
     transition: all 0.3s ease;
+    position: relative;
+    padding-bottom: 60px;
   }
 
   .premium-offer-container-{{ block.id }} {
@@ -192,9 +194,8 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 12px;
+    padding: 20px 12px;
     background: {{ block.settings.offer_bg_color }};
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
     color: {{ block.settings.text_color }};
     font-size: {{ block.settings.delivery_font_size }}px;
     font-weight: 600;
@@ -202,7 +203,10 @@
     letter-spacing: 6%;
     line-height:120%;
     font-family: var(--font-body-family);
-    
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
   }
 
   .delivery-info-{{ block.id }} svg {

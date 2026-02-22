@@ -7,97 +7,139 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
-    "sections": {
-      "main": {
-        "type": "main-page",
-        "disabled": true,
-        "settings": {
-          "padding_top": 28,
-          "padding_bottom": 28
-        }
-      },
-      "baseline_story_V7TUVY": {
-        "type": "baseline-story",
-        "blocks": {
-          "slide_AVzyBr": {
-            "type": "slide",
-            "settings": {
-              "heading": "Slide",
-              "description": "Add your content here.\nEach line animates in.",
-              "image": "shopify://shop_images/image_97_1.png"
-            }
-          },
-          "slide_bFBdJe": {
-            "type": "slide",
-            "settings": {
-              "heading": "Slide",
-              "description": "Add your content here.\nEach line animates in.",
-              "image": "shopify://shop_images/Group_47342.png"
-            }
-          },
-          "slide_XMHUBr": {
-            "type": "slide",
-            "settings": {
-              "heading": "Slide",
-              "description": "Add your content here.\nEach line animates in.",
-              "image": "shopify://shop_images/Group_47347.png"
-            }
-          },
-          "slide_hxmPhB": {
-            "type": "slide",
-            "settings": {
-              "heading": "Slide",
-              "description": "Add your content here.\nEach line animates in.",
-              "image": "shopify://shop_images/Group_47342_2.png"
-            }
-          },
-          "slide_rdrVUp": {
-            "type": "slide",
-            "settings": {
-              "heading": "Slide",
-              "description": "Add your content here.\nEach line animates in.",
-              "image": "shopify://shop_images/Group_47349_d839455a-ce8a-4a99-85ba-6d0b171f6ef3.png"
-            }
-          },
-          "slide_NMNXUY": {
-            "type": "slide",
-            "settings": {
-              "heading": "Slide",
-              "description": "Add your content here.\nEach line animates in.",
-              "image": "shopify://shop_images/Group_47342_3.png"
-            }
-          },
-          "slide_Ap6H8M": {
-            "type": "slide",
-            "settings": {
-              "heading": "Slide",
-              "description": "Add your content here.\nEach line animates in.",
-              "image": "shopify://shop_images/image_106_1.png"
-            }
-          }
-        },
-        "block_order": [
-          "slide_AVzyBr",
-          "slide_bFBdJe",
-          "slide_XMHUBr",
-          "slide_hxmPhB",
-          "slide_rdrVUp",
-          "slide_NMNXUY",
-          "slide_Ap6H8M"
-        ],
-        "name": "Baseline Story",
-        "settings": {
-          "banner_image": "shopify://shop_images/Bottles.png",
-          "banner_heading": "The story of olive oil",
-          "banner_subheading": "",
-          "scroll_hint_text": "Scroll"
-        }
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
       }
     },
-    "order": [
-      "main",
-      "baseline_story_V7TUVY"
-    ]
-  }
-  
+    "baseline_story_V7TUVY": {
+      "type": "baseline-story",
+      "blocks": {
+        "slide_AVzyBr": {
+          "type": "slide",
+          "settings": {
+            "heading": "Then.",
+            "description": "For thousands of years, olive oil was used for nourishment and wellbeing. Hippocrates famously called it  <strong> “the great healer.”</strong>",
+            "image": "shopify://shop_images/image_97_1.png",
+            "full_width": false
+          }
+        },
+        "slide_t4aLxy": {
+          "type": "slide",
+          "settings": {
+            "heading": "Now.",
+            "description": "Modern science has helped explain why.\nOlive oil’s benefits come from healthy fats and naturally occurring<strong> polyphenols.</strong>",
+            "image": "shopify://shop_images/Group_47342_6315b0f2-9cf0-4dd6-ae1f-fa427cdd3b84.png",
+            "full_width": false
+          }
+        },
+        "slide_XMHUBr": {
+          "type": "slide",
+          "settings": {
+            "heading": "The Connection.",
+            "description": "Polyphenols are produced by the olive tree as a<strong> natural defence against its environment.</strong>\nThose same compounds can also support the body when consumed.",
+            "image": "shopify://shop_images/Group_47347.png",
+            "full_width": false
+          }
+        },
+        "slide_Ap6H8M": {
+          "type": "slide",
+          "settings": {
+            "heading": "From nourishment to commodity.",
+            "description": "In recent decades, olive oil has become a global commodity. Much of it is produced to maximise yield, not to preserve quality or potency.",
+            "image": "shopify://shop_images/Group_47342_2.png",
+            "full_width": false
+          }
+        },
+        "slide_bFBdJe": {
+          "type": "slide",
+          "settings": {
+            "heading": "A lack of transparency.",
+            "description": "Independent studies show that much of the olive oil sold globally does not meet expected quality standards, eroding trust across the category.",
+            "image": "shopify://shop_images/Group_47349_d839455a-ce8a-4a99-85ba-6d0b171f6ef3.png",
+            "full_width": false
+          }
+        },
+        "slide_GTV3bQ": {
+          "type": "slide",
+          "settings": {
+            "heading": "The solution.",
+            "description": "The goal was to return olive oil to what it was always meant to be — a functional food, valued for what it delivers.",
+            "image": "shopify://shop_images/image_106_1_6603f780-fe69-47c8-a73c-b804bcd2027d.png",
+            "image_mobile": "shopify://shop_images/image_106_1.png",
+            "full_width": true
+          }
+        },
+        "slide_NMNXUY": {
+          "type": "slide",
+          "settings": {
+            "heading": "Why this was personal.",
+            "description": "We had access to olive oil from a small, naturally cultivated, rain-fed family grove.",
+            "image": "shopify://shop_images/Group_47342_3.png",
+            "full_width": false
+          }
+        },
+        "slide_FxtzDF": {
+          "type": "slide",
+          "settings": {
+            "heading": "Why this was personal.",
+            "description": "When we moved abroad, that changed. The olive oil available was abundant, but it lacked the quality and health effects we were used to.",
+            "image": "shopify://shop_images/Group_47357.png",
+            "full_width": false
+          }
+        },
+        "slide_CnfDMD": {
+          "type": "slide",
+          "settings": {
+            "heading": "Verified, not guessed.",
+            "description": "Today, Baseline works with a small number of producers who prioritise quality over yield.\nEvery batch is independently lab-tested, with results made available to you.",
+            "image": "shopify://shop_images/Group_47359.png",
+            "full_width": false
+          }
+        },
+        "centered_slide_7hD8T9": {
+          "type": "centered_slide",
+          "settings": {
+            "heading": "No guesswork. <i>Just verified quality.</i>"
+          }
+        },
+        "centered_slide_iEn37f": {
+          "type": "centered_slide",
+          "settings": {
+            "heading": "THE TEAM",
+            "image": "shopify://shop_images/Group_47350.png"
+          }
+        }
+      },
+      "block_order": [
+        "slide_AVzyBr",
+        "slide_t4aLxy",
+        "slide_XMHUBr",
+        "slide_Ap6H8M",
+        "slide_bFBdJe",
+        "slide_GTV3bQ",
+        "slide_NMNXUY",
+        "slide_FxtzDF",
+        "slide_CnfDMD",
+        "centered_slide_7hD8T9",
+        "centered_slide_iEn37f"
+      ],
+      "name": "Baseline Story",
+      "settings": {
+        "banner_image": "shopify://shop_images/Bottles.png",
+        "banner_heading": "The story of olive oil",
+        "banner_subheading": "",
+        "scroll_hint_text": "Scroll"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "baseline_story_V7TUVY"
+  ]
+}

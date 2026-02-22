@@ -151,7 +151,7 @@
   #BaselineStory-{{ section.id }} .baseline-story__slides {
     position: absolute;
     inset: 0;
-    z-index: 5;
+    z-index: 2;
   }
 
   #BaselineStory-{{ section.id }} .baseline-story__slide {
@@ -165,6 +165,7 @@
     gap: clamp(40px, 8vw, 80px);
     opacity: 0;
     pointer-events: none;
+    padding-top: 75px;
   }
 
   #BaselineStory-{{ section.id }} .baseline-story__slide-inner {
@@ -181,7 +182,12 @@
     flex: 1;
     min-width: 0;
     margin-top: -400px;
+
   }
+  #BaselineStory-{{ section.id }} .slide--full-width .baseline-story__slide-content{
+    max-width: 408px;
+  }
+  
 
   #BaselineStory-{{ section.id }} .baseline-story__slide-media {
     flex: 1;
@@ -257,6 +263,57 @@
   #BaselineStory-{{ section.id }} .line-inner strong { font-weight: 700; color: #fff; }
   #BaselineStory-{{ section.id }} .line-inner em { font-style: italic; font-weight: 700; }
 
+  /* Centered hero block: one column, heading top / image bottom, center align */
+  #BaselineStory-{{ section.id }} .baseline-story__slide.slide--centered .baseline-story__slide-inner {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    max-width: 900px;
+  }
+  #BaselineStory-{{ section.id }} .baseline-story__slide.slide--centered .baseline-story__slide-content {
+    margin-top: 0;
+    margin-left: 0;
+    order: 1;
+  }
+  #BaselineStory-{{ section.id }} .baseline-story__slide.slide--centered .baseline-story__slide-media {
+    order: 2;
+    width: 100%;
+    justify-content: center;
+  }
+  #BaselineStory-{{ section.id }} .baseline-story__slide.slide--centered .illus-img {
+    max-width: 780px;
+  }
+  #BaselineStory-{{ section.id }} .slide-hero-heading {
+    font-size: 72px;
+    font-weight: 500;
+    color: #fff;
+    margin: 0;
+    line-height: 1.15;
+    opacity: 0;
+    transform: translateY(30px);
+    text-transform: uppercase;
+  }
+  @media screen and (max-width: 991px) {
+    #BaselineStory-{{ section.id }} .baseline-story__banner-heading{
+      font-size: 82px;
+    }
+    #BaselineStory-{{ section.id }} .baseline-story__banner-bg {
+      width: 100%;
+    }
+    #BaselineStory-{{ section.id }} .slide-hero-heading { font-size: 52px; }
+  }
+  @media screen and (max-width: 749px) {
+    
+    #BaselineStory-{{ section.id }} .baseline-story__banner-heading{
+      font-size: 32px;
+    }
+    #BaselineStory-{{ section.id }} .slide-hero-heading { font-size: 32px; }
+    #BaselineStory-{{ section.id }} .baseline-story__slide.slide--centered .baseline-story__slide-content {
+      margin-left: 0;
+    }
+  }
+
   #BaselineStory-{{ section.id }} .slide-img-area {
     display: flex;
     align-items: center;
@@ -274,6 +331,17 @@
     transform: translateY(50px);
     filter: drop-shadow(0 20px 40px rgba(0,0,0,0.7));
     display: block;
+  }
+  #BaselineStory-{{ section.id }} .baseline-story__slide-img-mobile {
+    display: none;
+  }
+  @media screen and (max-width: 749px) {
+    #BaselineStory-{{ section.id }} .baseline-story__slide-img-desktop {
+      display: none !important;
+    }
+    #BaselineStory-{{ section.id }} .baseline-story__slide-img-mobile {
+      display: block !important;
+    }
   }
 
   #BaselineStory-{{ section.id }} .baseline-story__scroll-hint {
@@ -347,6 +415,10 @@
     transform: scale(1.5);
   }
   @media screen and (max-width: 991px) {
+    #BaselineStory-{{ section.id }} .baseline-story__slides {
+      margin-left: 25px;
+      margin-right: 25px;
+    }
     #BaselineStory-{{ section.id }} .baseline-story__slide-media{
       margin-left: auto;
     }
@@ -354,6 +426,9 @@
       margin-top: 0;
       width: 100%;
       margin-left: 60px;
+    }
+    #BaselineStory-{{ section.id }} .baseline-story__slide.text-slide.slide--full-width .baseline-story__slide-content{
+      margin-top: -100px;
     }
   #BaselineStory-{{ section.id }} .baseline-story__slide-inner {
       flex-direction: column;
@@ -405,42 +480,80 @@
 
     <div class="baseline-story__slides">
       {%- for block in section.blocks -%}
-        {%- assign lines_str = block.settings.description | default: '' -%}
-        {%- assign lines = lines_str | newline_to_br | split: '<br />' -%}
-        <div class="baseline-story__slide text-slide{% if block.settings.full_width %} slide--full-width{% endif %}" data-slide data-slide-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
-          <div class="baseline-story__slide-inner">
-            <div class="baseline-story__slide-content">
-              <span class="slide-eyebrow">{{ block.settings.heading | default: 'Slide' }}</span>
-              <div class="slide-lines" data-lines>
-                {%- for line in lines -%}
-                  <div class="line-wrap">
-                    {%- if line != blank -%}
-                      <span class="line-inner">{{ line }}</span>
-                    {%- else -%}
-                      <span class="line-inner">&nbsp;</span>
-                    {%- endif -%}
-                  </div>
-                {%- endfor -%}
-              </div>
-            </div>
-            <div class="baseline-story__slide-media">
-              <div class="slide-img-area">
-                {%- if block.settings.image != blank -%}
-                  <img
-                    class="illus-img"
-                    src="{{ block.settings.image | image_url: width: 640 }}"
-                    alt="{{ block.settings.image.alt | default: '' | escape }}"
-                    width="320"
-                    height="400"
-                    loading="lazy"
-                  >
-                {%- else -%}
-                  {{ 'image' | placeholder_svg_tag: 'illus-img placeholder-svg' }}
+        {%- if block.type == 'centered_slide' -%}
+          <div class="baseline-story__slide slide--centered" data-slide data-slide-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+            <div class="baseline-story__slide-inner">
+              <div class="baseline-story__slide-content">
+                {%- if block.settings.heading != blank -%}
+                  <h2 class="slide-hero-heading">{{ block.settings.heading }}</h2>
                 {%- endif -%}
+              </div>
+              {%- if block.settings.image != blank -%}
+                <div class="baseline-story__slide-media">
+                  <div class="slide-img-area">
+                    <img
+                      class="illus-img"
+                      src="{{ block.settings.image | image_url: width: 640 }}"
+                      alt="{{ block.settings.image.alt | default: '' | escape }}"
+                      width="320"
+                      height="400"
+                      loading="lazy"
+                    >
+                  </div>
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- else -%}
+          {%- assign lines_str = block.settings.description | default: '' -%}
+          {%- assign lines = lines_str | newline_to_br | split: '<br />' -%}
+          <div class="baseline-story__slide text-slide{% if block.settings.full_width %} slide--full-width{% endif %}" data-slide data-slide-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+            <div class="baseline-story__slide-inner">
+              <div class="baseline-story__slide-content">
+                <span class="slide-eyebrow">{{ block.settings.heading | default: 'Slide' }}</span>
+                <div class="slide-lines" data-lines>
+                  {%- for line in lines -%}
+                    <div class="line-wrap">
+                      {%- if line != blank -%}
+                        <span class="line-inner">{{ line }}</span>
+                      {%- else -%}
+                        <span class="line-inner">&nbsp;</span>
+                      {%- endif -%}
+                    </div>
+                  {%- endfor -%}
+                </div>
+              </div>
+              <div class="baseline-story__slide-media">
+                <div class="slide-img-area">
+                  {%- if block.settings.image != blank or block.settings.image_mobile != blank -%}
+                    {%- if block.settings.image != blank -%}
+                      <img
+                        class="illus-img illus-img--desktop{% if block.settings.image_mobile != blank %} baseline-story__slide-img-desktop{% endif %}"
+                        src="{{ block.settings.image | image_url: width: 640 }}"
+                        alt="{{ block.settings.image.alt | default: '' | escape }}"
+                        width="320"
+                        height="400"
+                        loading="lazy"
+                      >
+                    {%- endif -%}
+                    {%- if block.settings.image_mobile != blank -%}
+                      <img
+                        class="illus-img{% if block.settings.image != blank %} baseline-story__slide-img-mobile{% endif %}"
+                        src="{{ block.settings.image_mobile | image_url: width: 640 }}"
+                        alt="{{ block.settings.image_mobile.alt | default: block.settings.image.alt | default: '' | escape }}"
+                        width="320"
+                        height="400"
+                        loading="lazy"
+                      >
+                    {%- endif -%}
+                  {%- else -%}
+                    {{ 'image' | placeholder_svg_tag: 'illus-img placeholder-svg' }}
+                  {%- endif -%}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        {%- endif -%}
       {%- endfor -%}
     </div>
 
@@ -512,29 +625,37 @@
     const slide = slides[idx];
     if (!slide) return;
 
+    const isCentered = slide.classList.contains('slide--centered');
+    const heroHeading = slide.querySelector('.slide-hero-heading');
     const eyebrow = slide.querySelector('.slide-eyebrow');
     const lines = slide.querySelectorAll('.line-inner');
-    const illus = slide.querySelector('.illus-img');
+    const illusAll = slide.querySelectorAll('.illus-img');
 
     gsap.set(slide, { opacity: 0, y: 0 });
+    if (heroHeading) gsap.set(heroHeading, { opacity: 0, y: 30 });
     if (eyebrow) gsap.set(eyebrow, { opacity: 0, y: 20 });
     if (lines.length) gsap.set(lines, { opacity: 0, y: '100%' });
-    if (illus) gsap.set(illus, { opacity: 0, y: 50 });
+    if (illusAll.length) gsap.set(illusAll, { opacity: 0, y: 50 });
 
-    tl.to(slide, { opacity: 1, duration: 0.01 }, offset)
-      .to(eyebrow, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, offset + 0.1);
+    tl.to(slide, { opacity: 1, duration: 0.01 }, offset);
 
-    if (lines.length) {
-      const linesDelay = offset + 0.2;
-      const staggerTime = 0.08;
-      const lineDuration = 0.3;
-      tl.to(lines, { opacity: 1, y: '0%', duration: lineDuration, stagger: staggerTime, ease: 'power2.out' }, linesDelay);
-      if (illus) {
-        const imageStartDelay = linesDelay + Math.floor(lines.length / 2) * staggerTime + lineDuration * 0.5;
-        tl.to(illus, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, imageStartDelay);
+    if (isCentered && heroHeading) {
+      tl.to(heroHeading, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, offset + 0.1);
+      if (illusAll.length) tl.to(illusAll, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, offset + 0.35);
+    } else {
+      if (eyebrow) tl.to(eyebrow, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, offset + 0.1);
+      if (lines.length) {
+        const linesDelay = offset + 0.2;
+        const staggerTime = 0.08;
+        const lineDuration = 0.3;
+        tl.to(lines, { opacity: 1, y: '0%', duration: lineDuration, stagger: staggerTime, ease: 'power2.out' }, linesDelay);
+        if (illusAll.length) {
+          const imageStartDelay = linesDelay + Math.floor(lines.length / 2) * staggerTime + lineDuration * 0.5;
+          tl.to(illusAll, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, imageStartDelay);
+        }
+      } else if (illusAll.length) {
+        tl.to(illusAll, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, offset + 0.3);
       }
-    } else if (illus) {
-      tl.to(illus, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, offset + 0.3);
     }
   }
 
@@ -620,6 +741,8 @@
 
     // If slider zone is active, handle slide navigation
     if (sliderZoneActive && sliderZone.contains(e.target)) {
+      // On last slide scrolling down: allow page to scroll
+      if (current === TOTAL - 1 && e.deltaY > 0) return;
       e.preventDefault();
       const now = Date.now();
       if (isAnimating || now - lastWheel < 120) return;
@@ -772,10 +895,32 @@
           "label": "Image"
         },
         {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Image (mobile)",
+          "info": "Optional. Shown on small screens instead of the main image."
+        },
+        {
           "type": "checkbox",
           "id": "full_width",
           "label": "Full width",
           "default": false
+        }
+      ]
+    },
+    {
+      "type": "centered_slide",
+      "name": "Centered slide",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
         }
       ]
     }

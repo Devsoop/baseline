@@ -23,6 +23,9 @@
     {%- else -%}
       <h2 class="visually-hidden">{{ 'templates.contact.form.title' | t }}</h2>
     {%- endif -%}
+    {%- if section.settings.subheading != blank -%}
+      <div class="contact__subheading rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">{{ section.settings.subheading }}</div>
+    {%- endif -%}
     {%- liquid
       assign contact_form_class = 'isolate'
       if settings.animations_reveal_on_scroll
@@ -100,19 +103,6 @@
         </div>
       </div>
       <div class="field">
-        <input
-          type="tel"
-          id="ContactForm-phone"
-          class="field__input"
-          autocomplete="tel"
-          name="contact[{{ 'templates.contact.form.phone' | t }}]"
-          pattern="[0-9\-]*"
-          value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
-          placeholder="{{ 'templates.contact.form.phone' | t }}"
-        >
-        <label class="field__label" for="ContactForm-phone">{{ 'templates.contact.form.phone' | t }}</label>
-      </div>
-      <div class="field">
         <textarea
           rows="10"
           id="ContactForm-body"
@@ -132,6 +122,74 @@
         </button>
       </div>
     {%- endform -%}
+
+    {%- if section.settings.show_company_info -%}
+      {%- liquid
+        assign has_company_info = false
+        if section.settings.trading_name != blank
+          assign has_company_info = true
+        endif
+        if section.settings.company_number != blank
+          assign has_company_info = true
+        endif
+        if section.settings.contact_email != blank
+          assign has_company_info = true
+        endif
+        if section.settings.contact_address != blank
+          assign has_company_info = true
+        endif
+      -%}
+      {%- if has_company_info -%}
+      <div class="contact__company-info contact__company-info--{{ section.id }}">
+        {%- if section.settings.or_text != blank -%}
+          <div class="contact__company-info-or">
+            <span>{{ section.settings.or_text }}</span>
+          </div>
+        {%- endif -%}
+        <div class="contact__company-info-card{% if section.settings.or_text == blank %} contact__company-info-card--standalone{% endif %}">
+          {%- if section.settings.trading_name != blank -%}
+            <div class="contact__company-info-row">
+              <span class="contact__company-info-label">TRADING NAME</span>
+              <p class="contact__company-info-value contact__company-info-value--name">{{ section.settings.trading_name }}</p>
+            </div>
+          {%- endif -%}
+          {%- if section.settings.company_number != blank -%}
+            <div class="contact__company-info-row">
+              <span class="contact__company-info-label">COMPANY NUMBER:</span>
+              <span class="contact__company-info-badge">{{ section.settings.company_number }}</span>
+            </div>
+          {%- endif -%}
+          <div class="contact__company-info-contact">
+            {%- if section.settings.contact_email != blank -%}
+              <div class="contact__company-info-col">
+                <span class="contact__company-info-icon contact__company-info-icon--email" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1.33203 4L5.94071 6.61131C7.63976 7.574 8.35763 7.574 10.0567 6.61131L14.6654 4" stroke="white" stroke-width="1.4" stroke-linejoin="round"/>
+                  <path d="M1.34254 8.98378C1.38612 11.0275 1.40792 12.0493 2.162 12.8063C2.91608 13.5632 3.96558 13.5896 6.06458 13.6423C7.35823 13.6748 8.63916 13.6748 9.93283 13.6423C12.0318 13.5896 13.0813 13.5632 13.8354 12.8063C14.5895 12.0493 14.6113 11.0275 14.6548 8.98378C14.6689 8.32664 14.6689 7.67344 14.6548 7.01631C14.6113 4.97261 14.5895 3.95077 13.8354 3.19381C13.0813 2.43686 12.0318 2.41049 9.93283 2.35775C8.63916 2.32525 7.35823 2.32525 6.06458 2.35775C3.96558 2.41048 2.91608 2.43685 2.162 3.19381C1.40791 3.95076 1.38612 4.97261 1.34254 7.01631C1.32852 7.67344 1.32853 8.32664 1.34254 8.98378Z" stroke="white" stroke-width="1.4" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <div>
+                  <span class="contact__company-info-label">EMAIL</span>
+                  <p class="contact__company-info-value"><a href="mailto:{{ section.settings.contact_email | strip }}">{{ section.settings.contact_email }}</a></p>
+                </div>
+              </div>
+            {%- endif -%}
+            {%- if section.settings.contact_address != blank -%}
+              <div class="contact__company-info-col">
+                <span class="contact__company-info-icon contact__company-info-icon--address" aria-hidden="true">
+                  {{- 'icon-map-pin.svg' | inline_asset_content -}}
+                </span>
+                <div>
+                  <span class="contact__company-info-label">ADDRESS</span>
+                  <div class="contact__company-info-value contact__company-info-address">{{ section.settings.contact_address}}</div>
+                </div>
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+      {%- endif -%}
+    {%- endif -%}
   </div>
 </div>
 
@@ -179,10 +237,55 @@
       "label": "t:sections.all.heading_size.label"
     },
     {
+      "type": "inline_richtext",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "t:sections.all.colors.label",
       "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Company information"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_company_info",
+      "label": "Show company information below form",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "or_text",
+      "label": "Separator text (e.g. OR)",
+      "default": "OR"
+    },
+    {
+      "type": "text",
+      "id": "trading_name",
+      "label": "Trading name",
+      "default": "ZEYT GLOBAL LIMITED"
+    },
+    {
+      "type": "text",
+      "id": "company_number",
+      "label": "Company number",
+      "default": "15795980"
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "Contact email",
+      "default": "hello@usebaseline.co"
+    },
+    {
+      "type": "textarea",
+      "id": "contact_address",
+      "label": "Contact address",
+      "default": "3rd Floor 86-90 Paul Street,\nLondon, England\nUnited Kingdom, EC2A 4NE"
     },
     {
       "type": "header",

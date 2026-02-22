@@ -33,6 +33,9 @@
         "image_3GKpH3",
         "brand_information_VREiwh"
       ],
+      "custom_css": [
+        ".footer-block__brand-info .footer-block__image-wrapper {display: none;}"
+      ],
       "settings": {
         "color_scheme": "scheme-1",
         "newsletter_enable": false,

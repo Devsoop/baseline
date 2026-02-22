@@ -41,7 +41,7 @@
   margin-top: 0px;
   margin-bottom: 0px;
   line-height: 1;
-  font-size: 14px;
+  font-size: 16px;
 }
 @media screen and (min-width: 990px) {
   .selling-plan-option {
@@ -118,7 +118,7 @@
 /* Content Container */
 .selling-plan-option__content {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   gap: 0.8rem;
   flex: 1;
 }
@@ -131,10 +131,11 @@
 }
 
 .selling-plan-option__title {
-  font-size: 16px !important;
+  font-size: 18px !important;
   font-weight: 600;
   line-height: 1.2;
   margin: 0;
+  color: black;
 }
 
 @media screen and (min-width: 990px) {
@@ -163,7 +164,7 @@
 
 .selling-plan-option__benefits li {
   width: max-content;
-  font-size: 1rem;
+  font-size: 12px;
   font-weight: 600;
   color: #000000;
   border: 1px solid lightgray;
@@ -172,18 +173,15 @@
   text-transform: uppercase;
 }
 
-@media screen and (min-width: 990px) {
-  .selling-plan-option__benefits li {
-    font-size: 8px !important;
-  }
-}
 
 /* Price Container */
 .selling-plan-option__price-container {
   display: flex;
-  justify-content: end;
+  flex-direction: column-reverse;
+  justify-content: start;
   gap: 1rem;
-  align-items: center;
+  align-items: start;
+  margin-left: auto;
 }
 
 .selling-plan-option__compare-price {

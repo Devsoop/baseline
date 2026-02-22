@@ -228,7 +228,7 @@ product-info {
 .product__info-container .product-form,
 .product__info-container .product__description,
 .product__info-container .icon-with-text {
-  margin: 2.5rem 0;
+  margin: 20px 0;
 }
 .description-text {
     background-color: rgba(158, 1, 30, 0.1);
@@ -257,7 +257,7 @@ product-info {
 a.product__text {
   display: block;
   text-decoration: none;
-  color: rgba(var(--color-foreground), 0.75);
+  color: rgba(var(--color-foreground), 1);
 }
 
 .product__text.caption-with-letter-spacing {

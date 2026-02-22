@@ -14,12 +14,13 @@
     "header": {
       "type": "header",
       "custom_css": [
-        ".header__icon--account {display: none;}"
+        ".header__icon--account {display: none;}",
+        " .gradient{background: transparent;}"
       ],
       "settings": {
         "logo_position": "middle-left",
         "mobile_logo_position": "center",
-        "menu": "main-menu",
+        "menu": "main-menu-copy",
         "menu_type_desktop": "dropdown",
         "mobile_menu_button_label": "Try Baseline",
         "mobile_menu_button_link": "#",
