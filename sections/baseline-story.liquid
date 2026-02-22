@@ -27,6 +27,7 @@
     background: linear-gradient(180deg, #6B0211 0%, #000000 100%);
     scroll-snap-align: start;
     scroll-snap-stop: always;
+    touch-action: none;
   }
 
   #BaselineStory-{{ section.id }} .baseline-story__banner-bg {
@@ -86,6 +87,7 @@
     background: linear-gradient(180deg, #000000 0%, #6B0211 100%);
     scroll-snap-align: start;
     scroll-snap-stop: always;
+    touch-action: none;
   }
 
   #BaselineStory-{{ section.id }} .baseline-story__app {
@@ -762,32 +764,77 @@
   }, { passive: false });
 
   let touchY = 0;
+  let touchX = 0;
   let touchStartElement = null;
+  let touchHandled = false;
+
   section.addEventListener('touchstart', e => {
     touchY = e.touches[0].clientY;
+    touchX = e.touches[0].clientX;
     touchStartElement = e.target;
+    touchHandled = false;
   }, { passive: true });
-  section.addEventListener('touchend', e => {
-    // If banner is active and swiping down, jump to slider zone
-    if (bannerActive && banner.contains(touchStartElement)) {
-      const dy = touchY - e.changedTouches[0].clientY;
-      if (dy > 40) {
-        jumpToSliderZone();
+
+  section.addEventListener('touchmove', e => {
+    if (touchHandled) {
+      e.preventDefault();
+      return;
+    }
+    const inBanner = banner && banner.contains(touchStartElement);
+    const inSlider = sliderZone && sliderZone.contains(touchStartElement);
+    if (!inBanner && !inSlider) return;
+
+    const currentY = e.touches[0].clientY;
+    const currentX = e.touches[0].clientX;
+    const dy = touchY - currentY;
+    const dx = touchX - currentX;
+    const absDy = Math.abs(dy);
+    const absDx = Math.abs(dx);
+    if (absDy < 15) return;
+    if (absDx > absDy) return;
+
+    if (inBanner && dy > 15) {
+      touchHandled = true;
+      e.preventDefault();
+      return;
+    }
+    if (inSlider) {
+      if (current === 0 && dy < -15) {
+        touchHandled = true;
+        e.preventDefault();
         return;
       }
+      if (current === TOTAL - 1 && dy > 15) return;
+      touchHandled = true;
+      e.preventDefault();
+    }
+  }, { passive: false });
+
+  section.addEventListener('touchend', e => {
+    if (!touchStartElement) return;
+    const endY = e.changedTouches[0].clientY;
+    const dy = touchY - endY;
+
+    if (banner && banner.contains(touchStartElement)) {
+      if (dy > 40) {
+        jumpToSliderZone();
+      }
+      return;
     }
 
-    // If slider zone is active, handle slide navigation
-    if (!sliderZoneActive) return;
-    const dy = touchY - e.changedTouches[0].clientY;
+    if (!sliderZone || !sliderZone.contains(touchStartElement)) return;
     if (Math.abs(dy) < 40) return;
-    
-    // If on first slide and swiping up, jump back to banner
+
     if (current === 0 && dy < -40) {
       jumpToBanner();
       return;
     }
-    
+
+    if (current === TOTAL - 1 && dy > 40) {
+      window.scrollTo(0, window.scrollY + window.innerHeight);
+      return;
+    }
+
     const now = Date.now();
     if (isAnimating || now - lastWheel < 400) return;
     lastWheel = now;
