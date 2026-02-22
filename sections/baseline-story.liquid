@@ -1,0 +1,938 @@
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+
+{%- style -%}
+  #BaselineStory-{{ section.id }} {
+    position: relative;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+
+  #BaselineStory-{{ section.id }}.baseline-story {
+    background: #6B0211;
+    margin-top: -110px;
+  }
+  #BaselineStory-{{ section.id }} div:empty{
+    display: block;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__banner {
+    position: relative;
+    height: 100vh;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: linear-gradient(180deg, #6B0211 0%, #000000 100%);
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__banner-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    transform: translate(-50%, 0);
+    left: 50%;
+    top: unset;
+    bottom: 0;
+    z-index: 2;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__banner-bg img {
+    width: 100%;
+    height: fit-content;
+    object-fit: contain;
+    max-width: 650px;
+    margin: auto;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__banner-overlay {
+    position: absolute;
+    z-index: 1;
+    background: linear-gradient(180deg, #6B0211 0%, #000000 100%);
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__banner-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 2rem;
+    max-width: 800px;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__banner-heading {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    color: #fff;
+    margin: 0 0 1rem;
+    line-height: 1.2;
+    font-size: 112px;
+    text-transform: uppercase;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__banner-subheading {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: rgba(255,255,255,0.85);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__slider-zone {
+    position: relative;
+    height: 103vh;
+    min-height: 400px;
+    overflow: hidden;
+    background: linear-gradient(180deg, #000000 0%, #6B0211 100%);
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__app {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  /* Story ruler: __ (big 32px) then - - - - - (small 12px) 1px lines. Progress top→bottom, same pattern. */
+  #BaselineStory-{{ section.id }} .baseline-story__ruler {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: auto;
+    bottom: 0;
+    width: 32px;
+    z-index: 10;
+    padding: 12px 0;
+    overflow: hidden;
+    max-height: 480px;
+    margin: auto;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__ruler-track {
+    position: absolute;
+    top: 12px;
+    bottom: 12px;
+    left: 0;
+    width: 32px;
+    opacity: 0.4;
+    background-image:
+      /* big: full 32px, 1px every 60px */
+      linear-gradient(to bottom, rgba(255,255,255,1) 0, rgba(255,255,255,1) 1px, transparent 1px, transparent 60px),
+      /* small (center 5): 6px-wide tile so lines are short */
+      linear-gradient(to bottom, transparent 9px, rgba(255,255,255,1) 9px, rgba(255,255,255,1) 10px, transparent 10px, transparent 19px, rgba(255,255,255,1) 19px, rgba(255,255,255,1) 20px, transparent 20px, transparent 29px, rgba(255,255,255,1) 29px, rgba(255,255,255,1) 30px, transparent 30px, transparent 39px, rgba(255,255,255,1) 39px, rgba(255,255,255,1) 40px, transparent 40px, transparent 49px, rgba(255,255,255,1) 49px, rgba(255,255,255,1) 50px, transparent 50px, transparent 60px);
+    background-size: 32px 60px, 6px 60px;
+    background-position: 0 0, 0 0;
+    background-repeat: repeat-y, repeat-y;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__ruler-fill {
+    position: absolute;
+    top: 12px;
+    left: 0;
+    width: 32px;
+    height: 0%;
+    transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    background-image:
+      linear-gradient(to bottom, rgba(255,255,255,1) 0, rgba(255,255,255,1) 1px, transparent 1px, transparent 60px),
+      linear-gradient(to bottom, transparent 9px, rgba(255,255,255,1) 9px, rgba(255,255,255,1) 10px, transparent 10px, transparent 19px, rgba(255,255,255,1) 19px, rgba(255,255,255,1) 20px, transparent 20px, transparent 29px, rgba(255,255,255,1) 29px, rgba(255,255,255,1) 30px, transparent 30px, transparent 39px, rgba(255,255,255,1) 39px, rgba(255,255,255,1) 40px, transparent 40px, transparent 49px, rgba(255,255,255,1) 49px, rgba(255,255,255,1) 50px, transparent 50px, transparent 60px);
+    background-size: 32px 60px, 6px 60px;
+    background-position: 0 0, 0 0;
+    background-repeat: repeat-y, repeat-y;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__slides {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__slide {
+    position: absolute;
+    inset: 0;
+    padding: 60px clamp(24px, 5vw, 80px) 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(40px, 8vw, 80px);
+    opacity: 0;
+    pointer-events: none;
+    padding-top: 75px;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__slide-inner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: clamp(40px, 8vw, 80px);
+    max-width: 850px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__slide-content {
+    flex: 1;
+    min-width: 0;
+    margin-top: -400px;
+
+  }
+  #BaselineStory-{{ section.id }} .slide--full-width .baseline-story__slide-content{
+    max-width: 408px;
+  }
+  
+
+  #BaselineStory-{{ section.id }} .baseline-story__slide-media {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  #BaselineStory-{{ section.id }} .baseline-story__slide.slide--full-width .baseline-story__slide-media {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    position: absolute;
+    right: 0;
+    width: 100%;
+  }
+  #BaselineStory-{{ section.id }} .baseline-story__slide.slide--full-width .illus-img{
+    width: 100%;
+    max-width: 100%;
+  }
+/* 
+  @media screen and (max-width: 749px) {
+    #BaselineStory-{{ section.id }} .baseline-story__slide,
+    #BaselineStory-{{ section.id }} .baseline-story__slide-inner {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+    #BaselineStory-{{ section.id }} .baseline-story__slide-media {
+      width: 100%;
+      justify-content: flex-start;
+    }
+  } */
+
+  #BaselineStory-{{ section.id }} .slide-eyebrow {
+    font-size: 18px;
+    font-weight: 700;
+    font-style: italic;
+    color: #fff;
+    margin-bottom: 18px;
+    display: block;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  #BaselineStory-{{ section.id }} .slide-lines {
+    display: flex;
+    gap: 0;
+    flex-direction: column;
+  }
+
+  #BaselineStory-{{ section.id }} .line-wrap {
+    overflow: hidden;
+    padding-bottom: 2px;
+    width: 100%;
+  }
+
+  #BaselineStory-{{ section.id }} .line-inner {
+    display: inline-block;
+    width: 100%;
+    font-size: 18px;
+    font-weight: 400;
+    color: #fff;
+    line-height: 1.55;
+    opacity: 0;
+    transform: translateY(100%);
+    white-space: normal;
+  }
+
+  #BaselineStory-{{ section.id }} .line-inner strong { font-weight: 700; color: #fff; }
+  #BaselineStory-{{ section.id }} .line-inner em { font-style: italic; font-weight: 700; }
+
+  /* Centered hero block: one column, heading top / image bottom, center align */
+  #BaselineStory-{{ section.id }} .baseline-story__slide.slide--centered .baseline-story__slide-inner {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    max-width: 900px;
+  }
+  #BaselineStory-{{ section.id }} .baseline-story__slide.slide--centered .baseline-story__slide-content {
+    margin-top: 0;
+    margin-left: 0;
+    order: 1;
+  }
+  #BaselineStory-{{ section.id }} .baseline-story__slide.slide--centered .baseline-story__slide-media {
+    order: 2;
+    width: 100%;
+    justify-content: center;
+  }
+  #BaselineStory-{{ section.id }} .baseline-story__slide.slide--centered .illus-img {
+    max-width: 780px;
+  }
+  #BaselineStory-{{ section.id }} .slide-hero-heading {
+    font-size: 72px;
+    font-weight: 500;
+    color: #fff;
+    margin: 0;
+    line-height: 1.15;
+    opacity: 0;
+    transform: translateY(30px);
+    text-transform: uppercase;
+  }
+  @media screen and (max-width: 991px) {
+    #BaselineStory-{{ section.id }} .baseline-story__banner-heading{
+      font-size: 82px;
+    }
+    #BaselineStory-{{ section.id }} .baseline-story__banner-bg {
+      width: 100%;
+    }
+    #BaselineStory-{{ section.id }} .slide-hero-heading { font-size: 52px; }
+  }
+  @media screen and (max-width: 749px) {
+    
+    #BaselineStory-{{ section.id }} .baseline-story__banner-heading{
+      font-size: 32px;
+    }
+    #BaselineStory-{{ section.id }} .slide-hero-heading { font-size: 32px; }
+    #BaselineStory-{{ section.id }} .baseline-story__slide.slide--centered .baseline-story__slide-content {
+      margin-left: 0;
+    }
+  }
+
+  #BaselineStory-{{ section.id }} .slide-img-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  #BaselineStory-{{ section.id }} .illus-img,
+  #BaselineStory-{{ section.id }} .illus-img.placeholder-svg {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    object-fit: contain;
+    opacity: 0;
+    transform: translateY(50px);
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.7));
+    display: block;
+  }
+  #BaselineStory-{{ section.id }} .baseline-story__slide-img-mobile {
+    display: none;
+  }
+  @media screen and (max-width: 749px) {
+    #BaselineStory-{{ section.id }} .baseline-story__slide-img-desktop {
+      display: none !important;
+    }
+    #BaselineStory-{{ section.id }} .baseline-story__slide-img-mobile {
+      display: block !important;
+    }
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__scroll-hint {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 80;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__scroll-hint span {
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+  }
+
+  #BaselineStory-{{ section.id }} .hint-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    animation: baselineStoryBounce 1.6s ease-in-out infinite;
+  }
+
+  #BaselineStory-{{ section.id }} .hint-arrow i {
+    display: block;
+    width: 1px;
+    height: 6px;
+    background: rgba(255,255,255,0.3);
+  }
+
+  #BaselineStory-{{ section.id }} .hint-arrow svg {
+    width: 10px;
+    height: 6px;
+    fill: none;
+    stroke: rgba(255,255,255,0.3);
+    stroke-width: 1.5;
+  }
+
+  @keyframes baselineStoryBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(5px); }
+  }
+
+  #BaselineStory-{{ section.id }} .baseline-story__progress-dots {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 80;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    display: none;
+  }
+
+  #BaselineStory-{{ section.id }} .pdot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.18);
+    transition: background 0.4s, transform 0.4s;
+  }
+  #BaselineStory-{{ section.id }} .pdot.active {
+    background: #fff;
+    transform: scale(1.5);
+  }
+  @media screen and (max-width: 991px) {
+    #BaselineStory-{{ section.id }} .baseline-story__slides {
+      margin-left: 25px;
+      margin-right: 25px;
+    }
+    #BaselineStory-{{ section.id }} .baseline-story__slide-media{
+      margin-left: auto;
+    }
+    #BaselineStory-{{ section.id }} .baseline-story__slide-content {
+      margin-top: 0;
+      width: 100%;
+      margin-left: 60px;
+    }
+    #BaselineStory-{{ section.id }} .baseline-story__slide.text-slide.slide--full-width .baseline-story__slide-content{
+      margin-top: -100px;
+    }
+  #BaselineStory-{{ section.id }} .baseline-story__slide-inner {
+      flex-direction: column;
+    }
+  }
+  @media screen and (max-width: 749px) {
+    #BaselineStory-{{ section.id }} .baseline-story__slide-media{
+      margin-left: auto;
+      margin-right: auto;
+    }
+    }
+{%- endstyle -%}
+
+<section id="BaselineStory-{{ section.id }}" class="baseline-story">
+  <div class="baseline-story__banner" data-banner>
+    <div class="baseline-story__banner-bg">
+      {%- if section.settings.banner_image != blank -%}
+        <img src="{{ section.settings.banner_image | image_url: width: 1920 }}" alt="{{ section.settings.banner_heading | default: '' | escape }}" width="1920" height="1080" loading="eager">
+      {%- else -%}
+        <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a0508 0%,#0a0005 100%);"></div>
+      {%- endif -%}
+    </div>
+    <div class="baseline-story__banner-overlay"></div>
+    <div class="baseline-story__banner-content">
+      {%- if section.settings.banner_heading != blank -%}
+        <h1 class="baseline-story__banner-heading">{{ section.settings.banner_heading }}</h1>
+      {%- endif -%}
+      {%- if section.settings.banner_subheading != blank -%}
+        <p class="baseline-story__banner-subheading">{{ section.settings.banner_subheading }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="baseline-story__slider-zone" data-slider-zone>
+  <div class="baseline-story__app">
+
+    <div class="baseline-story__bg"></div>
+
+    <div class="baseline-story__ruler" data-ruler>
+      <div class="baseline-story__ruler-track"></div>
+      <div class="baseline-story__ruler-fill" data-ruler-fill></div>
+    </div>
+
+    <div class="baseline-story__progress-dots" data-dots>
+      {%- for block in section.blocks -%}
+        <div class="pdot{% if forloop.first %} active{% endif %}" data-i="{{ forloop.index0 }}"></div>
+      {%- endfor -%}
+    </div>
+
+    <div class="baseline-story__slides">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'centered_slide' -%}
+          <div class="baseline-story__slide slide--centered" data-slide data-slide-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+            <div class="baseline-story__slide-inner">
+              <div class="baseline-story__slide-content">
+                {%- if block.settings.heading != blank -%}
+                  <h2 class="slide-hero-heading">{{ block.settings.heading }}</h2>
+                {%- endif -%}
+              </div>
+              {%- if block.settings.image != blank -%}
+                <div class="baseline-story__slide-media">
+                  <div class="slide-img-area">
+                    <img
+                      class="illus-img"
+                      src="{{ block.settings.image | image_url: width: 640 }}"
+                      alt="{{ block.settings.image.alt | default: '' | escape }}"
+                      width="320"
+                      height="400"
+                      loading="lazy"
+                    >
+                  </div>
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- else -%}
+          {%- assign lines_str = block.settings.description | default: '' -%}
+          {%- assign lines = lines_str | newline_to_br | split: '<br />' -%}
+          <div class="baseline-story__slide text-slide{% if block.settings.full_width %} slide--full-width{% endif %}" data-slide data-slide-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+            <div class="baseline-story__slide-inner">
+              <div class="baseline-story__slide-content">
+                <span class="slide-eyebrow">{{ block.settings.heading | default: 'Slide' }}</span>
+                <div class="slide-lines" data-lines>
+                  {%- for line in lines -%}
+                    <div class="line-wrap">
+                      {%- if line != blank -%}
+                        <span class="line-inner">{{ line }}</span>
+                      {%- else -%}
+                        <span class="line-inner">&nbsp;</span>
+                      {%- endif -%}
+                    </div>
+                  {%- endfor -%}
+                </div>
+              </div>
+              <div class="baseline-story__slide-media">
+                <div class="slide-img-area">
+                  {%- if block.settings.image != blank or block.settings.image_mobile != blank -%}
+                    {%- if block.settings.image != blank -%}
+                      <img
+                        class="illus-img illus-img--desktop{% if block.settings.image_mobile != blank %} baseline-story__slide-img-desktop{% endif %}"
+                        src="{{ block.settings.image | image_url: width: 640 }}"
+                        alt="{{ block.settings.image.alt | default: '' | escape }}"
+                        width="320"
+                        height="400"
+                        loading="lazy"
+                      >
+                    {%- endif -%}
+                    {%- if block.settings.image_mobile != blank -%}
+                      <img
+                        class="illus-img{% if block.settings.image != blank %} baseline-story__slide-img-mobile{% endif %}"
+                        src="{{ block.settings.image_mobile | image_url: width: 640 }}"
+                        alt="{{ block.settings.image_mobile.alt | default: block.settings.image.alt | default: '' | escape }}"
+                        width="320"
+                        height="400"
+                        loading="lazy"
+                      >
+                    {%- endif -%}
+                  {%- else -%}
+                    {{ 'image' | placeholder_svg_tag: 'illus-img placeholder-svg' }}
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="baseline-story__scroll-hint" data-scroll-hint>
+      <span>{{ section.settings.scroll_hint_text | default: 'Scroll' }}</span>
+      <div class="hint-arrow">
+        <i></i><i></i>
+        <svg viewBox="0 0 10 6"><polyline points="1,1 5,5 9,1"/></svg>
+      </div>
+    </div>
+
+  </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  const section = document.getElementById('BaselineStory-{{ section.id }}');
+  if (!section) return;
+
+  const banner = section.querySelector('[data-banner]');
+  const sliderZone = section.querySelector('[data-slider-zone]');
+  const app = section.querySelector('.baseline-story__app');
+  const ruler = section.querySelector('[data-ruler]');
+  const rulerFill = section.querySelector('[data-ruler-fill]');
+  const dots = section.querySelectorAll('.pdot');
+  const slides = section.querySelectorAll('[data-slide]');
+  const TOTAL = slides.length;
+
+  if (TOTAL === 0) return;
+
+  let sliderZoneActive = false;
+  let bannerActive = false;
+  let isJumpingToSlider = false;
+
+  // Observe banner visibility
+  const bannerIO = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      bannerActive = e.isIntersecting && e.intersectionRatio >= 0.8;
+    });
+  }, { threshold: 0.8 });
+  if (banner) bannerIO.observe(banner);
+
+  // Observe slider zone visibility
+  const sliderIO = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      sliderZoneActive = e.isIntersecting && e.intersectionRatio >= 0.9;
+    });
+  }, { threshold: 0.9 });
+  if (sliderZone) sliderIO.observe(sliderZone);
+
+  let current = 0;
+  let isAnimating = false;
+
+  function updateRuler(idx) {
+    rulerFill.style.height = ((idx + 1) / TOTAL * 100) + '%';
+  }
+
+  function updateDots(idx) {
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  }
+
+  function exitSlide(idx, tl) {
+    const slide = slides[idx];
+    if (slide) tl.to(slide, { y: -30, opacity: 0, duration: 0.4, ease: 'power2.in' }, 0);
+  }
+
+  function enterSlide(idx, tl, offset) {
+    const slide = slides[idx];
+    if (!slide) return;
+
+    const isCentered = slide.classList.contains('slide--centered');
+    const heroHeading = slide.querySelector('.slide-hero-heading');
+    const eyebrow = slide.querySelector('.slide-eyebrow');
+    const lines = slide.querySelectorAll('.line-inner');
+    const illusAll = slide.querySelectorAll('.illus-img');
+
+    gsap.set(slide, { opacity: 0, y: 0 });
+    if (heroHeading) gsap.set(heroHeading, { opacity: 0, y: 30 });
+    if (eyebrow) gsap.set(eyebrow, { opacity: 0, y: 20 });
+    if (lines.length) gsap.set(lines, { opacity: 0, y: '100%' });
+    if (illusAll.length) gsap.set(illusAll, { opacity: 0, y: 50 });
+
+    tl.to(slide, { opacity: 1, duration: 0.01 }, offset);
+
+    if (isCentered && heroHeading) {
+      tl.to(heroHeading, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, offset + 0.1);
+      if (illusAll.length) tl.to(illusAll, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, offset + 0.35);
+    } else {
+      if (eyebrow) tl.to(eyebrow, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, offset + 0.1);
+      if (lines.length) {
+        const linesDelay = offset + 0.2;
+        const staggerTime = 0.08;
+        const lineDuration = 0.3;
+        tl.to(lines, { opacity: 1, y: '0%', duration: lineDuration, stagger: staggerTime, ease: 'power2.out' }, linesDelay);
+        if (illusAll.length) {
+          const imageStartDelay = linesDelay + Math.floor(lines.length / 2) * staggerTime + lineDuration * 0.5;
+          tl.to(illusAll, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, imageStartDelay);
+        }
+      } else if (illusAll.length) {
+        tl.to(illusAll, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, offset + 0.3);
+      }
+    }
+  }
+
+  function goTo(next) {
+    if (isAnimating || next === current || next < 0 || next >= TOTAL) return;
+    isAnimating = true;
+    const prev = current;
+    current = next;
+    updateDots(next);
+    updateRuler(next);
+
+    const tl = gsap.timeline({ onComplete: () => { isAnimating = false; } });
+    exitSlide(prev, tl);
+    enterSlide(next, tl, 0.3);
+  }
+
+  function jumpToSliderZone() {
+    if (isJumpingToSlider || !sliderZone) return;
+    isJumpingToSlider = true;
+    
+    const startY = window.pageYOffset || window.scrollY;
+    const sliderTop = sliderZone.getBoundingClientRect().top + startY;
+    const distance = sliderTop - startY;
+    const duration = 800;
+    const startTime = performance.now();
+
+    function animateScroll(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const ease = progress < 0.5 
+        ? 2 * progress * progress 
+        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+      
+      window.scrollTo(0, startY + distance * ease);
+      
+      if (progress < 1) {
+        requestAnimationFrame(animateScroll);
+      } else {
+        isJumpingToSlider = false;
+      }
+    }
+    
+    requestAnimationFrame(animateScroll);
+  }
+
+  function jumpToBanner() {
+    if (isJumpingToSlider || !banner) return;
+    isJumpingToSlider = true;
+    
+    const startY = window.pageYOffset || window.scrollY;
+    const bannerTop = banner.getBoundingClientRect().top + startY;
+    const distance = bannerTop - startY;
+    const duration = 800;
+    const startTime = performance.now();
+
+    function animateScroll(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const ease = progress < 0.5 
+        ? 2 * progress * progress 
+        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+      
+      window.scrollTo(0, startY + distance * ease);
+      
+      if (progress < 1) {
+        requestAnimationFrame(animateScroll);
+      } else {
+        isJumpingToSlider = false;
+      }
+    }
+    
+    requestAnimationFrame(animateScroll);
+  }
+
+  let lastWheel = 0;
+  window.addEventListener('wheel', e => {
+    // If banner is active and scrolling down, jump to slider zone
+    if (bannerActive && e.deltaY > 0 && !isJumpingToSlider) {
+      e.preventDefault();
+      jumpToSliderZone();
+      return;
+    }
+
+    // If slider zone is active, handle slide navigation
+    if (sliderZoneActive && sliderZone.contains(e.target)) {
+      // On last slide scrolling down: allow page to scroll
+      if (current === TOTAL - 1 && e.deltaY > 0) return;
+      e.preventDefault();
+      const now = Date.now();
+      if (isAnimating || now - lastWheel < 120) return;
+      lastWheel = now;
+      
+      // If on first slide and scrolling up, jump back to banner
+      if (current === 0 && e.deltaY < 0) {
+        jumpToBanner();
+        return;
+      }
+      
+      goTo(current + (e.deltaY > 0 ? 1 : -1));
+      return;
+    }
+
+    // If slider zone is not fully active but user is in it, allow normal scroll
+  }, { passive: false });
+
+  let touchY = 0;
+  let touchStartElement = null;
+  section.addEventListener('touchstart', e => {
+    touchY = e.touches[0].clientY;
+    touchStartElement = e.target;
+  }, { passive: true });
+  section.addEventListener('touchend', e => {
+    // If banner is active and swiping down, jump to slider zone
+    if (bannerActive && banner.contains(touchStartElement)) {
+      const dy = touchY - e.changedTouches[0].clientY;
+      if (dy > 40) {
+        jumpToSliderZone();
+        return;
+      }
+    }
+
+    // If slider zone is active, handle slide navigation
+    if (!sliderZoneActive) return;
+    const dy = touchY - e.changedTouches[0].clientY;
+    if (Math.abs(dy) < 40) return;
+    
+    // If on first slide and swiping up, jump back to banner
+    if (current === 0 && dy < -40) {
+      jumpToBanner();
+      return;
+    }
+    
+    const now = Date.now();
+    if (isAnimating || now - lastWheel < 400) return;
+    lastWheel = now;
+    goTo(current + (dy > 0 ? 1 : -1));
+  }, { passive: true });
+
+  section.addEventListener('keydown', e => {
+    // If banner is active and pressing down/space, jump to slider
+    if (bannerActive && (e.key === 'ArrowDown' || e.key === ' ')) {
+      e.preventDefault();
+      jumpToSliderZone();
+      return;
+    }
+
+    // If slider zone is active, handle slide navigation
+    if (!sliderZoneActive) return;
+    if (!app.contains(document.activeElement) && !section.contains(document.activeElement)) return;
+    
+    // If on first slide and pressing up, jump back to banner
+    if (current === 0 && e.key === 'ArrowUp') {
+      e.preventDefault();
+      jumpToBanner();
+      return;
+    }
+    
+    if (e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+  });
+
+  function init() {
+    if (typeof gsap === 'undefined') return setTimeout(init, 50);
+    gsap.set(slides, { opacity: 0 });
+    updateRuler(0);
+    updateDots(0);
+    const tl = gsap.timeline({ onComplete: () => { isAnimating = false; } });
+    isAnimating = true;
+    enterSlide(0, tl, 0.3);
+    const hint = section.querySelector('[data-scroll-hint]');
+    if (hint) gsap.to(hint, { opacity: 1, duration: 0.8, delay: 1.8, ease: 'power2.out' });
+  }
+
+  if (document.readyState === 'complete') setTimeout(init, 200);
+  else window.addEventListener('load', () => setTimeout(init, 200));
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Baseline Story",
+  "tag": "section",
+  "class": "section-baseline-story",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Banner"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Banner image"
+    },
+    {
+      "type": "text",
+      "id": "banner_heading",
+      "label": "Banner heading",
+      "default": "Our Story"
+    },
+    {
+      "type": "textarea",
+      "id": "banner_subheading",
+      "label": "Banner subheading"
+    },
+    {
+      "type": "header",
+      "content": "Slider"
+    },
+    {
+      "type": "text",
+      "id": "scroll_hint_text",
+      "label": "Scroll hint text",
+      "default": "Scroll"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Slide"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Add your content here.\nEach line animates in.",
+          "info": "Each line animates in. Use blank lines for spacing."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Image (mobile)",
+          "info": "Optional. Shown on small screens instead of the main image."
+        },
+        {
+          "type": "checkbox",
+          "id": "full_width",
+          "label": "Full width",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "centered_slide",
+      "name": "Centered slide",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Baseline Story",
+      "blocks": [
+        { "type": "slide" },
+        { "type": "slide" }
+      ]
+    }
+  ]
+}
+{% endschema %}

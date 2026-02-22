@@ -1,0 +1,461 @@
+{% comment %}
+  Premium Product Info Block
+  Add this as a block in your main-product.liquid section
+{% endcomment %}
+
+<style>
+  .premium-info-block-{{ block.id }} {
+    background: {{ block.settings.background_color }};
+    padding: 24px;
+    {% comment %} border-radius: {{ block.settings.border_radius }}px; {% endcomment %}
+    margin-top: {{ block.settings.margin_top }}px;
+    transition: all 0.3s ease;
+    position: relative;
+    padding-bottom: 60px;
+  }
+
+  .premium-offer-container-{{ block.id }} {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: {{ block.settings.offer_bg_color }};
+    {% comment %} border-radius: 8px; {% endcomment %}
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+
+  .premium-offer-container-{{ block.id }}:hover {
+    transform: translateY(-2px);
+  }
+
+  .premium-offer-left-{{ block.id }} {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex: 1;
+  }
+
+  .premium-offer-text-{{ block.id }} h3 {
+    max-width:200px;
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.title_font_size }}px;
+    line-height:22px;
+    letter-spacing:2%;
+    margin: 0 0 4px 0;
+    font-weight: 600;
+    font-family: var(--font-heading-family);
+  }
+  .premium-offer-text-{{ block.id }}{
+    display:flex;
+    align-items:center;
+    gap:20px;
+  }
+
+  .premium-offer-right-{{ block.id }} {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .premium-price-{{ block.id }} {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .original-price-{{ block.id }} {
+    color: {{ block.settings.text_color }};
+    text-decoration: line-through;
+    font-size: 14px;
+    opacity: 0.7;
+  }
+
+  .free-price-{{ block.id }} {
+    color: {{ block.settings.free_text_color }};
+    font-size: 18px;
+    font-weight: 600;
+    line-height:22px;
+    font-family: var(--font-heading-family);
+  }
+
+  .info-toggle-{{ block.id }} {
+    width: 24px;
+    height: 24px;
+    border: 2px solid {{ block.settings.text_color }};
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: {{ block.settings.text_color }};
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .info-toggle-{{ block.id }}:hover {
+    background: {{ block.settings.text_color }};
+    color: {{ block.settings.background_color }};
+  }
+
+  .premium-product-visual-{{ block.id }} {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-bottom: 0;
+  }
+
+  .premium-product-visual-{{ block.id }}.active {
+    max-height: 500px;
+    opacity: 1;
+    margin-bottom: 20px;
+  }
+
+  .product-showcase-{{ block.id }} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    padding: 40px 20px;
+    background: {{ block.settings.showcase_bg }};
+    {% comment %} border-radius: 8px; {% endcomment %}
+  }
+
+  .product-image-container-{{ block.id }} {
+    flex: 0 0 auto;
+    max-width: 200px;
+  }
+
+  .product-image-container-{{ block.id }} img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .plus-icon-{{ block.id }} {
+    font-size: 40px;
+    color: {{ block.settings.text_color }};
+    font-weight: 300;
+  }
+
+  .product-badges-{{ block.id }} {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .badge-{{ block.id }} {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid {{ block.settings.badge_border_color }};
+    color: {{ block.settings.badge_text_color }};
+    padding: 4px 12px 2px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    line-height:22px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 6%;
+    font-family: var(--font-body-family);
+  }
+
+  .premium-benefits-{{ block.id }} {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .benefit-item-{{ block.id }} {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.benefit_font_size }}px;
+    font-weight:600;
+    line-height:120%;
+    font-family: var(--font-body-family);
+  }
+
+  .benefit-item-{{ block.id }} svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    fill: {{ block.settings.text_color }};
+  }
+
+  .delivery-info-{{ block.id }} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 20px 12px;
+    background: {{ block.settings.offer_bg_color }};
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.delivery_font_size }}px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 6%;
+    line-height:120%;
+    font-family: var(--font-body-family);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  .delivery-info-{{ block.id }} svg {
+    width: 20px;
+    height: 20px;
+    fill: {{ block.settings.text_color }};
+  }
+
+  @media (max-width: 950px){
+     .premium-offer-container-{{ block.id }} {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .premium-info-block-{{ block.id }} {
+      padding: 16px;
+    }
+
+    
+
+    .premium-offer-left-{{ block.id }} {
+      width: 100%;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .premium-offer-right-{{ block.id }} {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .product-showcase-{{ block.id }} {
+      flex-direction: column;
+      gap: 20px;
+      padding: 30px 15px;
+    }
+
+    .product-image-container-{{ block.id }} {
+      max-width: 150px;
+    }
+
+    .premium-benefits-{{ block.id }} {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .product-badges-{{ block.id }} {
+      margin-top: 15px;
+    }
+
+    .premium-offer-text-{{ block.id }} h3 {
+      {% assign reduced_size = block.settings.title_font_size | minus: 2 %}
+      font-size: {{ reduced_size }}px;
+    }
+
+    .free-price-{{ block.id }} {
+      font-size: 20px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .product-image-container-{{ block.id }} {
+      max-width: 120px;
+    }
+
+    .badge-{{ block.id }} {
+      font-size: 10px;
+      padding: 6px 12px;
+    }
+  }
+</style>
+
+<div class="premium-info-block-{{ block.id }}" {{ block.shopify_attributes }}>
+  <div class="premium-offer-container-{{ block.id }}" data-offer-toggle>
+    <div class="premium-offer-left-{{ block.id }}">
+      <div class="premium-offer-text-{{ block.id }}">
+        <h3>{{ block.settings.offer_title }}</h3>
+        {%- if block.settings.product_image != blank -%}
+          {%- assign img_url = block.settings.product_image | image_url: width: 400 -%}
+          <img
+            src="{{ img_url }}"
+            alt="{{ block.settings.product_image.alt | default: 'Premium Product' }}"
+            width="400"
+            height="400"
+            loading="lazy"
+            style="width:88px; height:88px;"
+            class="product_small_img"
+          >
+        {%- endif -%}
+      </div>
+    </div>
+    <div class="premium-offer-right-{{ block.id }}">
+      {%- if block.settings.show_original_price -%}
+        <div class="premium-price-{{ block.id }}">
+          <span class="original-price-{{ block.id }}">{{ block.settings.original_price }}</span>
+          <span class="free-price-{{ block.id }}">{{ block.settings.free_text }}</span>
+        </div>
+      {%- else -%}
+        <span class="free-price-{{ block.id }}">{{ block.settings.free_text }}</span>
+      {%- endif -%}
+      <div class="info-toggle-{{ block.id }}" data-info-toggle>
+        <span class="toggle-icon">i</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="premium-product-visual-{{ block.id }}" data-product-visual>
+    <div class="product-showcase-{{ block.id }}">
+      {%- if block.settings.product_image != blank -%}
+        <div class="product-image-container-{{ block.id }}">
+          {%- assign img_url = block.settings.product_image | image_url: width: 400 -%}
+          <img
+            src="{{ img_url }}"
+            alt="{{ block.settings.product_image.alt | default: 'Premium Product' }}"
+            width="400"
+            height="400"
+            loading="lazy"
+          >
+        </div>
+      {%- endif -%}
+
+      {%- if block.settings.show_plus_icon -%}
+        <div class="plus-icon-{{ block.id }}">+</div>
+      {%- endif -%}
+
+      {%- if block.settings.accessory_image != blank -%}
+        <div class="product-image-container-{{ block.id }}">
+          {%- assign accessory_url = block.settings.accessory_image | image_url: width: 400 -%}
+          <img
+            src="{{ accessory_url }}"
+            alt="{{ block.settings.accessory_image.alt | default: 'Accessory' }}"
+            width="400"
+            height="400"
+            loading="lazy"
+          >
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if block.settings.show_badges -%}
+      <div class="product-badges-{{ block.id }}">
+        {%- if block.settings.badge_1 != blank -%}
+          <span class="badge-{{ block.id }}">{{ block.settings.badge_1 }}</span>
+        {%- endif -%}
+        {%- if block.settings.badge_2 != blank -%}
+          <span class="badge-{{ block.id }}">{{ block.settings.badge_2 }}</span>
+        {%- endif -%}
+        {%- if block.settings.badge_3 != blank -%}
+          <span class="badge-{{ block.id }}">{{ block.settings.badge_3 }}</span>
+        {%- endif -%}
+        {%- if block.settings.badge_4 != blank -%}
+          <span class="badge-{{ block.id }}">{{ block.settings.badge_4 }}</span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="premium-benefits-{{ block.id }}">
+    {%- if block.settings.benefit_1 != blank -%}
+      <div class="benefit-item-{{ block.id }}">
+        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+        </svg>
+        <span>{{ block.settings.benefit_1 }}</span>
+      </div>
+    {%- endif -%}
+
+    {%- if block.settings.benefit_2 != blank -%}
+      <div class="benefit-item-{{ block.id }}">
+        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+        </svg>
+        <span>{{ block.settings.benefit_2 }}</span>
+      </div>
+    {%- endif -%}
+
+    {%- if block.settings.benefit_3 != blank -%}
+      <div class="benefit-item-{{ block.id }}">
+        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+        </svg>
+        <span>{{ block.settings.benefit_3 }}</span>
+      </div>
+    {%- endif -%}
+
+    {%- if block.settings.benefit_4 != blank -%}
+      <div class="benefit-item-{{ block.id }}">
+        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+        </svg>
+        <span>{{ block.settings.benefit_4 }}</span>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if block.settings.delivery_text != blank -%}
+    <div class="delivery-info-{{ block.id }}">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19 7h-3V5c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h1c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h1c1.1 0 2-.9 2-2v-3l-3-4zM7 18c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm12-8.5h-3V7h1.5l1.5 2.5zM19 18c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
+      </svg>
+      <span>{{ block.settings.delivery_text }}</span>
+    </div>
+  {%- endif -%}
+</div>
+
+<script>
+  (function () {
+    const block = document.querySelector('.premium-info-block-{{ block.id }}');
+    if (!block) return;
+
+    const toggleBtn = block.querySelector('[data-info-toggle]');
+    const offerContainer = block.querySelector('[data-offer-toggle]');
+    const productVisual = block.querySelector('[data-product-visual]');
+    const smallImg = document.querySelector('.product_small_img'); // 👈 target image
+
+    if (toggleBtn && offerContainer && productVisual) {
+      const toggleIcon = toggleBtn.querySelector('.toggle-icon');
+
+      function toggleVisual() {
+        productVisual.classList.toggle('active');
+
+        // 👇 hide/show small image
+        if (smallImg) {
+          smallImg.style.display =
+            productVisual.classList.contains('active') ? 'none' : '';
+        }
+
+        if (productVisual.classList.contains('active')) {
+          toggleIcon.textContent = '×';
+          toggleBtn.style.transform = 'rotate(180deg)';
+        } else {
+          toggleIcon.textContent = 'i';
+          toggleBtn.style.transform = 'rotate(0deg)';
+        }
+      }
+
+      toggleBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        toggleVisual();
+      });
+
+      offerContainer.addEventListener('click', function () {
+        toggleVisual();
+      });
+    }
+  })();
+</script>

@@ -1,0 +1,228 @@
+{% comment %}
+  Renders product variant-picker for bundle templates with custom layout
+  
+  Accepts:
+  - product: {Object} product object.
+  - block: {Object} passing the block information.
+  - product_form_id: {String} Id of the product form to which the variant picker is associated.
+  
+  Usage:
+  {% render 'product-variant-picker-bundle', product: product, block: block, product_form_id: product_form_id %}
+{% endcomment %}
+{{ 'component-product-bundle.css' | asset_url | stylesheet_tag }}
+
+
+
+ 
+{%- liquid
+  assign is_subscription_selected = true
+-%}
+{%- unless product.has_only_default_variant -%}
+  <variant-selects
+    id="variant-selects-{{ section.id }}"
+    data-section="{{ section.id }}"
+    {{ block.shopify_attributes }}
+  >
+    {%- for option in product.options_with_values -%}
+      <fieldset class="js product-form__input product-form__input--bundle">
+        <legend class="form__label visually-hidden">{{ option.name }}</legend>
+        <span data-selected-value class="visually-hidden">{{ option.selected_value }}</span>
+        <span class="bundle-variant-heading">Quantity</span>
+        <div class="bundle-variant-grid">
+          {%- for value in option.values -%}
+          {%- liquid
+            assign variant_image = null
+            assign variant_price = null
+            assign variant_compare_at_price = null
+            assign variant_id = null
+            assign variant_available = false
+            assign variant_discount_percentage = 0
+            assign per_unit_price = null
+            assign original_price = null
+            assign variant_free_product = null
+            
+            comment
+              Find the variant that matches this option value
+            endcomment
+            for variant in product.variants
+              if option.position == 1 and variant.option1 == value
+                assign variant_image = variant.featured_image | default: variant.image
+                assign original_price = variant.price
+                assign variant_price = variant.price
+                assign variant_compare_at_price = variant.compare_at_price
+                assign variant_id = variant.id
+                assign variant_available = variant.available
+                assign variant_free_product = variant.metafields.custom.free_product.value
+                
+                comment
+                  If subscription is selected and variant has selling plan, use subscription price
+                endcomment
+                if is_subscription_selected and variant.selling_plan_allocations.size > 0
+                  assign variant_allocation = variant.selling_plan_allocations.first
+                  assign variant_price = variant_allocation.price
+                endif
+                break
+              elsif option.position == 2 and variant.option2 == value
+                assign variant_image = variant.featured_image | default: variant.image
+                assign original_price = variant.price
+                assign variant_price = variant.price
+                assign variant_compare_at_price = variant.compare_at_price
+                assign variant_id = variant.id
+                assign variant_available = variant.available
+                assign variant_free_product = variant.metafields.custom.free_product.value
+                
+                if is_subscription_selected and variant.selling_plan_allocations.size > 0
+                  assign variant_allocation = variant.selling_plan_allocations.first
+                  assign variant_price = variant_allocation.price
+                endif
+                break
+              elsif option.position == 3 and variant.option3 == value
+                assign variant_image = variant.featured_image | default: variant.image
+                assign original_price = variant.price
+                assign variant_price = variant.price
+                assign variant_compare_at_price = variant.compare_at_price
+                assign variant_id = variant.id
+                assign variant_available = variant.available
+                assign variant_free_product = variant.metafields.custom.free_product.value
+                
+                if is_subscription_selected and variant.selling_plan_allocations.size > 0
+                  assign variant_allocation = variant.selling_plan_allocations.first
+                  assign variant_price = variant_allocation.price
+                endif
+                break
+              endif
+            endfor
+            
+            comment
+              Calculate discount badge percentage for display
+              Use original price (compare_at_price if available, otherwise original_price) as base
+              Final price is already set in variant_price (subscription price if subscription selected, otherwise regular price)
+            endcomment
+            assign base_price = variant_compare_at_price
+            if base_price == null or base_price == 0
+              assign base_price = original_price
+            endif
+            
+            assign final_price = variant_price
+            
+            comment
+              Calculate discount percentage: (base_price - final_price) / base_price * 100
+              This accounts for both compare_at_price discounts and subscription discounts
+            endcomment
+            if base_price > final_price and base_price > 0
+              assign discount_amount = base_price | minus: final_price
+              assign variant_discount_percentage = discount_amount | times: 100.0 | divided_by: base_price | round
+            else
+              assign variant_discount_percentage = 0
+            endif
+            
+            comment
+              Extract quantity from variant title/option value (e.g., "4 Boxes" -> 4)
+            endcomment
+            assign quantity_match = value | split: ' ' | first | plus: 0
+            if quantity_match > 0
+              assign per_unit_price = variant_price | divided_by: quantity_match
+            else
+              assign per_unit_price = variant_price
+            endif
+            
+            assign is_selected = false
+            if value.selected
+              assign is_selected = true
+            endif
+          -%}
+          
+          {%- capture input_id -%}
+            {{ section.id }}-{{ option.position }}-{{ forloop.index0 }}
+          {%- endcapture -%}
+          
+          {%- capture input_name -%}
+            {{ option.name }}-{{ option.position }}
+          {%- endcapture -%}
+          
+          <input
+            type="radio"
+            id="{{ input_id }}"
+            name="{{ input_name | escape }}"
+            value="{{ value | escape }}"
+            form="{{ product_form_id }}"
+            class="absolute opacity-0 pointer-events-none"
+            {% if is_selected %}
+              checked
+            {% endif %}
+            {% unless variant_available %}
+              disabled
+            {% endunless %}
+            data-product-url="{{ value.product_url }}"
+            data-option-value-id="{{ value.id }}"
+            data-variant-id="{{ variant_id }}"
+            {% if variant_image != blank %}
+              data-variant-image="{{ variant_image | image_url: width: 200 }}"
+              data-variant-image-id="{{ variant_image.id }}"
+            {% endif %}--
+          >
+          <label
+            for="{{ input_id }}"
+            class="bundle-variant-option {% if is_selected %}bundle-variant-option--selected{% endif %}{% unless variant_available %} bundle-variant-option--disabled{% endunless %}"
+            {% if original_price %}data-original-price="{{ original_price }}"{% endif %}
+            {% if variant_compare_at_price %}data-original-compare-price="{{ variant_compare_at_price }}"{% endif %}
+          >
+            {%- if variant_discount_percentage > 0 -%}
+              <span class="bundle-discount-badge">
+                {{ variant_discount_percentage }}% Off
+              </span>
+            {%- endif -%}
+            
+            <h3 class="bundle-variant-title">
+              {{ value }}
+            </h3>
+            
+            <div class="bundle-variant-image-container">
+            {%- if variant_image != blank -%}
+              <img
+                alt="{{ value }} - {{ product.title }}"
+                loading="lazy"
+                width="auto"
+                height="200"
+                decoding="async"
+                class="bundle-variant-image"
+                style="color:transparent"
+                srcset="{{ variant_image | image_url: width: 250 }} 1x"
+                src="{{ variant_image | image_url: width: 250 }}"
+              >
+            {%- endif -%}
+            
+            {% if variant_free_product %}
+              <div class="gift-indicator">
+                  <span class="gift-indicator-text">+ <br> Gift</span>
+              </div>
+            {% endif %}
+            </div>
+
+            <div class="bundle-price-container">
+              {%- if variant_compare_at_price > variant_price or original_price > variant_price -%}
+                <del class="bundle-compare-price">
+                  {{ variant_compare_at_price | default: original_price | money }}
+                </del>
+              {%- endif -%}
+              <span class="bundle-price">
+                {{ variant_price | money }}
+              </span>
+            </div>
+            
+            {%- if per_unit_price != null and per_unit_price != variant_price -%}
+              <span class="bundle-unit-price">
+                <span class="bundle-unit-price-amount ">{{ per_unit_price | money }}</span>each
+              </span>
+            {%- endif -%}
+          </label>
+          {%- endfor -%}
+        </div>
+      </fieldset>
+    {%- endfor -%}
+
+    <script type="application/json" data-selected-variant>
+      {{ product.selected_or_first_available_variant | json }}
+    </script>
+  </variant-selects>
+{%- endunless -%}

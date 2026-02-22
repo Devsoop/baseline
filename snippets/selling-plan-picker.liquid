@@ -1,0 +1,143 @@
+{% comment %}
+  Renders selling plan options (subscription vs one-time purchase)
+  Accepts:
+  - product: {Object} Product Liquid object
+  - block: {Object} Block settings
+  - product_form_id: {String} Product form ID
+{% endcomment %}
+
+{{ 'component-selling-plan-picker.css' | asset_url | stylesheet_tag }}
+
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- assign has_selling_plans = false -%}
+{%- assign selling_plan_allocation = null -%}
+
+{%- if current_variant.selling_plan_allocations.size > 0 -%}
+  {%- assign has_selling_plans = true -%}
+  {%- assign selling_plan_allocation = current_variant.selling_plan_allocations.first -%}
+{%- endif -%}
+
+{%- if has_selling_plans -%}
+  {%- liquid
+    assign is_one_time_product = false
+    assign is_subscription_product = false
+    
+    comment
+      Logic:
+      - If product has custom.subscription_product set, it means this product IS the one-time product
+      - If product has custom.one_time_product set, it means this product IS the subscription product
+    endcomment
+    
+    if product.metafields.custom.subscription_product.value
+      assign is_one_time_product = true
+    endif
+    
+    if product.metafields.custom.one_time_product.value
+      assign is_subscription_product = true
+    endif
+    
+    assign subscription_selected = 'selected'
+    assign onetime_selected = ''
+    
+    if is_one_time_product
+      assign subscription_selected = ''
+      assign onetime_selected = 'selected'
+    elsif is_subscription_product
+      assign subscription_selected = 'selected'
+      assign onetime_selected = ''
+    endif
+  -%}
+  <span class="selling-plan-picker-heading">Frequency</span>
+  <div id="selling-plan-picker-{{ section.id }}" class="selling-plan-picker" data-section="{{ section.id }}" {{ block.shopify_attributes }}>
+    <div class="selling-plan-picker__container">
+      {%- comment -%} Subscribe & Save Option {%- endcomment -%}
+      <div 
+        role="button" 
+        class="selling-plan-option selling-plan-option--subscription {{ subscription_selected }}"
+        data-selling-plan-id="{{ selling_plan_allocation.selling_plan.id }}"
+        data-price="{{ selling_plan_allocation.price }}"
+        data-compare-price="{{ current_variant.compare_at_price | default: current_variant.price }}"
+      >
+        <div class="selling-plan-option__check-wrapper">
+          <img 
+            alt="" 
+            loading="lazy" 
+            width="15" 
+            height="15" 
+            decoding="async" 
+            class="selling-plan-option__check" 
+            src="{{ 'black-tick.svg' | asset_url }}"
+          >
+        </div>
+        <div class="selling-plan-option__content">
+          <div class="selling-plan-option__header">
+            <p class="selling-plan-option__title">Subscribe & Save</p>
+            <p class="packaging-size">500ml per pouch</p>
+            {%- if block.settings.subscription_benefits != blank -%}
+              <ul class="selling-plan-option__benefits">
+               
+                {%- assign benefits = block.settings.subscription_benefits | split: ',' -%}
+                {%- for benefit in benefits -%}
+                  <li>{{ benefit | strip }}</li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </div>
+          <div class="selling-plan-option__price-container">
+            <del class="selling-plan-option__compare-price">
+              {{ current_variant.compare_at_price | default: current_variant.price | money }}
+            </del>
+            <span class="selling-plan-option__price">
+              {{ selling_plan_allocation.price | money }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {%- comment -%} One Time Purchase Option {%- endcomment -%}
+      <div 
+        role="button" 
+        class="selling-plan-option selling-plan-option--onetime {{ onetime_selected }}"
+        data-selling-plan-id=""
+        data-price="{{ current_variant.price }}"
+        data-compare-price="{{ current_variant.compare_at_price }}"
+      >
+        <div class="selling-plan-option__check-wrapper">
+          <img 
+            alt="" 
+            loading="lazy" 
+            width="15" 
+            height="15" 
+            decoding="async" 
+            class="selling-plan-option__check" 
+            src="{{ 'black-tick.svg' | asset_url }}"
+          >
+        </div>
+        <div class="selling-plan-option__content">
+          <p class="selling-plan-option__title">One Time Purchase</p>
+          <p class="packaging-size">250ml per bottle</p>
+          <div class="selling-plan-option__price-container">
+            {%- if current_variant.compare_at_price > current_variant.price -%}
+              <del class="selling-plan-option__compare-price">
+                {{ current_variant.compare_at_price | money }}
+              </del>
+            {%- endif -%}
+            <span class="selling-plan-option__price">
+              {{ current_variant.price | money }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {%- comment -%} Hidden input for selling plan {%- endcomment -%}
+    <input 
+      type="hidden" 
+      name="selling_plan" 
+      value="{% if is_one_time_product %}{% else %}{{ selling_plan_allocation.selling_plan.id }}{% endif %}"
+      form="{{ product_form_id }}"
+      class="selling-plan-input"
+    >
+  </div>
+  <script src="{{ 'component-selling-plan-picker.js' | asset_url }}" defer></script>
+{%- endif -%}

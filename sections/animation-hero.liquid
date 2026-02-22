@@ -1,0 +1,480 @@
+{%- style -%}
+  /* ── Outer clip window: exactly one viewport tall ───────────────────── */
+  .animation-hero-{{ section.id }} {
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    margin-top: -110px;
+  }
+
+  /* ── The full section body: 200vh, gradient red (top) → black (bottom) ─
+     Hero lives on the red half, Polyphenols on the black half.
+     When this slides up 100vh the black half enters the viewport.        */
+  .animation-hero-{{ section.id }} .animation-hero__track {
+    height: 300vh;
+    width: 100%;
+    background-color: #0a0a0a;
+    background-image:
+      radial-gradient(ellipse 80% 25% at 50% 14%, #81091b 0%, #690212 25%, #560410 55%, rgb(99 4 17 / 41%) 85%, transparent 100%);
+    will-change: transform;
+    position: relative;
+  }
+
+  /* ── Hero panel: top 100vh of the track (sits on the red area) ───────── */
+  .animation-hero-{{ section.id }} .animation-hero__hero {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* ── Polyphenols panel: bottom 100vh of the track (sits on black area) ── */
+  .animation-hero-{{ section.id }} .animation-hero__polyphenols {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  @media (min-width: 990px) {
+    .animation-hero-{{ section.id }} .animation-hero__polyphenols {
+      grid-template-columns: 66.6% 33%;
+      gap: 1rem;
+    }
+  }
+
+  /* ── Linear fade at the bottom of the hero image ───────────────────── */
+  .animation-hero-{{ section.id }} .hero-bg-linear {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(0,0,0,0)    0%,
+      rgba(0,0,0,0.15) 35%,
+      rgba(0,0,0,0.6)  55%,
+      #000000          70%,
+      #000000          100%
+    );
+    pointer-events: none;
+  }
+
+  /* ── Responsive title ───────────────────────────────────────────────── */
+  @media screen and (max-width: 991px) {
+    .animation-hero-{{ section.id }} .animation-hero__title { font-size: 82px; }
+  }
+  @media screen and (max-width: 500px) {
+    .animation-hero-{{ section.id }} .animation-hero__title { font-size: 46px; }
+  }
+  @media screen and (max-width: 749px) {
+    .animation-hero-{{ section.id }} .animation-hero__banner {
+      max-width: 100%;
+    }
+  }
+
+  /* ── Word-split helpers ─────────────────────────────────────────────── */
+  .anim-word-wrap {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+  }
+  .anim-word {
+    display: inline-block;
+    will-change: transform, opacity;
+  }
+{%- endstyle -%}
+
+<section
+  class="animation-hero animation-hero-{{ section.id }}"
+  id="AnimationHero-{{ section.id }}"
+  data-section-id="{{ section.id }}"
+>
+  <!-- The sliding track: full 200vh, one gradient, both blocks inside -->
+  <div class="animation-hero__track">
+    <!-- PART 1 · Hero (red top half) -->
+    <div class="animation-hero__hero page-width">
+      <div class="hero-bg-linear" aria-hidden="true"></div>
+
+      <div class="animation-hero__hero-content">
+        {%- if section.settings.hero_heading != blank -%}
+          <h1 class="animation-hero__title">{{ section.settings.hero_heading }}</h1>
+        {%- endif -%}
+        {%- if section.settings.hero_button_text != blank -%}
+          <a
+            href="{{ section.settings.hero_button_link | default: '#' }}"
+            class="animation-hero__btn animation-hero__btn--outline animation-hero__hero-cta"
+          >
+            {{ section.settings.hero_button_text }}
+          </a>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.hero_banner_image != blank or section.settings.hero_banner_image_mobile != blank -%}
+        <div class="animation-hero__banner">
+          <div class="animation-hero__banner-img-wrap">
+            {%- assign mobile_img = section.settings.hero_banner_image_mobile -%}
+            {%- assign desktop_img = section.settings.hero_banner_image -%}
+            {%- if mobile_img != blank and desktop_img != blank -%}
+              <picture>
+                <source media="(max-width: 749px)" srcset="{{ mobile_img | image_url: width: 800 }}">
+                <img
+                  src="{{ desktop_img | image_url: width: 1200 }}"
+                  alt="{{ desktop_img.alt | default: 'Hero banner' }}"
+                  class="animation-hero__banner-img"
+                  loading="lazy"
+                  width="{{ desktop_img.width }}"
+                  height="{{ desktop_img.height }}"
+                >
+              </picture>
+            {%- elsif mobile_img != blank -%}
+              {{
+                mobile_img
+                | image_url: width: 800
+                | image_tag: loading: 'lazy', class: 'animation-hero__banner-img', alt: mobile_img.alt | default: 'Hero banner'
+              }}
+            {%- else -%}
+              {{
+                desktop_img
+                | image_url: width: 1200
+                | image_tag: loading: 'lazy', class: 'animation-hero__banner-img', alt: desktop_img.alt | default: 'Hero banner'
+              }}
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <!-- PART 2 · Polyphenols (black bottom half) -->
+    <div class="animation-hero__polyphenols page-width">
+      <div class="animation-hero__polyphenols-content">
+        {%- if section.settings.polyphenols_heading != blank -%}
+          <h2 class="animation-hero__polyphenols-title">{{ section.settings.polyphenols_heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.polyphenols_text != blank -%}
+          <div class="animation-hero__polyphenols-text rte">
+            {{ section.settings.polyphenols_text }}
+          </div>
+        {%- endif -%}
+        {%- if section.settings.polyphenols_button_text != blank -%}
+          <a
+            href="{{ section.settings.polyphenols_button_link | default: '#' }}"
+            class="animation-hero__btn animation-hero__btn--outline"
+          >
+            {{ section.settings.polyphenols_button_text }}
+          </a>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.polyphenols_image != blank -%}
+        <div class="animation-hero__polyphenols-media">
+          {{
+            section.settings.polyphenols_image
+            | image_url: width: 600
+            | image_tag:
+              loading: 'lazy',
+              class: 'animation-hero__polyphenols-img',
+              alt: section.settings.polyphenols_image.alt
+            | default: 'Polyphenols'
+          }}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+  <!-- /.animation-hero__track -->
+</section>
+
+<style>
+  .animation-hero {
+    color: #fff;
+  }
+  .animation-hero__hero-content {
+    position: relative;
+    z-index: 2;
+  }
+  .animation-hero__title {
+    margin: 0 0 1.5rem;
+    font-size: 100px;
+    text-transform: uppercase;
+    line-height: 1.1;
+    color: white;
+  }
+
+  .animation-hero__btn {
+    display: inline-block;
+    padding: 0.75rem 1.75rem;
+    font-size: 17px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    color: #fff;
+    transition: opacity 0.2s;
+    will-change: transform, opacity;
+  }
+  .animation-hero__btn:hover {
+    opacity: 0.9;
+  }
+  .animation-hero__btn--outline {
+    border: 2px solid #fff;
+    border-radius: 9999px;
+  }
+  .animation-hero__banner {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    max-width: 80%;
+    margin: auto;
+  }
+  .animation-hero__banner-img-wrap {
+    width: 100%;
+    will-change: transform, opacity;
+  }
+  .animation-hero__banner-img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .animation-hero__polyphenols-title {
+    margin: 0 0 1rem;
+    font-size: 52px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: white;
+  }
+  @media (max-width: 550px) {
+    .animation-hero__polyphenols-title {
+      font-size: 32px !important;
+    }
+    .animation-hero__polyphenols-text {
+      font-size: 16px !important;
+    }
+  }
+  .animation-hero__polyphenols-text {
+    margin-bottom: 1.5rem;
+    font-size: 24px;
+    line-height: 1.6;
+  }
+  .animation-hero__polyphenols-text strong {
+    font-weight: 700;
+  }
+  .animation-hero__polyphenols-media {
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media (min-width: 990px) {
+    .animation-hero__polyphenols-media {
+      max-width: 320px;
+    }
+  }
+  .animation-hero__polyphenols-img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+</style>
+
+<script>
+  (function () {
+    function loadScript(src, cb) {
+      if (document.querySelector('script[src="' + src + '"]')) {
+        cb();
+        return;
+      }
+      var s = document.createElement('script');
+      s.src = src;
+      s.onload = cb;
+      document.head.appendChild(s);
+    }
+
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', function () {
+      loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js', function () {
+        init();
+      });
+    });
+
+    function init() {
+      if (typeof gsap === 'undefined') return;
+      gsap.registerPlugin(ScrollTrigger);
+
+      var section = document.getElementById('AnimationHero-{{ section.id }}');
+      if (!section) return;
+
+      var track = section.querySelector('.animation-hero__track');
+      var heroTitle = section.querySelector('.animation-hero__title');
+      var heroCta = section.querySelector('.animation-hero__hero-cta');
+      var bannerWrap = section.querySelector('.animation-hero__banner-img-wrap');
+      var header = document.querySelector(
+        'sticky-header, .header-wrapper, #shopify-section-header, .site-header, header.header'
+      );
+
+      /* Split title words, reversed so last word animates out first */
+      var wordEls = [];
+      if (heroTitle) {
+        var words = heroTitle.innerText.trim().split(/\s+/);
+        heroTitle.innerHTML = words
+          .map(function (w) {
+            return '<span class="anim-word-wrap"><span class="anim-word">' + w + '</span></span>';
+          })
+          .join(' ');
+        wordEls = Array.from(section.querySelectorAll('.anim-word')).reverse();
+      }
+
+      /*
+      Pin the section (100vh clip window) for 3× scroll distance.
+      t 0 → 1  : hero content exits
+      t 1 → 2  : track slides UP 100vh — the section's own black bottom half
+                 enters the viewport naturally, polyphenols content visible
+      t 2 → 3  : polyphenols pinned (hold)
+    */
+      var tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: '+=100%',
+          pin: true,
+          scrub: 1.2,
+          anticipatePin: 1,
+          snap: {
+            snapTo: (progress) => {
+              return progress < 0.3 ? 0 : 1; // below 50% go back, above go next
+            },
+            duration: 3,
+            ease: 'power2.inOut',
+          },
+        },
+      });
+
+      /* Phase 1 — hero content exits */
+      if (wordEls.length) {
+        tl.to(
+          wordEls,
+          {
+            y: 160,
+            opacity: 0,
+            stagger: 0.07,
+            ease: 'power3.in',
+            duration: 0.9,
+          },
+          0
+        );
+      }
+      if (heroCta) {
+        tl.to(heroCta, { y: 80, opacity: 0, ease: 'power2.in', duration: 0.6 }, 0);
+      }
+      if (bannerWrap) {
+        tl.to(bannerWrap, { scale: 2.55, opacity: 0, ease: 'power2.inOut', duration: 1.0 }, 0);
+      }
+      if (header) {
+        tl.to(header, { yPercent: -120, ease: 'power2.in', duration: 0.5 }, 0.5);
+      }
+
+      /* Phase 2 — the entire track (section body) slides UP one viewport.
+       The black bottom half of the section's own gradient enters the view.
+       No background swap, no overlay — just the section revealing itself. */
+      tl.to(
+        track,
+        {
+          y: '-100vh',
+          ease: 'power3.inOut',
+          duration: 1.0,
+        },
+        1.0
+      );
+
+      // hold slide 2 pinned
+      tl.to({}, { duration: 1 });
+
+      /* Header comes back down as polyphenols arrives */
+      if (header) {
+        tl.to(header, { yPercent: 0, ease: 'power2.out', duration: 0.8 }, 1.4);
+      }
+
+      /* Cleanup */
+      if (header) {
+        ScrollTrigger.create({
+          trigger: section,
+          start: 'top top',
+          end: '+=300%',
+          onLeave: function () {
+            gsap.set(header, { clearProps: 'all' });
+          },
+        });
+      }
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Animation hero",
+  "tag": "section",
+  "class": "section-animation-hero",
+  "settings": [
+    { "type": "header", "content": "Hero area" },
+    { "type": "text", "id": "hero_heading", "label": "Hero heading", "default": "Health in every drop" },
+    { "type": "text", "id": "hero_button_text", "label": "Hero button text", "default": "Try baseline" },
+    { "type": "url", "id": "hero_button_link", "label": "Hero button link" },
+    { "type": "header", "content": "Hero banner image" },
+    { "type": "image_picker", "id": "hero_banner_image", "label": "Banner image (desktop)" },
+    { "type": "image_picker", "id": "hero_banner_image_mobile", "label": "Banner image (mobile)" },
+    { "type": "header", "content": "Powered by Polyphenols" },
+    {
+      "type": "text",
+      "id": "polyphenols_heading",
+      "label": "Polyphenols heading",
+      "default": "Powered by polyphenols"
+    },
+    {
+      "type": "richtext",
+      "id": "polyphenols_text",
+      "label": "Polyphenols text",
+      "default": "<p>Polyphenols are <strong>potent antioxidants</strong> that help protect your body from <strong>free radicals</strong> and <strong>oxidative stress</strong>.</p>"
+    },
+    {
+      "type": "text",
+      "id": "polyphenols_button_text",
+      "label": "Polyphenols button text",
+      "default": "Take the 3-minute polyphenol journey"
+    },
+    { "type": "url", "id": "polyphenols_button_link", "label": "Polyphenols button link" },
+    { "type": "image_picker", "id": "polyphenols_image", "label": "Polyphenols graphic (e.g. droplet / GIF)" },
+    { "type": "header", "content": "Section padding" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 300,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "presets": [{ "name": "Animation hero" }]
+}
+{% endschema %}

@@ -27,6 +27,18 @@
       },
       {
         "type": "image_picker",
+        "id": "alternate_logo",
+        "label": "Alternate logo"
+      },
+      {
+        "type": "text",
+        "id": "alternate_logo_templates",
+        "label": "Use alternate logo on templates",
+        "info": "Comma-separated template names. e.g. index, product, page.about, page.contact",
+        "placeholder": "index, product"
+      },
+      {
+        "type": "image_picker",
         "id": "favicon",
         "label": "t:settings_schema.logo.settings.favicon.label",
         "info": "t:settings_schema.logo.settings.favicon.info"
@@ -124,16 +136,7 @@
         "label": "t:settings_schema.typography.settings.heading_scale.label",
         "default": 100
       },
-      {
-        "type": "header",
-        "content": "t:settings_schema.typography.settings.header__2.content"
-      },
-      {
-        "type": "font_picker",
-        "id": "type_body_font",
-        "default": "assistant_n4",
-        "label": "t:settings_schema.typography.settings.type_body_font.label"
-      },
+     
       {
         "type": "range",
         "id": "body_scale",
@@ -154,7 +157,7 @@
         "id": "page_width",
         "min": 1000,
         "max": 1600,
-        "step": 100,
+        "step": 20,
         "default": 1200,
         "unit": "px",
         "label": "t:settings_schema.layout.settings.page_width.label"

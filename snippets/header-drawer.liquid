@@ -1,9 +1,24 @@
 {% comment %}
   Renders a header drawer menu for mobile and desktop.
-
+  Button from section settings (mobile_menu_button_label + mobile_menu_button_link).
+  Links from main menu (link list).
   Usage:
   {% render 'header-drawer' %}
 {% endcomment %}
+
+{%- liquid
+  assign mobile_menu_links = section.settings.menu
+
+  assign template_full = request.page_type
+  if template.suffix != blank
+    assign template_full = request.page_type | append: '.' | append: template.suffix
+  endif
+  if settings.alternate_logo_templates contains template_full and settings.alternate_logo != blank
+    assign current_logo = settings.alternate_logo
+  else
+    assign current_logo = settings.logo
+  endif
+-%}
 
 <header-drawer data-breakpoint="{% if section.settings.menu_type_desktop == 'drawer' %}desktop{% else %}tablet{% endif %}">
   <details id="Details-menu-drawer-container" class="menu-drawer-container">
@@ -16,12 +31,27 @@
         {{- 'icon-close.svg' | inline_asset_content -}}
       </span>
     </summary>
-    <div id="menu-drawer" class="gradient menu-drawer motion-reduce color-{{ section.settings.menu_color_scheme }}">
+    <div id="menu-drawer" class="gradient menu-drawer menu-drawer--baseline motion-reduce color-{{ menu_color_scheme | default: section.settings.menu_color_scheme }}">
+      <button type="button" class="menu-drawer__close-drawer link focus-inset" aria-label="{{ 'general.accessibility.close' | t }}">
+        <span class="svg-wrapper">{{ 'icon-close.svg' | inline_asset_content }}</span>
+      </button>
       <div class="menu-drawer__inner-container">
         <div class="menu-drawer__navigation-container">
           <nav class="menu-drawer__navigation">
+            <div class="menu-drawer__brand">
+              <a href="{{ routes.root_url }}" class="menu-drawer__logo-link link focus-inset">
+                {%- if current_logo != blank -%}
+                  {%- assign logo_alt = current_logo.alt | default: shop.name | escape -%}
+                  {%- assign logo_height = settings.logo_width | divided_by: current_logo.aspect_ratio -%}
+                  {{ current_logo | image_url: width: 300 | image_tag: class: 'menu-drawer__logo', alt: logo_alt, height: logo_height, width: settings.logo_width, loading: 'lazy' }}
+                {%- else -%}
+                  <span class="menu-drawer__logo-text h2">{{ shop.name }}</span>
+                {%- endif -%}
+              </a>
+            </div>
+            {%- if mobile_menu_links != blank -%}
             <ul class="menu-drawer__menu has-submenu list-menu" role="list">
-              {%- for link in section.settings.menu.links -%}
+              {%- for link in mobile_menu_links.links -%}
                 <li>
                   {%- if link.links != blank -%}
                     <details id="Details-menu-drawer-menu-item-{{ forloop.index }}">
@@ -134,6 +164,17 @@
                 </li>
               {%- endfor -%}
             </ul>
+            {%- endif -%}
+            {%- if section.settings.mobile_menu_button_label != blank and section.settings.mobile_menu_button_link != blank -%}
+              <div class="menu-drawer__cta">
+                <a
+                  href="{{ section.settings.mobile_menu_button_link }}"
+                  class="menu-drawer__cta-button button button--full-width"
+                >
+                  {{ section.settings.mobile_menu_button_label | escape }}
+                </a>
+              </div>
+            {%- endif -%}
           </nav>
           <div class="menu-drawer__utility-links">
             {%- if shop.customer_accounts_enabled -%}

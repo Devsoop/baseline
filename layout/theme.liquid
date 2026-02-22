@@ -27,7 +27,9 @@
     {% endif %}
 
     {% render 'meta-tags' %}
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Manrope:wght@200..800&display=swap" rel="stylesheet">
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
@@ -98,9 +100,12 @@
         color: rgba(var(--color-foreground), 0.75);
         background-color: rgb(var(--color-background));
       }
-
+     
       :root {
-        --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+
+        --font-body-family: 'IvyEpic', {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+
+        
         --font-body-style: {{ settings.type_body_font.style }};
         --font-body-weight: {{ settings.type_body_font.weight }};
         --font-body-weight-bold: {{ settings.type_body_font.weight | plus: 300 | at_most: 1000 }};
@@ -220,6 +225,47 @@
         --variant-pills-shadow-horizontal-offset: {{ settings.variant_pills_shadow_horizontal_offset }}px;
         --variant-pills-shadow-vertical-offset: {{ settings.variant_pills_shadow_vertical_offset }}px;
         --variant-pills-shadow-blur-radius: {{ settings.variant_pills_shadow_blur }}px;
+
+        /*Override Font*/
+        --font-heading-family: 'IBM Plex Sans';
+        --font-body-family: "IvyEpic";
+        /* --font-body-family--alt: 'BioSans'; */
+      }
+      @font-face{
+        font-family: "IBM Plex Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: <weight>;
+        font-style: normal;
+        font-variation-settings:
+          "wdth" 100;
+      }
+      @font-face {
+        font-display: swap;
+        font-family: 'IvyEpic';
+        src: url('{{ 'IvyEpic.otf' | asset_url }}') format('opentype');
+        font-weight: 300;
+        font-style: normal;
+      }
+      @font-face {
+        font-display: swap;
+        font-family: 'IvyEpic';
+        src: url('{{ 'IvyEpic_Light.otf' | asset_url }}') format('opentype');
+        font-weight: 400;
+        font-style: normal;
+      }
+      @font-face {
+        font-display: swap;
+        font-family: 'IvyEpic';
+        src: url('{{ 'IvyEpic_Regular.otf' | asset_url }}') format('opentype');
+        font-weight:500;
+        font-style: normal;
+      }
+      @font-face {
+        font-display: swap;
+        font-family: 'IvyEpic';
+        src: url('{{ 'IvyEpic_Medium.otf' | asset_url }}') format('opentype');
+        font-weight: 600;
+        font-style: normal;
       }
 
       *,

@@ -1,7 +1,17 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "main-page",
+      "disabled": true,
       "settings": {
         "padding_top": 36,
         "padding_bottom": 36
@@ -9,12 +19,27 @@
     },
     "form": {
       "type": "contact-form",
+      "custom_css": [
+        ".gradient {padding-top: 100px;}",
+        " {margin-top: -100px;}",
+        "form#ContactForm {background: white; padding: 60px;}",
+        ".contact__button {margin-top: 4rem; justify-content: end; display: flex;}",
+        ".contact__subheading,.title {color: white; text-align: center; max-width: 560px; margin: auto;}",
+        ".contact__subheading {margin-bottom: 30px;}"
+      ],
       "settings": {
-        "heading": "",
+        "heading": "Let’s Connect",
         "heading_size": "h1",
-        "color_scheme": "scheme-1",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "subheading": "We're happy to answer questions or help you with returns. Please fill out the form if you need assistance.",
+        "color_scheme": "scheme-5",
+        "show_company_info": true,
+        "or_text": "OR",
+        "trading_name": "ZEYT GLOBAL LIMITED",
+        "company_number": "15795980",
+        "contact_email": "hello@usebaseline.co",
+        "contact_address": "3rd Floor 86-90 Paul Street,\nLondon, England\nUnited Kingdom, EC2A 4NE",
+        "padding_top": 100,
+        "padding_bottom": 100
       }
     }
   },
