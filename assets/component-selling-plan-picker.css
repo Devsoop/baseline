@@ -22,6 +22,7 @@
 
 /* Selling Plan Option Base Styles */
 .selling-plan-option {
+  height:99px;
   position: relative;
   display: flex;
   align-items: flex-start;
