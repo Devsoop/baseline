@@ -179,7 +179,7 @@
 /* Price Container */
 .selling-plan-option__price-container {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   justify-content: start;
   gap: 1rem;
   align-items: start;
