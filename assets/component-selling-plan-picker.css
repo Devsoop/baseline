@@ -119,7 +119,7 @@
 /* Content Container */
 .selling-plan-option__content {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   gap: 0.8rem;
   flex: 1;
 }
