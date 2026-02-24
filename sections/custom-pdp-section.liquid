@@ -460,23 +460,9 @@
 
 
 
-    @media (min-width: 550px){
-      .desktop{
-        display:initial;
-      }
-      .mobile{
-        display:none;
-      }
-    }
-
 
     @media (max-width: 550px) {
-      .desktop{
-        display:none;
-      }
-      .mobile{
-        display:initial;
-      }
+      
       .benefit-learn-more{
         display:none;
       }
@@ -561,17 +547,16 @@
 {% endstyle %}
 
 <style>
-  .ritual-card-mobile{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-  }
-  .ritual-card-header-footer{
-    padding:20px;
-    gap:30px;
-  }
-  .ritual-card-title{
-    padding:0;
-  }
+  @media (min-width: 550px){
+      .desktop{
+        display:initial;
+      }
+      .mobile{
+        display:none;
+      }
+    }
+
+
 </style>
 
 <section class="daily-ritual-section">
