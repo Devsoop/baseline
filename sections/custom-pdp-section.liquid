@@ -580,8 +580,19 @@
       font-weight:400 !important;
     }
     .ritual-card-footer{
-      margin:0;
-      max-width:none;
+      margin:0 !important;
+      max-width:none !important;
+    }
+    .ritual-mobile-left{
+      display: flex !important;
+      padding: 20px !important;
+      gap: 30px !important;
+      flex-direction: column !important;
+    }
+    .ritual-mobile-right img{
+      width: 100% !important;
+      height: auto !important;
+      object-fit: contain !important;
     }
   }
 
@@ -628,25 +639,25 @@
             {% comment %} For Mobile {% endcomment %}
             <div class="ritual-card mob" {{ block.shopify_attributes }}>
               <div class="ritual-mobile-left">
-              <div class="ritual-card-header">
-                <h3 class="ritual-card-title">{{ block.settings.card_title }}</h3>
-                <p class="ritual-card-subtitle">{{ block.settings.card_subtitle }}</p>
-              </div>
-              {% if block.settings.card_footer %}
-                <div class="ritual-card-footer">{{ block.settings.card_footer }}</div>
-              {% endif %}
+                <div class="ritual-card-header">
+                  <h3 class="ritual-card-title">{{ block.settings.card_title }}</h3>
+                  <p class="ritual-card-subtitle">{{ block.settings.card_subtitle }}</p>
+                </div>
+                {% if block.settings.card_footer %}
+                  <div class="ritual-card-footer">{{ block.settings.card_footer }}</div>
+                {% endif %}
               </div>
               <div class="ritual-mobile-right">
-              {% if block.settings.card_image %}
-                <img
-                  src="{{ block.settings.card_image | img_url: '400x400' }}"
-                  alt="{{ block.settings.card_title }}"
-                  class="ritual-card-image"
-                  loading="lazy"
-                  width=""
-                  height=""
-                >
-              {% endif %}
+                {% if block.settings.card_image %}
+                  <img
+                    src="{{ block.settings.card_image | img_url: '400x400' }}"
+                    alt="{{ block.settings.card_title }}"
+                    class="ritual-card-image"
+                    loading="lazy"
+                    width=""
+                    height=""
+                  >
+                {% endif %}
               </div>
             </div>
             {% comment %} End For Mobile {% endcomment %}
