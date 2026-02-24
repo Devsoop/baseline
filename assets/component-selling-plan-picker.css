@@ -162,6 +162,10 @@
     flex-direction: column;
   }
 
+  selling-plan-option__content{
+    flex-direction:column;
+  }
+
 }
 
 .selling-plan-option__benefits li {
