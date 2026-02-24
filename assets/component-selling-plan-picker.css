@@ -180,9 +180,9 @@
 .selling-plan-option__price-container {
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: center;
   gap: 1rem;
-  align-items: start;
+  align-items: end;
   margin-left: auto;
 }
 
