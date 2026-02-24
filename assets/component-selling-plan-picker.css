@@ -188,7 +188,7 @@
 
 .selling-plan-option__compare-price {
   font-size: 1.8rem !important;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1;
   color: rgba(var(--color-foreground), 0.8);
   text-decoration: line-through;
