@@ -756,7 +756,7 @@
                         <div style="transform:translateY(-50px);" class="benefit-icon-wrapper ">
                           {% if block.settings.benefit_icon %}
                             <img
-                              src="{{ block.settings.benefit_icon | img_url: '150x150' }}"
+                              src="{{ block.settings.benefit_icon_back | img_url: '150x150' }}"
                               alt="{{ block.settings.benefit_title }}"
                               class="benefit-icon"
                               loading="lazy"
@@ -1268,7 +1268,7 @@
         {
           "type": "image_picker",
           "id": "benefit_icon",
-          "label": "Benefit Icon"
+          "label": "Benefit Icon (Front)"
         },
         {
           "type": "text",
@@ -1281,6 +1281,11 @@
           "id": "benefit_description",
           "label": "Description (Front)",
           "default": "Supports focus, clarity, and mental sharpness"
+        },
+        {
+          "type": "image_picker",
+          "id": "benefit_icon_back",
+          "label": "Benefit Icon (Back)"
         },
         {
           "type": "text",
