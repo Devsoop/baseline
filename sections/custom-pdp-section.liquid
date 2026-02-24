@@ -572,6 +572,30 @@
                 <div class="ritual-card-footer">{{ block.settings.card_footer }}</div>
               {% endif %}
             </div>
+            {% comment %}-------------------- For Mobile-------------------- {% endcomment %}
+             <div class="ritual-card" {{ block.shopify_attributes }}>
+              <div>
+              <div class="ritual-card-header">
+                <h3 class="ritual-card-title">{{ block.settings.card_title }}</h3>
+                <p class="ritual-card-subtitle">{{ block.settings.card_subtitle }}</p>
+              </div>
+              {% if block.settings.card_footer %}
+                <div class="ritual-card-footer">{{ block.settings.card_footer }}</div>
+              {% endif %}
+              </div>
+              {% if block.settings.card_image %}
+                <img
+                  src="{{ block.settings.card_image | img_url: '400x400' }}"
+                  alt="{{ block.settings.card_title }}"
+                  class="ritual-card-image"
+                  loading="lazy"
+                  width=""
+                  height=""
+                >
+              {% endif %}
+              
+            </div>
+            {% comment %}------------------------ End for Mobile --------------------- {% endcomment %}
           {% endif %}
         {% endfor %}
       </div>
