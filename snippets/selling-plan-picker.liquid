@@ -116,13 +116,13 @@
         <div style="height:60px; flex-direction:column;" class="selling-plan-option__content">
           <p class="selling-plan-option__title">One Time Purchase</p>
           <p class="packaging-size">250ml per bottle</p>
-          <div class="selling-plan-option__price-container">
+          <div style="margin-top:-10px;" class="selling-plan-option__price-container">
             {%- if current_variant.compare_at_price > current_variant.price -%}
               <del class="selling-plan-option__compare-price">
                 {{ current_variant.compare_at_price | money }}
               </del>
             {%- endif -%}
-            <span style="margin-top:-10px;" class="selling-plan-option__price">
+            <span  class="selling-plan-option__price">
               {{ current_variant.price | money }}
             </span>
           </div>
