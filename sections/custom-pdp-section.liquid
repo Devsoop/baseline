@@ -571,7 +571,6 @@
         {% for block in section.blocks %}
           {% if block.type == 'ritual_card' %}
             <div class="ritual-card" {{ block.shopify_attributes }}>
-              <div>
               <div class="ritual-card-header">
                 <h3 class="ritual-card-title">{{ block.settings.card_title }}</h3>
                 <p class="ritual-card-subtitle">{{ block.settings.card_subtitle }}</p>
@@ -586,7 +585,6 @@
                   height=""
                 >
               {% endif %}
-              </div>
               {% if block.settings.card_footer %}
                 <div class="ritual-card-footer">{{ block.settings.card_footer }}</div>
               {% endif %}
