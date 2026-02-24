@@ -525,7 +525,7 @@
       "name": "FAQ with Image",
       "settings": {
         "heading": "FAQ",
-        "background_image": "shopify://shop_images/4479c9b23e11ecb21c25d5f6fe471ba1f6baadd3.png",
+        "background_image": "shopify://shop_images/4479c9b23e11ecb21c25d5f6fe471ba1f6baadd3_21bd884b-6d59-4513-8b9c-f40b12ce7f3b.png",
         "heading_color": "#ffffff",
         "accordion_mode": "single",
         "open_first": true,
