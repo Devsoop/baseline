@@ -457,6 +457,9 @@
         min-width: 260px;
       }
     }
+
+
+
     @media (min-width: 550px){
       .desktop{
         display:initial;
@@ -465,6 +468,7 @@
         display:none;
       }
     }
+
 
     @media (max-width: 550px) {
       .desktop{
@@ -556,6 +560,13 @@
     }
 {% endstyle %}
 
+<style>
+  .ritual-card-mobile{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+  }
+</style>
+
 <section class="daily-ritual-section">
   <div class="daily-ritual-container">
     <!-- Part 1: Daily Ritual -->
@@ -587,7 +598,7 @@
               {% endif %}
             </div>
             {% comment %}-------------------- For Mobile-------------------- {% endcomment %}
-            <div class="ritual-card mobile" {{ block.shopify_attributes }}>
+            <div class="ritual-card-mobile mobile" {{ block.shopify_attributes }}>
               <div>
                 <div class="ritual-card-header">
                   <h3 class="ritual-card-title">{{ block.settings.card_title }}</h3>
