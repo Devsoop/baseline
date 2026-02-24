@@ -22,7 +22,6 @@
 
 /* Selling Plan Option Base Styles */
 .selling-plan-option {
-  height:99px;
   position: relative;
   display: flex;
   align-items: flex-start;
@@ -122,9 +121,6 @@
   /* flex-direction: column; */
   gap: 0.8rem;
   flex: 1;
-}
-.selling-plan-option__content:first-of-type {
-  flex-direction:column;
 }
 
 /* Title and Benefits Container */
