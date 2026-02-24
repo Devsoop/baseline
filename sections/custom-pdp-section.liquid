@@ -559,6 +559,26 @@
     }
 {% endstyle %}
 
+<style>
+  @media (max-width: 480px){
+    .mob{
+      display:grid;
+    }
+    .desk{
+      display:none;
+    }
+  }
+
+  @media (min-width: 480px){
+    .mob{
+      display:none;
+    }
+    .desk{
+      display:block;
+    }
+  }
+</style>
+
 <section class="daily-ritual-section">
   <div class="daily-ritual-container">
     <!-- Part 1: Daily Ritual -->
