@@ -613,6 +613,8 @@
 </style>
 {% comment %} ------CSS for Ritual Card Mobile Layout (End) {% endcomment %}
 
+
+
 <section class="daily-ritual-section">
   <div class="daily-ritual-container">
     <!-- Part 1: Daily Ritual -->
@@ -643,7 +645,7 @@
                 <div class="ritual-card-footer">{{ block.settings.card_footer }}</div>
               {% endif %}
             </div>
-            {% comment %} For Mobile {% endcomment %}
+            {% comment %}------------------------ For Mobile (Hidden In Devices > 450px)----------------------------- {% endcomment %}
             <div class="ritual-card mob" {{ block.shopify_attributes }}>
               <div class="ritual-mobile-left">
                 <div class="ritual-card-header">
