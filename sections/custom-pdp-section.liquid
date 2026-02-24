@@ -462,7 +462,7 @@
 
 
     @media (max-width: 550px) {
-      
+
       .benefit-learn-more{
         display:none;
       }
@@ -555,8 +555,17 @@
         display:none;
       }
     }
+  @media (max-width: 550px){
+    .desktop{
+        display:none;
+      }
+      .mobile{
 
+        display:grid;
+        grip-template-columns:auto(2fr,1fr)
+      }
 
+  }
 </style>
 
 <section class="daily-ritual-section">
@@ -590,7 +599,7 @@
               {% endif %}
             </div>
             {% comment %}-------------------- For Mobile-------------------- {% endcomment %}
-            <div class="ritual-card ritual-card-mobile mobile" {{ block.shopify_attributes }}>
+            <div class="ritual-card mobile" {{ block.shopify_attributes }}>
               <div class="ritual-card-header-footer">
                 <div class="ritual-card-header">
                   <h3 class="ritual-card-title">{{ block.settings.card_title }}</h3>
