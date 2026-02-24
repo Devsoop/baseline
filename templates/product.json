@@ -179,7 +179,7 @@
             "show_buttons": true,
             "button_1_text": "MORNING",
             "button_1_icon": true,
-            "button_1_active": true,
+            "button_1_active": false,
             "button_2_text": "WITH MEALS",
             "button_2_icon": true,
             "button_2_active": true,
