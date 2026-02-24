@@ -129,7 +129,7 @@
 .selling-plan-option__header {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 1.2rem;
 }
 
 .selling-plan-option__title {
