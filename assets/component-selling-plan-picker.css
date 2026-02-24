@@ -201,7 +201,7 @@
 }
 
 .selling-plan-option__price {
-  font-size: 2.4rem;
+  font-size: 2.4rem !important;
   font-weight: 700;
   line-height: 1;
 }
