@@ -198,10 +198,10 @@
     }
 
     .info-button:hover {
-      
+
       transform: translateY(-2px);
     }
-    
+
 
     .info-button.active {
       background: {{ section.settings.button_active_background }};
@@ -255,7 +255,7 @@
       letter-spacing: 1px;
       color: {{ section.settings.heading_color }};
       margin: 0 auto 15px auto;
-      
+
       text-transform: uppercase;
       /* padding: 0px 140px; */
     }
@@ -298,7 +298,7 @@
     }
 
     .benefit-card {
-      min-width: 280px; 
+      min-width: 280px;
       max-width: 305px;
       height: 400px;
       perspective: 1000px;
@@ -373,9 +373,9 @@
       align-items: center;
       justify-content: start;
       {% comment %} margin: 30px 0; {% endcomment %}
-      
+
     }
-    
+
 
     .benefit-icon {
       width: 100px;
@@ -531,7 +531,7 @@
       /* .ritual-card-header {
         padding: 15px;
       } */
-      
+
 
       /* .ritual-card-image {
         height: 150px;
@@ -544,7 +544,7 @@
 
       .benefit-card {
         min-width: 260px;
-        height: 300px; 
+        height: 300px;
       }
 
       .benefit-card-front,
@@ -570,7 +570,7 @@
       <div class="ritual-grid page-width">
         {% for block in section.blocks %}
           {% if block.type == 'ritual_card' %}
-            <div class="ritual-card" {{ block.shopify_attributes }}>
+            <div class="ritual-card desk" {{ block.shopify_attributes }}>
               <div class="ritual-card-header">
                 <h3 class="ritual-card-title">{{ block.settings.card_title }}</h3>
                 <p class="ritual-card-subtitle">{{ block.settings.card_subtitle }}</p>
@@ -589,7 +589,31 @@
                 <div class="ritual-card-footer">{{ block.settings.card_footer }}</div>
               {% endif %}
             </div>
-            
+            {% comment %} For Mobile {% endcomment %}
+            <div class="ritual-card mob" {{ block.shopify_attributes }}>
+              <div class="ritual-mobile-left">
+              <div class="ritual-card-header">
+                <h3 class="ritual-card-title">{{ block.settings.card_title }}</h3>
+                <p class="ritual-card-subtitle">{{ block.settings.card_subtitle }}</p>
+              </div>
+              {% if block.settings.card_footer %}
+                <div class="ritual-card-footer">{{ block.settings.card_footer }}</div>
+              {% endif %}
+              </div>
+              <div class="ritual-mobile-right">
+              {% if block.settings.card_image %}
+                <img
+                  src="{{ block.settings.card_image | img_url: '400x400' }}"
+                  alt="{{ block.settings.card_title }}"
+                  class="ritual-card-image"
+                  loading="lazy"
+                  width=""
+                  height=""
+                >
+              {% endif %}
+              </div>
+            </div>
+            {% comment %} End For Mobile {% endcomment %}
           {% endif %}
         {% endfor %}
       </div>
@@ -986,7 +1010,7 @@
       "label": "Button Border Color",
       "default": "#FFFFFF"
     },
-  
+
     {
       "type": "color",
       "id": "button_active_background",
