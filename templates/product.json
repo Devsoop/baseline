@@ -239,6 +239,7 @@
             "benefit_icon": "shopify://shop_images/e482962fc65deb2274d79c83fcf3b6b335925089_2.png",
             "benefit_title": "Immunity",
             "benefit_description": "Supports your body’s\nnatural immune response",
+            "benefit_icon_back": "shopify://shop_images/virus_no_bg.png",
             "benefit_back_title": "Immune Support",
             "benefit_back_description": "Improves cholesterol, supports circulation, and lowers heart disease risk.",
             "benifit_card_button_text": "Learn More",
