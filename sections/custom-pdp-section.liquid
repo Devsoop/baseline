@@ -565,6 +565,10 @@
     display:grid;
     grid-template-columns:repeat(2,1fr);
   }
+  .ritual-card-header-footer{
+    padding:20px;
+    gap:30px;
+  }
 </style>
 
 <section class="daily-ritual-section">
@@ -599,7 +603,7 @@
             </div>
             {% comment %}-------------------- For Mobile-------------------- {% endcomment %}
             <div class="ritual-card ritual-card-mobile mobile" {{ block.shopify_attributes }}>
-              <div>
+              <div class="ritual-card-header-footer">
                 <div class="ritual-card-header">
                   <h3 class="ritual-card-title">{{ block.settings.card_title }}</h3>
                   <p class="ritual-card-subtitle">{{ block.settings.card_subtitle }}</p>
