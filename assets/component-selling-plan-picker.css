@@ -118,8 +118,10 @@
 
 /* Content Container */
 .selling-plan-option__content {
-  display: flex;
-  flex-direction: column; 
+  /* display: flex; */
+  /* flex-direction: column;  */
+  display:grid;
+  grid-template-columns: 2fr 1fr;
   gap: 1.2rem;
   flex: 1;
   
