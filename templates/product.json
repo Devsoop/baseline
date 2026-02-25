@@ -182,7 +182,7 @@
             "button_1_active": true,
             "button_2_text": "WITH MEALS",
             "button_2_icon": true,
-            "button_2_active": false,
+            "button_2_active": true,
             "button_3_text": "AFTER EXERCISE",
             "button_3_icon": true,
             "button_3_active": false,
