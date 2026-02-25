@@ -17,6 +17,7 @@
         "hero_button_text": "Try baseline",
         "hero_button_link": "",
         "hero_banner_image": "shopify://shop_images/Hero_2.png",
+        "hero_banner_image_mobile": "shopify://shop_images/Hero_3.png",
         "polyphenols_heading": "Powered by polyphenols",
         "polyphenols_text": "<p><em><strong>Polyphenols</strong></em> are powerful plant compounds found naturally in olives. These micronutrients act as <em><strong>potent antioxidants</strong></em>, protecting your cells from damage caused by <em><strong>free radicals</strong></em> and <em><strong>oxidative stress</strong></em>. At baseline we craft high polyphenol olive oil that contains significantly more of these beneficial compounds than regular olive oil — <em><strong>making every drop a concentrated source of nature's protection.</strong></em></p>",
         "polyphenols_button_text": "Take the 3-minute polyphenol journey",
@@ -33,6 +34,7 @@
           "type": "card_tall",
           "settings": {
             "image": "shopify://shop_images/IMG_6350_1.png",
+            "image_mobile": "shopify://shop_images/IMG_6350_1_1.png",
             "title": "Small Batch. Single origin,\ncold extracted in small runs."
           }
         },
@@ -40,6 +42,7 @@
           "type": "card_fresh",
           "settings": {
             "image": "shopify://shop_images/image_17.png",
+            "image_mobile": "shopify://shop_images/Image_8.png",
             "copy": "Fresh. Sourced from the\nfinest single-origin farms\nacross the globe."
           }
         },
@@ -66,6 +69,7 @@
           "type": "card_cold",
           "settings": {
             "image": "shopify://shop_images/image_16.png",
+            "image_mobile": "shopify://shop_images/Image_9.png",
             "copy": "Cold Extracted.\nCold extraction to preserve polyphenols."
           }
         }
