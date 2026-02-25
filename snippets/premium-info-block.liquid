@@ -500,7 +500,7 @@
   })();
 </script>
 
-
+{% comment %} Script For Hiding and showing Free Gift Div with Variant Change  {% endcomment %}
 <script>
   window.variantFreeProduct_{{ block.id }} = {
     {% for variant in product.variants %}
@@ -517,6 +517,7 @@
     }
   })();
 </script>
+
 <script>
   document.addEventListener('change', function(e) {
   // Works with standard Shopify variant selectors and most themes
