@@ -285,6 +285,12 @@
 </style>
 
 <div class="premium-info-block-{{ block.id }}" {{ block.shopify_attributes }}>
+
+  {% assign variant = product.selected_or_first_available_variant %}
+  {% if variant.metafields.custom.free_product != blank %}
+  
+
+
   <div class="premium-offer-container-{{ block.id }}" data-offer-toggle>
     <div class="premium-offer-left-{{ block.id }}">
       <div class="premium-offer-text-{{ block.id }}">
@@ -317,6 +323,7 @@
       </div>
     </div>
   </div>
+  {% endif %}
 
   <div class="premium-product-visual-{{ block.id }}" data-product-visual>
     <div class="product-showcase-{{ block.id }}">
