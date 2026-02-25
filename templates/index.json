@@ -32,14 +32,14 @@
         "card_tall_EfBrRh": {
           "type": "card_tall",
           "settings": {
-            "image": "shopify://shop_images/IMG_6350_1.png",
+            "image": "shopify://shop_images/IMG_6350_1_1.png",
             "title": "Small Batch. Single origin,\ncold extracted in small runs."
           }
         },
         "card_fresh_7UEBNe": {
           "type": "card_fresh",
           "settings": {
-            "image": "shopify://shop_images/image_17.png",
+            "image": "shopify://shop_images/Image_8.png",
             "copy": "Fresh. Sourced from the\nfinest single-origin farms\nacross the globe."
           }
         },
