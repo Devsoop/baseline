@@ -285,13 +285,8 @@
 </style>
 
 <div class="premium-info-block-{{ block.id }}" {{ block.shopify_attributes }}>
-
-  {% assign variant = product.selected_or_first_available_variant %}
-  {% if variant.metafields.custom.free_product != blank %}
   
-
-
-  <div class="premium-offer-container-{{ block.id }}" data-offer-toggle>
+  {% comment %} <div class="premium-offer-container-{{ block.id }}" data-offer-toggle>
     <div class="premium-offer-left-{{ block.id }}">
       <div class="premium-offer-text-{{ block.id }}">
         <h3>{{ block.settings.offer_title }}</h3>
@@ -322,8 +317,46 @@
         <span class="toggle-icon">i</span>
       </div>
     </div>
+  </div> {% endcomment %}
+  {% assign variant = product.selected_or_first_available_variant %}
+
+<div 
+  class="premium-offer-container-{{ block.id }}" 
+  data-offer-toggle
+  data-block-id="{{ block.id }}"
+  style="display: none;"
+>
+  <div class="premium-offer-left-{{ block.id }}">
+    <div class="premium-offer-text-{{ block.id }}">
+      <h3>{{ block.settings.offer_title }}</h3>
+      {%- if block.settings.product_image != blank -%}
+        {%- assign img_url = block.settings.product_image | image_url: width: 400 -%}
+        <img
+          src="{{ img_url }}"
+          alt="{{ block.settings.product_image.alt | default: 'Premium Product' }}"
+          width="400"
+          height="400"
+          loading="lazy"
+          style="width:88px; height:88px;"
+          class="product_small_img"
+        >
+      {%- endif -%}
+    </div>
   </div>
-  {% endif %}
+  <div class="premium-offer-right-{{ block.id }}">
+    {%- if block.settings.show_original_price -%}
+      <div class="premium-price-{{ block.id }}">
+        <span class="original-price-{{ block.id }}">{{ block.settings.original_price }}</span>
+        <span class="free-price-{{ block.id }}">{{ block.settings.free_text }}</span>
+      </div>
+    {%- else -%}
+      <span class="free-price-{{ block.id }}">{{ block.settings.free_text }}</span>
+    {%- endif -%}
+    <div class="info-toggle-{{ block.id }}" data-info-toggle>
+      <span class="toggle-icon">i</span>
+    </div>
+  </div>
+</div>
 
   <div class="premium-product-visual-{{ block.id }}" data-product-visual>
     <div class="product-showcase-{{ block.id }}">
@@ -465,4 +498,46 @@
       });
     }
   })();
+</script>
+
+
+<script>
+  window.variantFreeProduct_{{ block.id }} = {
+    {% for variant in product.variants %}
+      "{{ variant.id }}": {{ variant.metafields.custom.free_product | json }},
+    {% endfor %}
+  };
+
+  // Show on initial load if the selected variant qualifies
+  (function() {
+    var selectedId = {{ product.selected_or_first_available_variant.id }};
+    var metafield = window.variantFreeProduct_{{ block.id }}[selectedId];
+    if (metafield !== null && metafield !== undefined && metafield !== "") {
+      document.querySelector('[data-block-id="{{ block.id }}"]').style.display = "";
+    }
+  })();
+</script>
+<script>
+  document.addEventListener('change', function(e) {
+  // Works with standard Shopify variant selectors and most themes
+  if (e.target.name === 'id' || e.target.classList.contains('product-form__input')) {
+    var variantId = e.target.value;
+    var metafield = window.variantFreeProduct_{{ block.id }}[variantId];
+    var container = document.querySelector('[data-block-id="{{ block.id }}"]');
+    if (metafield !== null && metafield !== undefined && metafield !== "") {
+      container.style.display = "";
+    } else {
+      container.style.display = "none";
+    }
+  }
+});
+
+// Also listen for the 'variant:changed' custom event fired by themes like Dawn
+document.addEventListener('variant:changed', function(e) {
+  var variantId = e.detail.variant ? e.detail.variant.id : null;
+  if (!variantId) return;
+  var metafield = window.variantFreeProduct_{{ block.id }}[variantId];
+  var container = document.querySelector('[data-block-id="{{ block.id }}"]');
+  container.style.display = (metafield !== null && metafield !== undefined && metafield !== "") ? "" : "none";
+});
 </script>
