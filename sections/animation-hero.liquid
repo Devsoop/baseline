@@ -68,18 +68,7 @@
     pointer-events: none;
   }
 
-  /* ── Responsive title ───────────────────────────────────────────────── */
-  @media screen and (max-width: 991px) {
-    .animation-hero-{{ section.id }} .animation-hero__title { font-size: 82px; }
-  }
-  @media screen and (max-width: 500px) {
-    .animation-hero-{{ section.id }} .animation-hero__title { font-size: 46px; }
-  }
-  @media screen and (max-width: 749px) {
-    .animation-hero-{{ section.id }} .animation-hero__banner {
-      max-width: 100%;
-    }
-  }
+
 
   /* ── Word-split helpers ─────────────────────────────────────────────── */
   .anim-word-wrap {
@@ -89,7 +78,12 @@
   }
   .anim-word {
     display: inline-block;
-    will-change: transform, opacity;
+    will-change: transform;
+  }
+  /* Invisible wall: clip at bottom of text so words fully disappear (no top edge showing). No extra padding = disappear sooner. */
+  .animation-hero-{{ section.id }} .animation-hero__title-clip {
+    overflow: hidden;
+    display: block;
   }
 {%- endstyle -%}
 
@@ -106,7 +100,9 @@
 
       <div class="animation-hero__hero-content">
         {%- if section.settings.hero_heading != blank -%}
-          <h1 class="animation-hero__title">{{ section.settings.hero_heading }}</h1>
+          <div class="animation-hero__title-clip" aria-hidden="true">
+            <h1 class="animation-hero__title">{{ section.settings.hero_heading }}</h1>
+          </div>
         {%- endif -%}
         {%- if section.settings.hero_button_text != blank -%}
           <a
@@ -212,12 +208,12 @@
 
   .animation-hero__btn {
     display: inline-block;
-    padding: 0.75rem 1.75rem;
+    padding: 0.75rem 40px;
     font-size: 18px;
     font-weight: 700;
     line-height:136%;
     text-transform: uppercase;
-    letter-spacing: 6%;
+    letter-spacing: 1.3px;
     text-decoration: none;
     color: #fff;
     transition: opacity 0.2s;
@@ -279,7 +275,9 @@
     margin-left: auto;
     margin-right: auto;
   }
+  .animation-hero__banner-img-wrap {margin-top: 100px;}
   @media (min-width: 990px) {
+    
     .animation-hero__polyphenols-media {
       max-width: 320px;
     }
@@ -288,6 +286,22 @@
     width: 100%;
     height: auto;
     display: block;
+  }
+    /* ── Responsive title ───────────────────────────────────────────────── */
+  @media screen and (max-width: 991px) {
+    .animation-hero__btn{
+      font-size: 14px;
+      text-align: center;
+    }
+    .animation-hero-{{ section.id }} .animation-hero__title { font-size: 82px; }
+  }
+  @media screen and (max-width: 500px) {
+    .animation-hero-{{ section.id }} .animation-hero__title { font-size: 46px; }
+  }
+  @media screen and (max-width: 749px) {
+    .animation-hero-{{ section.id }} .animation-hero__banner {
+      max-width: 100%;
+    }
   }
 </style>
 
@@ -310,12 +324,23 @@
       });
     });
 
+    function escapeHtml(text) {
+      var div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
     function init() {
       if (typeof gsap === 'undefined') return;
       gsap.registerPlugin(ScrollTrigger);
 
       var section = document.getElementById('AnimationHero-{{ section.id }}');
       if (!section) return;
+
+      /* Kill existing ScrollTriggers for this section (e.g. after theme editor re-render) */
+      ScrollTrigger.getAll().forEach(function (st) {
+        if (st.trigger && section.contains(st.trigger)) st.kill();
+      });
 
       var track = section.querySelector('.animation-hero__track');
       var heroTitle = section.querySelector('.animation-hero__title');
@@ -325,16 +350,17 @@
         'sticky-header, .header-wrapper, #shopify-section-header, .site-header, header.header'
       );
 
-      /* Split title words, reversed so last word animates out first */
+      /* Split title words, reversed so last word animates out first. Escape HTML so special chars don't break DOM. */
       var wordEls = [];
       if (heroTitle) {
-        var words = heroTitle.innerText.trim().split(/\s+/);
+        var rawText = heroTitle.innerText != null ? heroTitle.innerText : heroTitle.textContent || '';
+        var words = rawText.trim().split(/\s+/).filter(Boolean);
         heroTitle.innerHTML = words
           .map(function (w) {
-            return '<span class="anim-word-wrap"><span class="anim-word">' + w + '</span></span>';
+            return '<span class="anim-word-wrap"><span class="anim-word">' + escapeHtml(w) + '</span></span>';
           })
           .join(' ');
-        wordEls = Array.from(section.querySelectorAll('.anim-word')).reverse();
+        wordEls = Array.from(heroTitle.querySelectorAll('.anim-word')).reverse();
       }
 
       /*
@@ -348,9 +374,9 @@
         scrollTrigger: {
           trigger: section,
           start: 'top top',
-          end: '+=200%',
+          end: '+=400%',
           pin: true,
-          scrub: 1.2,
+          scrub: 2.2,
           anticipatePin: 1,
           snap: {
             snapTo: (progress) => {
@@ -362,14 +388,15 @@
         },
       });
 
-      /* Phase 1 — hero content exits */
+      /* Phase 1 — words move down one line-height so they fully pass the clip (wall at text bottom). fromTo so scroll-back restores y: 0. */
+      var wordPhaseDuration = wordEls.length ? 0.9 + (wordEls.length - 1) * 0.45 : 0;
       if (wordEls.length) {
-        tl.to(
+        tl.fromTo(
           wordEls,
+          { y: 0 },
           {
-            y: 80,
-            opacity: 0,
-            stagger: 0.07,
+            y: 100,
+            stagger: 0.45,
             ease: 'power3.in',
             duration: 0.9,
           },
@@ -377,7 +404,7 @@
         );
       }
       if (heroCta) {
-        tl.to(heroCta, { y: 80, opacity: 0, ease: 'power2.in', duration: 0.6 }, 0);
+        tl.to(heroCta, { filter: 'blur(10px)', opacity: 0, ease: 'power2.in', duration: 0.6 }, 0);
       }
       if (bannerWrap) {
         tl.to(bannerWrap, { scale: 2.55, opacity: 0, ease: 'power2.inOut', duration: 1.0 }, 0);
@@ -386,9 +413,7 @@
         tl.to(header, { yPercent: -120, ease: 'power2.in', duration: 0.5 }, 0.5);
       }
 
-      /* Phase 2 — the entire track (section body) slides UP one viewport.
-       The black bottom half of the section's own gradient enters the view.
-       No background swap, no overlay — just the section revealing itself. */
+      /* Phase 2 — track slides UP after all words have exited (start after word phase) */
       tl.to(
         track,
         {
@@ -396,28 +421,27 @@
           ease: 'power3.inOut',
           duration: 1.0,
         },
-        1.0
+        Math.max(1.0, wordPhaseDuration)
       );
 
       // hold slide 2 pinned
-      tl.to({}, { duration: 1 });
+      tl.to({}, { duration: 1 }, Math.max(1.0, wordPhaseDuration) + 1.0);
 
       /* Header comes back down as polyphenols arrives */
       if (header) {
-        tl.to(header, { yPercent: 0, ease: 'power2.out', duration: 0.8 }, 1.4);
+        tl.to(header, { yPercent: 0, ease: 'power2.out', duration: 0.8 }, Math.max(1.0, wordPhaseDuration) + 0.4);
       }
 
       /* Cleanup */
-      if (header) {
-        ScrollTrigger.create({
-          trigger: section,
-          start: 'top top',
-          end: '+=300%',
-          onLeave: function () {
-            gsap.set(header, { clearProps: 'all' });
-          },
-        });
-      }
+      ScrollTrigger.create({
+        trigger: section,
+        start: 'top top',
+        end: '+=500%',
+        onLeave: function () {
+          if (header) gsap.set(header, { clearProps: 'all' });
+          if (heroCta) gsap.set(heroCta, { clearProps: 'all' });
+        },
+      });
     }
   })();
 </script>

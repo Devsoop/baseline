@@ -36,15 +36,23 @@
     aspect-ratio: 413 / 940;
   }
 
-  #GridLayout-{{ section.id }} .grid-layout__tall-img {
+  #GridLayout-{{ section.id }} .grid-layout__tall-img-wrap {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 88%;
+    z-index: 1;
+  }
+  #GridLayout-{{ section.id }} .grid-layout__tall-img-wrap .grid-layout__tall-img,
+  #GridLayout-{{ section.id }} .grid-layout__tall-img-wrap img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
     object-position: center top;
-    z-index: 1;
   }
 
   #GridLayout-{{ section.id }} .grid-layout__tall-placeholder {
@@ -114,7 +122,8 @@
     background: #f6f7f6;
   }
 
-  #GridLayout-{{ section.id }} .grid-layout__card--fresh .grid-layout__card-img {
+  #GridLayout-{{ section.id }} .grid-layout__card--fresh .grid-layout__card-img,
+  #GridLayout-{{ section.id }} .grid-layout__card--fresh .grid-layout__card-img-wrap {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -125,6 +134,19 @@
     max-height: 70%;
     object-fit: contain;
     z-index: 1;
+  }
+  #GridLayout-{{ section.id }} .grid-layout__card--fresh .grid-layout__card-img-wrap {
+    width: 70%;
+    max-width: 290px;
+    max-height: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #GridLayout-{{ section.id }} .grid-layout__card--fresh .grid-layout__card-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
 
   #GridLayout-{{ section.id }} .grid-layout__card--fresh .grid-layout__card-placeholder {
@@ -338,6 +360,52 @@
     display: block;
   }
 
+  /* Mobile: square image areas */
+  @media (max-width: 768px) {
+  #GridLayout-{{ section.id }} .grid-layout__tall-img-wrap .grid-layout__tall-img,
+  #GridLayout-{{ section.id }} .grid-layout__tall-img-wrap img {
+    position: absolute;
+    top: -12px;
+  }
+  #GridLayout-{{ section.id }} .grid-layout__tall-img-wrap .grid-layout__tall-img img{
+    height: 85%;
+  }
+    #GridLayout-{{ section.id }} .grid-layout__tall .grid-layout__tall-img-wrap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 88%;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #GridLayout-{{ section.id }} .grid-layout__tall .grid-layout__tall-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      aspect-ratio: 1;
+    }
+    #GridLayout-{{ section.id }} .grid-layout__card--fresh .grid-layout__card-img-wrap {
+      width: 60%;
+      max-width: 200px;
+      aspect-ratio: 1;
+      max-height: none;
+    }
+    #GridLayout-{{ section.id }} .grid-layout__card--fresh .grid-layout__card-img-wrap img {
+      object-fit: cover;
+    }
+    #GridLayout-{{ section.id }} .grid-layout__card--cold .grid-layout__card-img-wrap {
+      aspect-ratio: 1;
+      width: 50%;
+      max-width: 200px;
+    }
+    #GridLayout-{{ section.id }} .grid-layout__card--cold .grid-layout__card-img-wrap img {
+      object-fit: cover;
+    }
+  }
+
   #GridLayout-{{ section.id }} .grid-layout__card--cold .grid-layout__card-placeholder {
     position: absolute;
     top: 44px;
@@ -465,6 +533,9 @@
       width: calc(100% - 32px);
       font-size: 12px;
     }
+    #GridLayout-{{ section.id }} .grid-layout__tall .grid-layout__tall-img-wrap img {
+      height: 85%;
+    }
     #GridLayout-{{ section.id }} .grid-layout__card--fresh .grid-layout__card-img {
       width: 70%;
       max-width: 180px;
@@ -519,18 +590,51 @@
     }
     #GridLayout-{{ section.id }} .grid-layout__card--cold {
       width: 100%;
-      min-height: 320px;
-    }
-    #GridLayout-{{ section.id }} .grid-layout__card--cold .grid-layout__card-img-wrap {
-      top: 30px;
-      width: 65%;
-      max-width: 280px;
+      min-height: 156px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px;
     }
     #GridLayout-{{ section.id }} .grid-layout__card--cold .grid-layout__card-copy {
-      bottom: 20px;
-      left: 20px;
-      width: calc(100% - 40px);
+      position: static;
+      order: -1;
+      flex: 1;
+      min-width: 0;
+      bottom: auto;
+      left: auto;
+      width: auto;
+      max-width: none;
       font-size: 14px;
+      padding: 0;
+    }
+    #GridLayout-{{ section.id }} .grid-layout__card--cold .grid-layout__card-img-wrap {
+      position: static;
+      order: 0;
+      flex-shrink: 0;
+      top: auto;
+      left: auto;
+      transform: none;
+      width: 100px;
+      max-width: 45%;
+      aspect-ratio: 1;
+      border-radius: 50% 50% 45% 45%;
+    }
+    #GridLayout-{{ section.id }} .grid-layout__card--cold .grid-layout__card-img-wrap img {
+      object-fit: cover;
+    }
+    #GridLayout-{{ section.id }} .grid-layout__card--cold .grid-layout__card-placeholder {
+      position: static;
+      flex-shrink: 0;
+      width: 100px;
+      max-width: 45%;
+      aspect-ratio: 1;
+      top: auto;
+      left: auto;
+      transform: none;
+      border-radius: 50% 50% 45% 45%;
     }
   }
 {%- endstyle -%}
@@ -539,17 +643,46 @@
   <div class="grid-layout__inner">
     <!-- Tall Card (Left) -->
     <div class="grid-layout__tall">
-      {%- if block_tall != blank and block_tall.settings.image != blank -%}
-        <img
-          class="grid-layout__tall-img"
-          src="{{ block_tall.settings.image | image_url: width: 826 }}"
-          srcset="{{ block_tall.settings.image | image_url: width: 413 }} 413w, {{ block_tall.settings.image | image_url: width: 826 }} 826w"
-          sizes="(max-width: 1024px) 100vw, 413px"
-          alt="{{ block_tall.settings.image.alt | default: block_tall.settings.title | escape }}"
-          width="413"
-          height="835"
-          loading="lazy"
-        >
+      {%- if block_tall != blank and block_tall.settings.image != blank or block_tall != blank and block_tall.settings.image_mobile != blank -%}
+        <div class="grid-layout__tall-img-wrap">
+          {%- assign img_tall = block_tall.settings.image -%}
+          {%- assign img_tall_mob = block_tall.settings.image_mobile -%}
+          {%- if img_tall_mob != blank and img_tall != blank -%}
+            <picture>
+              <source media="(max-width: 768px)" srcset="{{ img_tall_mob | image_url: width: 600 }}">
+              <img
+                class="grid-layout__tall-img"
+                src="{{ img_tall | image_url: width: 826 }}"
+                srcset="{{ img_tall | image_url: width: 413 }} 413w, {{ img_tall | image_url: width: 826 }} 826w"
+                sizes="(max-width: 1024px) 100vw, 413px"
+                alt="{{ img_tall.alt | default: block_tall.settings.title | escape }}"
+                width="413"
+                height="835"
+                loading="lazy"
+              >
+            </picture>
+          {%- elsif img_tall_mob != blank -%}
+            <img
+              class="grid-layout__tall-img"
+              src="{{ img_tall_mob | image_url: width: 600 }}"
+              alt="{{ img_tall_mob.alt | default: block_tall.settings.title | escape }}"
+              width="600"
+              height="600"
+              loading="lazy"
+            >
+          {%- else -%}
+            <img
+              class="grid-layout__tall-img"
+              src="{{ img_tall | image_url: width: 826 }}"
+              srcset="{{ img_tall | image_url: width: 413 }} 413w, {{ img_tall | image_url: width: 826 }} 826w"
+              sizes="(max-width: 1024px) 100vw, 413px"
+              alt="{{ img_tall.alt | default: block_tall.settings.title | escape }}"
+              width="413"
+              height="835"
+              loading="lazy"
+            >
+          {%- endif -%}
+        </div>
       {%- else -%}
         <div class="grid-layout__tall-placeholder" aria-hidden="true"></div>
       {%- endif -%}
@@ -564,15 +697,28 @@
       <div class="grid-layout__row">
         <!-- Fresh Card -->
         <div class="grid-layout__card grid-layout__card--fresh">
-          {%- if block_fresh != blank and block_fresh.settings.image != blank -%}
-            <img
-              class="grid-layout__card-img"
-              src="{{ block_fresh.settings.image | image_url: width: 670 }}"
-              alt="{{ block_fresh.settings.image.alt | escape }}"
-              width="335"
-              height="414"
-              loading="lazy"
-            >
+          {%- if block_fresh != blank and block_fresh.settings.image != blank or block_fresh != blank and block_fresh.settings.image_mobile != blank -%}
+            <div class="grid-layout__card-img-wrap">
+              {%- assign img_fresh = block_fresh.settings.image -%}
+              {%- assign img_fresh_mob = block_fresh.settings.image_mobile -%}
+              {%- if img_fresh_mob != blank and img_fresh != blank -%}
+                <picture>
+                  <source media="(max-width: 768px)" srcset="{{ img_fresh_mob | image_url: width: 600 }}">
+                  <img
+                    class="grid-layout__card-img"
+                    src="{{ img_fresh | image_url: width: 670 }}"
+                    alt="{{ img_fresh.alt | escape }}"
+                    width="335"
+                    height="414"
+                    loading="lazy"
+                  >
+                </picture>
+              {%- elsif img_fresh_mob != blank -%}
+                <img class="grid-layout__card-img" src="{{ img_fresh_mob | image_url: width: 600 }}" alt="{{ img_fresh_mob.alt | escape }}" width="600" height="600" loading="lazy">
+              {%- else -%}
+                <img class="grid-layout__card-img" src="{{ img_fresh | image_url: width: 670 }}" alt="{{ img_fresh.alt | escape }}" width="335" height="414" loading="lazy">
+              {%- endif -%}
+            </div>
           {%- else -%}
             <div class="grid-layout__card-placeholder" aria-hidden="true"></div>
           {%- endif -%}
@@ -620,15 +766,26 @@
 
         <!-- Cold Extracted Card -->
         <div class="grid-layout__card grid-layout__card--cold">
-          {%- if block_cold != blank and block_cold.settings.image != blank -%}
+          {%- if block_cold != blank and block_cold.settings.image != blank or block_cold != blank and block_cold.settings.image_mobile != blank -%}
             <div class="grid-layout__card-img-wrap">
-              <img
-                src="{{ block_cold.settings.image | image_url: width: 610 }}"
-                alt="{{ block_cold.settings.image.alt | escape }}"
-                width="305"
-                height="298"
-                loading="lazy"
-              >
+              {%- assign img_cold = block_cold.settings.image -%}
+              {%- assign img_cold_mob = block_cold.settings.image_mobile -%}
+              {%- if img_cold_mob != blank and img_cold != blank -%}
+                <picture>
+                  <source media="(max-width: 768px)" srcset="{{ img_cold_mob | image_url: width: 600 }}">
+                  <img
+                    src="{{ img_cold | image_url: width: 610 }}"
+                    alt="{{ img_cold.alt | escape }}"
+                    width="305"
+                    height="298"
+                    loading="lazy"
+                  >
+                </picture>
+              {%- elsif img_cold_mob != blank -%}
+                <img src="{{ img_cold_mob | image_url: width: 600 }}" alt="{{ img_cold_mob.alt | escape }}" width="600" height="600" loading="lazy">
+              {%- else -%}
+                <img src="{{ img_cold | image_url: width: 610 }}" alt="{{ img_cold.alt | escape }}" width="305" height="298" loading="lazy">
+              {%- endif -%}
             </div>
           {%- else -%}
             <div class="grid-layout__card-placeholder" aria-hidden="true"></div>
@@ -658,7 +815,12 @@
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "Image (desktop)"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Image (mobile, square)"
         },
         {
           "type": "textarea",
@@ -676,7 +838,12 @@
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "Image (desktop)"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Image (mobile, square)"
         },
         {
           "type": "textarea",
@@ -760,7 +927,12 @@
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "Image (desktop)"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Image (mobile, square)"
         },
         {
           "type": "textarea",

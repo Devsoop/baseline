@@ -3610,17 +3610,20 @@ details-disclosure > details {
     justify-self: start;
     display: flex;
     justify-content: center;
-    background: #80808099;
-    border-radius: 10px;
+    background: #8080801c;
+    border-radius: 20px;
+    padding: 17px 10px;
   }
   .scrolled-past-header  .header__icons {
     justify-self: center;
-    background: #80808099;
-    border-radius: 10px;
+    background: #8080801c;
+    border-radius: 20px;
+    padding: 10px;
   }
   .scrolled-past-header .header__inline-menu{
-    background: #80808099;
-    border-radius: 10px;
+    background: #8080801c;
+    border-radius: 20px;
+    padding: 10px;
   }
 }
 .footer.color-scheme-4 .list-social,
