@@ -1,0 +1,899 @@
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign free_product = current_variant.metafields.custom.free_product.value
+  assign free_product_without_subscription = current_variant.metafields.custom.free_product_without_subscription.value
+  assign current_variant_features = current_variant.metafields.custom.features | metafield_tag
+  assign product_upsell_text = product.metafields.custom.upsell_text.value
+-%}
+
+<product-gifts
+  id="gifts-{{ section.id }}"
+  class="product-gifts"
+  data-section="{{ section.id }}"
+  {% if free_product == blank and free_product_without_subscription == blank %}
+    style="display: none;"
+  {% endif %}
+>
+<style>
+  .product-gifts .product-gifts-offer-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background: {{ block.settings.offer_bg_color }};
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+
+  .product-gifts .product-gifts-offer-container:hover {
+    transform: translateY(-2px);
+  }
+
+  .product-gifts .product-gifts-offer-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex: 1;
+  }
+
+  .product-gifts .product-gifts-offer-text {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .product-gifts .product-gifts-offer-text h3,
+  .product-gifts .product-gifts__product-title {
+    max-width: 200px;
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.title_font_size }}px;
+    line-height: 22px;
+    letter-spacing: 0.02em;
+    margin: 0 0 4px 0;
+    font-weight: 600;
+    font-family: var(--font-heading-family, inherit);
+  }
+
+  .product-gifts .product-gifts-small-img {
+    width: 88px;
+    height: 88px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .product-gifts .product-gifts-offer-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .product-gifts .product-gifts-price {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .product-gifts .product-gifts-original-price {
+    color: {{ block.settings.text_color }};
+    text-decoration: line-through;
+    font-size: 14px;
+    opacity: 0.7;
+  }
+
+  .product-gifts .product-gifts-free-price {
+    color: {{ block.settings.free_text_color }};
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 22px;
+    font-family: var(--font-heading-family, inherit);
+  }
+
+  .product-gifts .product-gifts-info-toggle {
+    width: 24px;
+    height: 24px;
+    border: 2px solid {{ block.settings.text_color }};
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: {{ block.settings.text_color }};
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .product-gifts .product-gifts-info-toggle:hover {
+    background: {{ block.settings.text_color }};
+    color: {{ block.settings.background_color }};
+  }
+
+  .product-gifts .product-gifts-product-visual {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease, margin 0.3s ease;
+    margin-bottom: 0;
+  }
+
+  .product-gifts .product-gifts-product-visual.active {
+    max-height: 500px;
+    opacity: 1;
+    margin-bottom: 20px;
+  }
+
+  .product-gifts .product-gifts-showcase {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 40px 20px;
+    background: {{ block.settings.showcase_bg }};
+  }
+
+  .product-gifts .product-gifts-image-container {
+    flex: 0 0 auto;
+    max-width: 200px;
+  }
+
+  .product-gifts .product-gifts-image-container img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .product-gifts .product-gifts__variant-images-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .product-gifts .product-gift-conainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .product-gifts .product-gifts__variant-image-btn {
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .product-gifts .product-gifts__variant-image-btn--unavailable {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .product-gifts .product-gifts__variant-image-btn--selected {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+
+  .product-gifts .product-gifts__variant-image-btn .product-gifts__variant-image {
+    display: block;
+    max-width: 120px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .product-gifts .product-gifts__variant-price-container,
+  .product-gifts .product-gifts__variant-title {
+    text-align: center;
+    color: {{ block.settings.text_color }};
+    font-size: 14px;
+  }
+
+  .product-gifts .product-gifts__variant-price-compare s {
+    color: {{ block.settings.text_color }};
+    font-size: 12px;
+    opacity: 0.7;
+  }
+
+  .product-gifts .product-gifts-features {
+    margin-top: 20px;
+  }
+
+  .product-gifts .product-gifts-features ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    padding-left: 0;
+    list-style: none;
+    margin: 0;
+  }
+
+  .product-gifts .product-gifts-features ul li {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid {{ block.settings.badge_border_color }};
+    color: {{ block.settings.badge_text_color }};
+    padding: 4px 12px 2px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    line-height: 22px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-family: var(--font-body-family, inherit);
+  }
+
+  @media (max-width: 950px) {
+    .product-gifts .product-gifts-offer-container {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .product-gifts .product-gifts-offer-left {
+      width: 100%;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .product-gifts .product-gifts-offer-right {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .product-gifts .product-gifts-showcase {
+      flex-direction: column;
+      gap: 20px;
+      padding: 30px 15px;
+    }
+
+    .product-gifts .product-gifts-image-container {
+      max-width: 150px;
+    }
+
+    .product-gifts .product-gifts-offer-text h3,
+    .product-gifts .product-gifts__product-title {
+      font-size: {{ block.settings.title_font_size | minus: 2 }}px;
+    }
+
+    .product-gifts .product-gifts-free-price {
+      font-size: 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .product-gifts .product-gifts-image-container {
+      max-width: 120px;
+    }
+
+    .product-gifts .product-gifts-small-img {
+      width: 64px;
+      height: 64px;
+    }
+  }
+</style>
+  {%- if free_product != blank -%}
+    {%- assign default_variant = free_product.selected_or_first_available_variant -%}
+    <div class="product-gifts__container" data-gift-type="subscription">
+      <div class="product-gifts__product" data-gift-product>
+        <div class="product-gifts-offer-container" data-offer-toggle>
+          <div class="product-gifts-offer-left">
+            <div class="product-gifts-offer-text">
+              <h3 class="product-gifts__product-title">{{ free_product.title }}</h3>
+              {%- if free_product.featured_image != blank -%}
+                <img
+                  src="{{ free_product.featured_image | image_url: width: 400 }}"
+                  alt="{{ free_product.title }}"
+                  width="88"
+                  height="88"
+                  loading="lazy"
+                  class="product-gifts-small-img"
+                >
+              {%- endif -%}
+            </div>
+          </div>
+          <div class="product-gifts-offer-right">
+            <div class="product-gifts-price">
+              <span class="product-gifts-original-price"><s>{{ default_variant.price | money }}</s></span>
+              <span class="product-gifts-free-price">Free</span>
+            </div>
+            <div class="product-gifts-info-toggle" data-info-toggle>
+              <span class="product-gifts-toggle-icon">i</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-gifts-product-visual" data-product-visual>
+          <div class="product-gifts-showcase">
+            {%- if free_product.featured_image != blank -%}
+              <div class="product-gifts-image-container">
+                <img
+                  src="{{ free_product.featured_image | image_url: width: 400 }}"
+                  alt="{{ free_product.title }}"
+                  width="250"
+                  height="auto"
+                  loading="lazy"
+                  class="product-gifts__variant-image product-gifts__main-image"
+                >
+              </div>
+            {%- endif -%}
+            <div class="product-gifts__variant-selector">
+              <input type="hidden" data-gift-variant-id="{{ default_variant.id }}" value="{{ default_variant.id }}">
+            </div>
+          </div>
+          {%- assign features = free_product.selected_or_first_available_variant.metafields.custom.features | metafield_tag -%}
+          {%- if features != blank -%}
+            <div class="product-gifts-features">
+              {{ features }}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if free_product_without_subscription != blank -%}
+    <div class="product-gifts__container" data-gift-type="one-time">
+      <div class="product-gifts__product" data-gift-product>
+        {%- assign default_variant_ot = free_product_without_subscription.selected_or_first_available_variant -%}
+        <div class="product-gifts-offer-container" data-offer-toggle>
+          <div class="product-gifts-offer-left">
+            <div class="product-gifts-offer-text">
+              <h3 class="product-gifts__product-title">{{ free_product_without_subscription.title }}</h3>
+              {%- if free_product_without_subscription.featured_image != blank -%}
+                <img
+                  src="{{ free_product_without_subscription.featured_image | image_url: width: 400 }}"
+                  alt="{{ free_product_without_subscription.title }}"
+                  width="88"
+                  height="88"
+                  loading="lazy"
+                  class="product-gifts-small-img"
+                >
+              {%- endif -%}
+            </div>
+          </div>
+          <div class="product-gifts-offer-right">
+            <div class="product-gifts-price">
+              <span class="product-gifts-original-price"><s>{{ default_variant_ot.price | money }}</s></span>
+              <span class="product-gifts-free-price">Free</span>
+            </div>
+            <div class="product-gifts-info-toggle" data-info-toggle>
+              <span class="product-gifts-toggle-icon">i</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-gifts-product-visual" data-product-visual>
+          <div class="product-gifts-showcase">
+            {%- if free_product_without_subscription.has_only_default_variant == false
+              and free_product_without_subscription.variants.size > 1
+            -%}
+              <div class="product-gifts__variant-selector">
+                <div class="product-gifts__variant-images-grid">
+                  {%- for gift_variant in free_product_without_subscription.variants -%}
+                    <div class="product-gift-conainer">
+                      <div class="product-gifts__variant-price-container">
+                        <span class="product-gifts__variant-price">Free</span>
+                        <span class="product-gifts__variant-price-compare"><s>{{ gift_variant.price | money }}</s></span>
+                      </div>
+                      <button
+                        type="button"
+                        class="product-gifts__variant-image-btn{% unless gift_variant.available %} product-gifts__variant-image-btn--unavailable{% endunless %}"
+                        data-gift-variant-id="{{ gift_variant.id }}"
+                        data-gift-variant-price="{{ gift_variant.price }}"
+                        {% unless gift_variant.available %} disabled {% endunless %}
+                        aria-label="Select {{ gift_variant.title }}"
+                      >
+                        {%- if gift_variant.featured_image != blank -%}
+                          <img
+                            src="{{ gift_variant.featured_image | image_url: width: '350x' }}"
+                            alt="{{ gift_variant.title }}"
+                            class="product-gifts__variant-image"
+                            width="auto"
+                            height="auto"
+                            loading="lazy"
+                          >
+                        {%- else -%}
+                          <span class="product-gifts__variant-image-placeholder">{{ gift_variant.title }}</span>
+                        {%- endif -%}
+                        {%- unless gift_variant.available -%}
+                          <span class="product-gifts__variant-badge">Sold Out</span>
+                        {%- endunless -%}
+                      </button>
+                      <span class="product-gifts__variant-title"><p>{{ gift_variant.title }}</p></span>
+                    </div>
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- else -%}
+              {%- if free_product_without_subscription.featured_image != blank -%}
+                <div class="product-gifts-image-container">
+                  <img
+                    src="{{ free_product_without_subscription.featured_image | image_url: width: 400 }}"
+                    alt="{{ free_product_without_subscription.title }}"
+                    width="250"
+                    height="auto"
+                    loading="lazy"
+                    class="product-gifts__variant-image product-gifts__main-image"
+                  >
+                </div>
+              {%- endif -%}
+              <div class="product-gifts__variant-selector">
+                <input type="hidden" data-gift-variant-id="{{ default_variant_ot.id }}" value="{{ default_variant_ot.id }}">
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+</product-gifts>
+<script>
+  (function () {
+    if (window.__productGiftsToggleAttached) return;
+    window.__productGiftsToggleAttached = true;
+    document.addEventListener('click', function (e) {
+      const offerContainer = e.target.closest('.product-gifts [data-offer-toggle]');
+      const toggleBtn = e.target.closest('.product-gifts [data-info-toggle]');
+      if (!offerContainer && !toggleBtn) return;
+      const giftProduct = (offerContainer || toggleBtn).closest('[data-gift-product]');
+      if (!giftProduct) return;
+      const productVisual = giftProduct.querySelector('[data-product-visual]');
+      if (!productVisual) return;
+      if (toggleBtn) e.stopPropagation();
+      productVisual.classList.toggle('active');
+      const smallImg = giftProduct.querySelector('.product-gifts-small-img');
+      const iconEl = giftProduct.querySelector('[data-info-toggle] .product-gifts-toggle-icon');
+      const infoToggleEl = giftProduct.querySelector('[data-info-toggle]');
+      if (smallImg) {
+        smallImg.style.display = productVisual.classList.contains('active') ? 'none' : '';
+      }
+      if (iconEl && infoToggleEl) {
+        if (productVisual.classList.contains('active')) {
+          iconEl.textContent = '×';
+          infoToggleEl.style.transform = 'rotate(180deg)';
+        } else {
+          iconEl.textContent = 'i';
+          infoToggleEl.style.transform = 'rotate(0deg)';
+        }
+      }
+    });
+  })();
+</script>
+<script>
+  // component-gifts.js
+  class ProductGifts extends HTMLElement {
+    constructor() {
+      super();
+      this.selectedVariantId = null;
+      this.giftContainer = null;
+      this.cartUpdateUnsubscriber = null;
+      this.variantChangeUnsubscriber = null;
+      this.sellingPlanChangeUnsubscriber = null;
+      this.isSubscriptionSelected = false;
+      this.parentLineKey = null; // Add this line
+    }
+
+    connectedCallback() {
+      // Wait for dependencies to be available
+      this.waitForDependencies().then(() => {
+        this.checkSubscriptionState(); // Check initial subscription state
+        this.updateGiftContainer();
+        this.initializeVariantSelection();
+        this.subscribeToCartUpdates();
+        this.subscribeToVariantChanges();
+        this.subscribeToSellingPlanChanges(); // Add this
+        this.updateVisibility(); // Add this - update visibility based on current state
+        this.updateFeaturesDisplay(); // Update features/upsell display
+      });
+    }
+
+    updateGiftContainer() {
+      // Find the appropriate gift container based on subscription state
+      const subscriptionGift = this.querySelector('[data-gift-type="subscription"]');
+      const oneTimeGift = this.querySelector('[data-gift-type="one-time"]');
+
+      if (this.isSubscriptionSelected && subscriptionGift) {
+        this.giftContainer = subscriptionGift.querySelector('[data-gift-product]');
+      } else if (!this.isSubscriptionSelected && oneTimeGift) {
+        this.giftContainer = oneTimeGift.querySelector('[data-gift-product]');
+      } else {
+        this.giftContainer = null;
+      }
+    }
+
+    waitForDependencies() {
+      return new Promise((resolve) => {
+        // Check if dependencies are already available
+        if (typeof subscribe !== 'undefined' && typeof PUB_SUB_EVENTS !== 'undefined') {
+          resolve();
+          return;
+        }
+
+        // Wait for DOMContentLoaded first
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', checkDependencies);
+        } else {
+          checkDependencies();
+        }
+
+        function checkDependencies() {
+          // Poll for dependencies with a timeout
+          let attempts = 0;
+          const maxAttempts = 50; // 5 seconds max wait
+
+          const interval = setInterval(() => {
+            attempts++;
+
+            if (typeof subscribe !== 'undefined' && typeof PUB_SUB_EVENTS !== 'undefined') {
+              clearInterval(interval);
+              resolve();
+            } else if (attempts >= maxAttempts) {
+              clearInterval(interval);
+              resolve(); // Resolve anyway to prevent blocking
+            }
+          }, 100);
+        }
+      });
+    }
+
+    disconnectedCallback() {
+      if (this.cartUpdateUnsubscriber) {
+        this.cartUpdateUnsubscriber();
+      }
+      if (this.variantChangeUnsubscriber) {
+        this.variantChangeUnsubscriber();
+      }
+      if (this.sellingPlanChangeUnsubscriber) {
+        // Add this
+        this.sellingPlanChangeUnsubscriber();
+      }
+    }
+
+    initializeVariantSelection() {
+      // Handle variant button clicks - only for the currently visible gift container
+      if (!this.giftContainer) return;
+
+      const variantButtons = this.giftContainer.querySelectorAll('.product-gifts__variant-image-btn');
+
+      variantButtons.forEach((button) => {
+        button.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+
+          if (button.disabled) {
+            return;
+          }
+
+          // Remove selected class from all buttons in current container
+          variantButtons.forEach((btn) => {
+            btn.classList.remove('product-gifts__variant-image-btn--selected');
+          });
+
+          // Add selected class to clicked button
+          button.classList.add('product-gifts__variant-image-btn--selected');
+
+          // Store selected variant ID
+          this.selectedVariantId = button.getAttribute('data-gift-variant-id');
+        });
+      });
+
+      // Set initial selected variant (first available or hidden input value)
+      const hiddenInput = this.giftContainer.querySelector('input[data-gift-variant-id]');
+      if (hiddenInput) {
+        this.selectedVariantId = hiddenInput.getAttribute('data-gift-variant-id');
+      } else if (variantButtons.length > 0) {
+        // Select first available variant by default
+        const firstAvailable = Array.from(variantButtons).find((btn) => !btn.disabled);
+        if (firstAvailable) {
+          firstAvailable.classList.add('product-gifts__variant-image-btn--selected');
+          this.selectedVariantId = firstAvailable.getAttribute('data-gift-variant-id');
+        }
+      }
+    }
+
+    subscribeToCartUpdates() {
+      // Check if subscribe function exists
+      if (typeof subscribe === 'undefined') {
+        return;
+      }
+
+      if (typeof PUB_SUB_EVENTS === 'undefined') {
+        return;
+      }
+
+      // Listen for cart update events when main product is added
+      this.cartUpdateUnsubscriber = subscribe(PUB_SUB_EVENTS.cartUpdate, (event) => {
+        // Only proceed if the cart update came from product-form (main product added)
+        if (event.source !== 'product-form') {
+          return;
+        }
+
+        // Extract parent line key from cartData
+        this.parentLineKey = event.cartData.key;
+
+        // Update gift container based on current subscription state
+        this.checkSubscriptionState();
+        this.updateGiftContainer();
+
+        // Check if component is visible (not hidden)
+        if (this.style.display === 'none') {
+          return;
+        }
+
+        // Only proceed if we have a gift container visible and a selected variant
+        if (!this.giftContainer) {
+          return;
+        }
+
+        if (!this.selectedVariantId) {
+          return;
+        }
+
+        // Add the gift variant to cart
+        this.addGiftToCart();
+      });
+    }
+
+    async addGiftToCart() {
+      if (!this.selectedVariantId) {
+        return;
+      }
+
+      // Check if required functions exist
+      if (typeof fetchConfig === 'undefined') {
+        return;
+      }
+
+      if (typeof routes === 'undefined' || !routes.cart_add_url) {
+        return;
+      }
+
+      try {
+        const config = fetchConfig('javascript');
+        config.headers['X-Requested-With'] = 'XMLHttpRequest';
+        config.headers['Content-Type'] = 'application/json';
+
+        // Build items array
+        const items = [
+          {
+            id: this.selectedVariantId,
+            quantity: 1,
+          },
+        ];
+
+        // Add parent_line_key if available
+        if (this.parentLineKey) {
+          items[0].parent_line_key = this.parentLineKey;
+        }
+
+        // Get cart sections to render if cart drawer exists
+        const cart = document.querySelector('cart-notification') || document.querySelector('cart-drawer');
+        const body = {
+          items: items,
+        };
+
+        if (cart && cart.getSectionsToRender) {
+          body.sections = cart.getSectionsToRender().map((section) => section.id);
+          body.sections_url = window.location.pathname;
+        }
+
+        config.body = JSON.stringify(body);
+
+        const response = await fetch(`${routes.cart_add_url}`, config);
+        const data = await response.json();
+
+        if (data.status) {
+          // Handle error
+          if (typeof publish !== 'undefined') {
+            publish(PUB_SUB_EVENTS.cartError, {
+              source: 'gifts',
+              productVariantId: this.selectedVariantId,
+              errors: data.errors || data.description,
+              message: data.message,
+            });
+          }
+          return;
+        }
+
+        // Successfully added gift to cart
+        // Update cart UI if cart drawer exists
+        if (cart && cart.renderContents) {
+          cart.renderContents(data);
+        }
+
+        // Publish cart update event
+        if (typeof publish !== 'undefined') {
+          publish(PUB_SUB_EVENTS.cartUpdate, {
+            source: 'gifts',
+            productVariantId: this.selectedVariantId,
+            cartData: data,
+          });
+        }
+      } catch (error) {
+        // Error adding gift to cart
+      }
+    }
+
+    subscribeToVariantChanges() {
+      if (typeof subscribe === 'undefined' || typeof PUB_SUB_EVENTS === 'undefined') {
+        return;
+      }
+
+      // Listen for variant changes to reinitialize after HTML is updated
+      this.variantChangeUnsubscriber = subscribe(PUB_SUB_EVENTS.variantChange, (event) => {
+        // Wait a bit for the HTML to be updated by product-info.js
+        setTimeout(() => {
+          // Update variant features from the updated HTML (features div is now outside product-gifts)
+          const featuresContainer = this.querySelector('.product-variant-features');
+          if (featuresContainer && event.data?.html && event.data?.sectionId) {
+            const newGiftsSection = event.data.html.querySelector(`#gifts-${event.data.sectionId}`);
+            const newFeaturesContainer = newGiftsSection.querySelector('.product-variant-features');
+            if (newFeaturesContainer) {
+              // Update the data-variant-features attribute with new variant features
+              const newVariantFeatures = newFeaturesContainer.getAttribute('data-variant-features');
+              if (newVariantFeatures) {
+                featuresContainer.setAttribute('data-variant-features', newVariantFeatures);
+              }
+              // Also update the data-upsell-text if it changed
+              const newUpsellText = newFeaturesContainer.getAttribute('data-upsell-text');
+              if (newUpsellText !== null) {
+                featuresContainer.setAttribute('data-upsell-text', newUpsellText);
+              }
+            }
+          }
+
+          // Check subscription state and update gift container
+          this.checkSubscriptionState();
+          this.updateGiftContainer();
+
+          // Reinitialize variant selection for the new gift container
+          if (this.giftContainer) {
+            this.initializeVariantSelection();
+          } else {
+            this.selectedVariantId = null;
+          }
+
+          // Update visibility
+          this.updateVisibility();
+          // Update features/upsell display after gift container is updated
+          this.updateFeaturesDisplay();
+        }, 100);
+      });
+    }
+
+    // Add this new method
+    checkSubscriptionState() {
+      // Check if subscription option is selected
+      const subscriptionOption = document.querySelector('.selling-plan-option--subscription.selected');
+      const sellingPlanInput = document.querySelector('.selling-plan-input');
+
+      // Subscription is selected if:
+      // 1. Subscription option has 'selected' class, OR
+      // 2. Selling plan input has a non-empty value
+      this.isSubscriptionSelected = !!(
+        subscriptionOption ||
+        (sellingPlanInput && sellingPlanInput.value && sellingPlanInput.value.trim() !== '')
+      );
+
+      return this.isSubscriptionSelected;
+    }
+
+    // Add this new method
+    updateVisibility() {
+      // Update gift container reference first
+      this.updateGiftContainer();
+
+      const hasGift = this.giftContainer !== null;
+
+      if (hasGift) {
+        this.style.display = '';
+        // Show the appropriate gift container based on subscription state
+        const subscriptionGift = this.querySelector('[data-gift-type="subscription"]');
+        const oneTimeGift = this.querySelector('[data-gift-type="one-time"]');
+
+        if (this.isSubscriptionSelected) {
+          if (subscriptionGift) subscriptionGift.style.display = '';
+          if (oneTimeGift) oneTimeGift.style.display = 'none';
+        } else {
+          if (subscriptionGift) subscriptionGift.style.display = 'none';
+          if (oneTimeGift) oneTimeGift.style.display = '';
+        }
+      } else {
+        this.style.display = 'none';
+      }
+    }
+
+    subscribeToSellingPlanChanges() {
+      // Listen for selling plan changes (subscription vs one-time purchase)
+      this.sellingPlanChangeUnsubscriber = () => {
+        // Remove event listener if needed
+        document.removeEventListener('selling-plan-changed', this.handleSellingPlanChange);
+      };
+
+      // Add event listener
+      this.handleSellingPlanChange = (event) => {
+        const { sellingPlanId } = event.detail || {};
+
+        // Update subscription state: if sellingPlanId is empty, it's one-time purchase
+        this.isSubscriptionSelected = !!(sellingPlanId && sellingPlanId.trim() !== '');
+
+        // Update gift container based on new subscription state
+        this.updateGiftContainer();
+
+        // Reinitialize variant selection for the new gift container
+        if (this.giftContainer) {
+          this.initializeVariantSelection();
+        } else {
+          this.selectedVariantId = null;
+        }
+
+        // Update visibility based on new subscription state
+        this.updateVisibility();
+        // Update features/upsell display
+        this.updateFeaturesDisplay();
+      };
+
+      document.addEventListener('selling-plan-changed', this.handleSellingPlanChange);
+    }
+
+    updateFeaturesDisplay() {
+      // Find the features container (sibling of product-gifts element)
+      const featuresContainer = document.querySelector('.product-variant-features');
+
+      if (!featuresContainer) return;
+
+      if (this.isSubscriptionSelected) {
+        // Show variant features when subscription is selected
+        const variantFeatures = featuresContainer.getAttribute('data-variant-features');
+        if (variantFeatures) {
+          featuresContainer.innerHTML = this.decodeHtmlEntities(variantFeatures);
+        }
+      } else {
+        // Show upsell text when subscription is not selected
+        const upsellText = featuresContainer.getAttribute('data-upsell-text');
+        if (upsellText) {
+          featuresContainer.innerHTML = this.decodeHtmlEntities(upsellText);
+        } else {
+          // If no upsell text, show variant features as fallback
+          const variantFeatures = featuresContainer.getAttribute('data-variant-features');
+          if (variantFeatures) {
+            featuresContainer.innerHTML = this.decodeHtmlEntities(variantFeatures);
+          }
+        }
+      }
+    }
+
+    decodeHtmlEntities(html) {
+      const txt = document.createElement('textarea');
+      txt.innerHTML = html;
+      return txt.value;
+    }
+  }
+
+  // Register the custom element when dependencies are ready
+  function registerProductGifts() {
+    if (!customElements.get('product-gifts')) {
+      customElements.define('product-gifts', ProductGifts);
+    }
+  }
+
+  // Wait for dependencies before registering
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      // Wait a bit more for deferred scripts to load
+      setTimeout(registerProductGifts, 100);
+    });
+  } else {
+    // DOM already loaded, wait for scripts
+    setTimeout(registerProductGifts, 100);
+  }
+</script>

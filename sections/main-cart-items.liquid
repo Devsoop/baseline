@@ -225,6 +225,7 @@
                           <label class="visually-hidden" for="Quantity-{{ item.index | plus: 1 }}">
                             {{ 'products.product.quantity.label' | t }}
                           </label>
+                          {%- unless item.parent_relationship -%}
                           <div class="quantity-popover-container{% if has_qty_rules or has_vol_pricing %} quantity-popover-container--hover{% endif %}">
                             {%- if has_qty_rules or has_vol_pricing -%}
                               <button
@@ -291,10 +292,14 @@
                               </button>
                             </quantity-input>
                           </div>
+                          {%- endunless -%}
                           <cart-remove-button
                             id="Remove-{{ item.index | plus: 1 }}"
                             data-index="{{ item.index | plus: 1 }}"
                             {% assign can_remove = item.instructions.can_remove | default: true %}
+                           {%  if item.parent_relationship != null %}
+                            {%  assign can_remove = false %}
+                            {% endif %}
                             {% if can_remove == false %}
                               class="hidden"
                             {% endif %}

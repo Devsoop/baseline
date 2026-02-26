@@ -295,94 +295,8 @@
 <div class="premium-info-block-{{ block.id }}" {{ block.shopify_attributes }}>
   {% assign variant = product.selected_or_first_available_variant %}
   {% assign current_variant_features = variant.metafields.custom.features | metafield_tag %}
-  <div
-    class="premium-offer-container-{{ block.id }}"
-    data-offer-toggle
-    data-block-id="{{ block.id }}"
-    style="display: none;"
-  >
-    <div class="premium-offer-left-{{ block.id }}">
-      <div class="premium-offer-text-{{ block.id }}">
-        <h3>{{ block.settings.offer_title }}</h3>
-        {%- if block.settings.product_image != blank -%}
-          {%- assign img_url = block.settings.product_image | image_url: width: 400 -%}
-          <img
-            src="{{ img_url }}"
-            alt="{{ block.settings.product_image.alt | default: 'Premium Product' }}"
-            width="400"
-            height="400"
-            loading="lazy"
-            style="width:88px; height:88px;"
-            class="product_small_img"
-          >
-        {%- endif -%}
-      </div>
-    </div>
-    <div class="premium-offer-right-{{ block.id }}">
-      {%- if block.settings.show_original_price -%}
-        <div class="premium-price-{{ block.id }}">
-          <span class="original-price-{{ block.id }}">{{ block.settings.original_price }}</span>
-          <span class="free-price-{{ block.id }}">{{ block.settings.free_text }}</span>
-        </div>
-      {%- else -%}
-        <span class="free-price-{{ block.id }}">{{ block.settings.free_text }}</span>
-      {%- endif -%}
-      <div class="info-toggle-{{ block.id }}" data-info-toggle>
-        <span class="toggle-icon">i</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="premium-product-visual-{{ block.id }}" data-product-visual>
-    <div class="product-showcase-{{ block.id }}">
-      {%- if block.settings.product_image != blank -%}
-        <div class="product-image-container-{{ block.id }}">
-          {%- assign img_url = block.settings.product_image | image_url: width: 400 -%}
-          <img
-            src="{{ img_url }}"
-            alt="{{ block.settings.product_image.alt | default: 'Premium Product' }}"
-            width="400"
-            height="400"
-            loading="lazy"
-          >
-        </div>
-      {%- endif -%}
-
-      {%- if block.settings.show_plus_icon -%}
-        <div class="plus-icon-{{ block.id }}">+</div>
-      {%- endif -%}
-
-      {%- if block.settings.accessory_image != blank -%}
-        <div class="product-image-container-{{ block.id }}">
-          {%- assign accessory_url = block.settings.accessory_image | image_url: width: 400 -%}
-          <img
-            src="{{ accessory_url }}"
-            alt="{{ block.settings.accessory_image.alt | default: 'Accessory' }}"
-            width="400"
-            height="400"
-            loading="lazy"
-          >
-        </div>
-      {%- endif -%}
-    </div>
-
-    {%- if block.settings.show_badges -%}
-      <div class="product-badges-{{ block.id }}">
-        {%- if block.settings.badge_1 != blank -%}
-          <span class="badge-{{ block.id }}">{{ block.settings.badge_1 }}</span>
-        {%- endif -%}
-        {%- if block.settings.badge_2 != blank -%}
-          <span class="badge-{{ block.id }}">{{ block.settings.badge_2 }}</span>
-        {%- endif -%}
-        {%- if block.settings.badge_3 != blank -%}
-          <span class="badge-{{ block.id }}">{{ block.settings.badge_3 }}</span>
-        {%- endif -%}
-        {%- if block.settings.badge_4 != blank -%}
-          <span class="badge-{{ block.id }}">{{ block.settings.badge_4 }}</span>
-        {%- endif -%}
-      </div>
-    {%- endif -%}
-  </div>
+  {%- render 'gifts', product: product, block: block -%}
+ 
 
   <div class="premium-benefits-{{ block.id }}">
     {{ current_variant_features }}
@@ -407,6 +321,8 @@
       const toggleBtn = e.target.closest('[data-info-toggle]');
       const offerContainer = e.target.closest('[data-offer-toggle]');
       if (!offerContainer && !toggleBtn) return;
+
+      if (e.target.closest('.product-gifts')) return;
 
       const block = (offerContainer || toggleBtn).closest('[class*="premium-info-block-"]');
       if (!block) return;
