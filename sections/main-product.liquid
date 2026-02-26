@@ -5,6 +5,14 @@
   data-product-id="{{ product.id }}"
   data-update-url="true"
   data-url="{{ product.url }}"
+  {% if product.metafields.custom.one_time_product.value %}
+    data-one-time-product-id="{{ product.metafields.custom.one_time_product.value.id }}"
+    data-one-time-product-url="{{ product.metafields.custom.one_time_product.value.url }}"
+  {% endif %}
+  {% if product.metafields.custom.subscription_product.value %}
+    data-subscription-product-id="{{ product.metafields.custom.subscription_product.value.id }}"
+    data-subscription-product-url="{{ product.metafields.custom.subscription_product.value.url }}"
+  {% endif %}
   {% if section.settings.image_zoom == 'hover' %}
     data-zoom-on-hover
   {% endif %}
