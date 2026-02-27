@@ -425,73 +425,8 @@
         Math.max(1.0, wordPhaseDuration)
       );
 
-      {% comment %} // hold slide 2 pinned
-      tl.to({}, { duration: 1 }, Math.max(1.0, wordPhaseDuration) + 1.0); {% endcomment %}
       // hold slide 2 pinned
       tl.to({}, { duration: 1 }, Math.max(1.0, wordPhaseDuration) + 1.0);
-
-      /* Phase 3 — polyphenols text: animate visual line by visual line */
-      var polyTextEl = section.querySelector('.animation-hero__polyphenols-text');
-      if (polyTextEl) {
-
-        /* 1. Wrap text nodes only — never break HTML tags */
-        function wrapTextNodes(el) {
-          var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
-          var nodes = [];
-          var n;
-          while ((n = walker.nextNode())) nodes.push(n);
-          nodes.forEach(function (textNode) {
-            var tokens = textNode.nodeValue.split(/(\s+)/);
-            if (tokens.length <= 1) return;
-            var frag = document.createDocumentFragment();
-            tokens.forEach(function (token) {
-              if (!token.trim()) {
-                frag.appendChild(document.createTextNode(token));
-              } else {
-                var sp = document.createElement('span');
-                sp.className = 'poly-word';
-                sp.style.cssText = 'display:inline;';
-                sp.textContent = token;
-                frag.appendChild(sp);
-              }
-            });
-            textNode.parentNode.replaceChild(frag, textNode);
-          });
-        }
-        wrapTextNodes(polyTextEl);
-
-        /* 2. Force a reflow so positions are accurate */
-        polyTextEl.getBoundingClientRect();
-
-        var allWords = Array.from(polyTextEl.querySelectorAll('.poly-word'));
-
-        /* 3. Group words by visual line (same offsetTop) */
-        var lineGroups = [];
-        allWords.forEach(function (word) {
-          var top = Math.round(word.getBoundingClientRect().top);
-          var last = lineGroups[lineGroups.length - 1];
-          if (last && Math.abs(last.top - top) < 5) {
-            last.words.push(word);
-          } else {
-            lineGroups.push({ top: top, words: [word] });
-          }
-        });
-
-        /* 4. No DOM restructuring — just hide all words, animate per line group */
-        var allWordEls = allWords;
-        gsap.set(allWordEls, { opacity: 0, y: 18 });
-
-        var holdStart = Math.max(1.0, wordPhaseDuration) + 1.0;
-        var perLine   = 0.7 / (lineGroups.length + 1);
-
-        lineGroups.forEach(function (group, i) {
-          tl.to(
-            group.words,
-            { opacity: 1, y: 0, ease: 'power2.out', duration: perLine * 1.5 },
-            holdStart + i * perLine
-          );
-        });
-      }
 
       /* Header comes back down as polyphenols arrives */
       if (header) {
