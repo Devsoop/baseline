@@ -260,7 +260,7 @@
     line-height: 1.55;
     opacity: 0;
     transform: translateY(100%);
-    white-space: normal;
+    white-space: pre-line;
   }
 
   #BaselineStory-{{ section.id }} .line-inner strong { font-weight: 700; color: #fff; }
@@ -610,6 +610,26 @@
 
   let current = 0;
   let isAnimating = false;
+  let slideSteps = [];
+
+  function typeInElement(el) {
+    if (!el) return;
+    const full = el.dataset.fullText || el.textContent || '';
+    el.dataset.fullText = full;
+    el.textContent = '';
+    let i = 0;
+    const total = Math.max(full.length, 8);
+    const duration = 600; // ms
+    const stepTime = duration / total;
+
+    const timer = setInterval(() => {
+      i += 1;
+      el.textContent = full.slice(0, i);
+      if (i >= full.length) {
+        clearInterval(timer);
+      }
+    }, stepTime);
+  }
 
   function updateRuler(idx) {
     rulerFill.style.height = ((idx + 1) / TOTAL * 100) + '%';
@@ -624,41 +644,124 @@
     if (slide) tl.to(slide, { y: -30, opacity: 0, duration: 0.4, ease: 'power2.in' }, 0);
   }
 
-  function enterSlide(idx, tl, offset) {
+  function showSlide(idx, tl, offset) {
     const slide = slides[idx];
     if (!slide) return;
+    tl.to(slide, { opacity: 1, duration: 0.35, ease: 'power2.out' }, offset);
+  }
 
-    const isCentered = slide.classList.contains('slide--centered');
-    const heroHeading = slide.querySelector('.slide-hero-heading');
-    const eyebrow = slide.querySelector('.slide-eyebrow');
-    const lines = slide.querySelectorAll('.line-inner');
-    const illusAll = slide.querySelectorAll('.illus-img');
+  function prepareSlideSteps() {
+    slideSteps = Array.from(slides).map(slide => {
+      const isCentered = slide.classList.contains('slide--centered');
+      const heroHeading = slide.querySelector('.slide-hero-heading');
+      const eyebrow = slide.querySelector('.slide-eyebrow');
+      const lines = Array.from(slide.querySelectorAll('.line-inner'));
+      const illusAll = Array.from(slide.querySelectorAll('.illus-img'));
+      const steps = [];
 
-    gsap.set(slide, { opacity: 0, y: 0 });
-    if (heroHeading) gsap.set(heroHeading, { opacity: 0, y: 30 });
-    if (eyebrow) gsap.set(eyebrow, { opacity: 0, y: 20 });
-    if (lines.length) gsap.set(lines, { opacity: 0, y: '100%' });
-    if (illusAll.length) gsap.set(illusAll, { opacity: 0, y: 50 });
-
-    tl.to(slide, { opacity: 1, duration: 0.01 }, offset);
-
-    if (isCentered && heroHeading) {
-      tl.to(heroHeading, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, offset + 0.1);
-      if (illusAll.length) tl.to(illusAll, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, offset + 0.35);
-    } else {
-      if (eyebrow) tl.to(eyebrow, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, offset + 0.1);
-      if (lines.length) {
-        const linesDelay = offset + 0.2;
-        const staggerTime = 0.08;
-        const lineDuration = 0.3;
-        tl.to(lines, { opacity: 1, y: '0%', duration: lineDuration, stagger: staggerTime, ease: 'power2.out' }, linesDelay);
-        if (illusAll.length) {
-          const imageStartDelay = linesDelay + Math.floor(lines.length / 2) * staggerTime + lineDuration * 0.5;
-          tl.to(illusAll, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, imageStartDelay);
-        }
-      } else if (illusAll.length) {
-        tl.to(illusAll, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, offset + 0.3);
+      if (isCentered) {
+        if (heroHeading) steps.push([heroHeading]);
+        if (illusAll.length) steps.push(illusAll);
+      } else {
+        if (eyebrow) steps.push([eyebrow]);
+        lines.forEach(line => steps.push([line]));
+        if (illusAll.length) steps.push(illusAll);
       }
+
+      if (heroHeading) gsap.set(heroHeading, { opacity: 0, y: 30 });
+      if (eyebrow) gsap.set(eyebrow, { opacity: 0, y: 20 });
+      if (lines.length) gsap.set(lines, { opacity: 0, y: '100%' });
+      if (illusAll.length) gsap.set(illusAll, { opacity: 0, y: 50 });
+
+      return {
+        steps,
+        revealed: 0,
+        isCentered
+      };
+    });
+  }
+
+  function revealNextStep(idx, direction) {
+    const state = slideSteps[idx];
+    if (!state || isAnimating) return false;
+
+    if (direction > 0) {
+      if (state.revealed >= state.steps.length) return false;
+      const elements = state.steps[state.revealed];
+      state.revealed += 1;
+      const firstEl = elements[0];
+      const slideVariant = idx % 3; // 0,1,2 → different animation styles per slide
+
+      const isText =
+        firstEl &&
+        (firstEl.classList.contains('line-inner') ||
+         firstEl.classList.contains('slide-hero-heading') ||
+         firstEl.classList.contains('slide-eyebrow'));
+      const isImage = firstEl && firstEl.classList.contains('illus-img');
+
+      if (isText) {
+        if (slideVariant === 0) {
+          // Variant 0: typewriter
+          gsap.set(firstEl, { opacity: 1, y: 0 });
+          typeInElement(firstEl);
+        } else {
+          // Variant 1/2: different motion styles
+          const tl = gsap.timeline({ onComplete: () => { isAnimating = false; } });
+          isAnimating = true;
+          if (slideVariant === 1) {
+            // Fade up
+            gsap.set(elements, { opacity: 0, y: 20, x: 0 });
+            tl.to(elements, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0);
+          } else {
+            // Slide in from left
+            gsap.set(elements, { opacity: 0, x: -30, y: 0 });
+            tl.to(elements, { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out' }, 0);
+          }
+        }
+      } else if (isImage) {
+        // Images get their own per-slide variants
+        const tl = gsap.timeline({ onComplete: () => { isAnimating = false; } });
+        isAnimating = true;
+        if (slideVariant === 0) {
+          // Fade/scale in
+          gsap.set(elements, { opacity: 0, scale: 0.9, y: 40 });
+          tl.to(elements, { opacity: 1, scale: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 0);
+        } else if (slideVariant === 1) {
+          // Slide in from right
+          gsap.set(elements, { opacity: 0, x: 40, y: 0 });
+          tl.to(elements, { opacity: 1, x: 0, duration: 0.6, ease: 'power2.out' }, 0);
+        } else {
+          // Slight rotate pop-in
+          gsap.set(elements, { opacity: 0, y: 30, rotation: -3 });
+          tl.to(elements, { opacity: 1, y: 0, rotation: 0, duration: 0.6, ease: 'power2.out' }, 0);
+        }
+      } else {
+        const tl = gsap.timeline({ onComplete: () => { isAnimating = false; } });
+        isAnimating = true;
+        tl.to(elements, { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' }, 0);
+      }
+
+      return true;
+    }
+
+    return false;
+  }
+
+  function handleDirection(direction) {
+    if (isAnimating) return;
+
+    if (direction > 0) {
+      const didReveal = revealNextStep(current, 1);
+      if (didReveal) return;
+
+      if (current === TOTAL - 1) return;
+      goTo(current + 1);
+      return;
+    }
+
+    if (direction < 0) {
+      if (current === 0) return;
+      goTo(current - 1);
     }
   }
 
@@ -672,7 +775,7 @@
 
     const tl = gsap.timeline({ onComplete: () => { isAnimating = false; } });
     exitSlide(prev, tl);
-    enterSlide(next, tl, 0.3);
+    showSlide(next, tl, 0.2);
   }
 
   function jumpToSliderZone() {
@@ -744,20 +847,20 @@
 
     // If slider zone is active, handle slide navigation
     if (sliderZoneActive && sliderZone.contains(e.target)) {
-      // On last slide scrolling down: allow page to scroll
-      if (current === TOTAL - 1 && e.deltaY > 0) return;
+      // On last slide scrolling down: allow page to scroll once fully revealed
+      if (current === TOTAL - 1 && e.deltaY > 0 && slideSteps[current] && slideSteps[current].revealed >= slideSteps[current].steps.length) return;
       e.preventDefault();
       const now = Date.now();
       if (isAnimating || now - lastWheel < 120) return;
       lastWheel = now;
       
-      // If on first slide and scrolling up, jump back to banner
-      if (current === 0 && e.deltaY < 0) {
+      // If on first slide (no parts revealed) and scrolling up, jump back to banner
+      if (current === 0 && e.deltaY < 0 && (!slideSteps[0] || slideSteps[0].revealed === 0)) {
         jumpToBanner();
         return;
       }
-      
-      goTo(current + (e.deltaY > 0 ? 1 : -1));
+
+      handleDirection(e.deltaY > 0 ? 1 : -1);
       return;
     }
 
@@ -831,7 +934,7 @@
       return;
     }
 
-    if (current === TOTAL - 1 && dy > 40) {
+    if (current === TOTAL - 1 && dy > 40 && slideSteps[current] && slideSteps[current].revealed >= slideSteps[current].steps.length) {
       window.scrollTo(0, window.scrollY + window.innerHeight);
       return;
     }
@@ -839,7 +942,7 @@
     const now = Date.now();
     if (isAnimating || now - lastWheel < 400) return;
     lastWheel = now;
-    goTo(current + (dy > 0 ? 1 : -1));
+    handleDirection(dy > 0 ? 1 : -1);
   }, { passive: true });
 
   section.addEventListener('keydown', e => {
@@ -861,18 +964,26 @@
       return;
     }
     
-    if (e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
-    if (e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+    if (e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); handleDirection(1); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); handleDirection(-1); }
   });
 
   function init() {
     if (typeof gsap === 'undefined') return setTimeout(init, 50);
     gsap.set(slides, { opacity: 0 });
+    prepareSlideSteps();
     updateRuler(0);
     updateDots(0);
     const tl = gsap.timeline({ onComplete: () => { isAnimating = false; } });
     isAnimating = true;
-    enterSlide(0, tl, 0.3);
+    showSlide(0, tl, 0.3);
+    // Optionally reveal the first part so slide 0 isn't empty
+    if (slideSteps[0] && slideSteps[0].steps.length) {
+      tl.call(() => {
+        isAnimating = false;
+        revealNextStep(0, 1);
+      });
+    }
     const hint = section.querySelector('[data-scroll-hint]');
     if (hint) gsap.to(hint, { opacity: 1, duration: 0.8, delay: 1.8, ease: 'power2.out' });
   }
