@@ -25,7 +25,8 @@
         "form#ContactForm {background: white; padding: 60px;}",
         ".contact__button {margin-top: 4rem; justify-content: end; display: flex;}",
         ".contact__subheading,.title {color: white; text-align: center; max-width: 560px; margin: auto;}",
-        ".contact__subheading {margin-bottom: 30px;}"
+        ".contact__subheading {margin-bottom: 30px;}",
+        ".button {text-transform: uppercase; font-weight: 700; font-size: 16px; line-height: 136%; letter-spacing: 6%;}"
       ],
       "settings": {
         "heading": "Let’s Connect",
