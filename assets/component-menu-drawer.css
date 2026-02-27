@@ -326,7 +326,7 @@ details[open].menu-opening > .menu-drawer__submenu {
 
 /* Baseline mobile menu design: gradient, centered logo/links/CTA/social */
 .menu-drawer--baseline {
-  background: linear-gradient(180deg, #6b0211 10%, #000000 100%) !important;
+  background: linear-gradient(180deg, #6b0211 80%, #000000 100%) !important;
   --color-foreground: 255, 255, 255;
   --color-background: 0, 0, 0;
 }
