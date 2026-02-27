@@ -425,31 +425,8 @@
         Math.max(1.0, wordPhaseDuration)
       );
 
-      {% comment %} // hold slide 2 pinned
-      tl.to({}, { duration: 1 }, Math.max(1.0, wordPhaseDuration) + 1.0); {% endcomment %}
       // hold slide 2 pinned
       tl.to({}, { duration: 1 }, Math.max(1.0, wordPhaseDuration) + 1.0);
-
-      /* Phase 3 — polyphenols text lines rise in one-by-one during the hold */
-      var polyTextEl = section.querySelector('.animation-hero__polyphenols-text');
-      if (polyTextEl) {
-        var polyLines = Array.from(polyTextEl.children).length
-          ? Array.from(polyTextEl.children)
-          : [polyTextEl];
-        var holdStart = Math.max(1.0, wordPhaseDuration) + 1.0;
-        var holdDuration = 1.0;
-        var perLine = holdDuration / (polyLines.length + 1);
-        gsap.set(polyLines, { y: 40, opacity: 0 });
-        polyLines.forEach(function (line, i) {
-          tl.to(
-            line,
-            { y: 0, opacity: 1, ease: 'power2.out', duration: perLine * 0.9 },
-            holdStart + i * perLine
-          );
-        });
-      }
-
-      {% comment %}  {% endcomment %}
 
       /* Header comes back down as polyphenols arrives */
       if (header) {
