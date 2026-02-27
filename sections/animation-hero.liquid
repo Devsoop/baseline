@@ -434,24 +434,38 @@
       var polyTextEl = section.querySelector('.animation-hero__polyphenols-text');
       if (polyTextEl) {
 
-        /* 1. Wrap every word in a <span> so we can measure offsetTop */
-        polyTextEl.querySelectorAll('p, li').forEach(function (block) {
-          block.innerHTML = block.innerHTML
-            .split(/(\s+)/)
-            .map(function (token) {
-              return token.trim()
-                ? '<span class="poly-word" style="display:inline-block;white-space:nowrap;">' + token + '</span>'
-                : token;
-            })
-            .join('');
-        });
+        /* 1. Walk text nodes only — never touch HTML tags, so commas/punctuation stay attached */
+        function wrapTextNodes(el) {
+          var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+          var nodes = [];
+          var n;
+          while ((n = walker.nextNode())) nodes.push(n);
+          nodes.forEach(function (textNode) {
+            var tokens = textNode.nodeValue.split(/(\s+)/);
+            if (tokens.length <= 1) return;
+            var frag = document.createDocumentFragment();
+            tokens.forEach(function (token) {
+              if (!token.trim()) {
+                frag.appendChild(document.createTextNode(token));
+              } else {
+                var sp = document.createElement('span');
+                sp.className = 'poly-word';
+                sp.style.cssText = 'display:inline-block;white-space:nowrap;';
+                sp.textContent = token;
+                frag.appendChild(sp);
+              }
+            });
+            textNode.parentNode.replaceChild(frag, textNode);
+          });
+        }
+        wrapTextNodes(polyTextEl);
 
         var allWords = Array.from(polyTextEl.querySelectorAll('.poly-word'));
 
-        /* 2. Group words that sit on the same visual line (same offsetTop) */
+        /* 2. Group words sharing the same visual top into lines */
         var lineGroups = [];
         allWords.forEach(function (word) {
-          var top = word.getBoundingClientRect().top;
+          var top = Math.round(word.getBoundingClientRect().top);
           var last = lineGroups[lineGroups.length - 1];
           if (last && Math.abs(last.top - top) < 4) {
             last.words.push(word);
@@ -460,26 +474,34 @@
           }
         });
 
-        /* 3. Wrap each visual-line group in a clip <span> + inner <span> */
+        /* 3. Wrap each visual line: outer clips, inner slides — no extra spacing */
         lineGroups.forEach(function (group) {
-          var wrapper = document.createElement('span');
-          wrapper.style.cssText = 'display:block;overflow:hidden;';
+          var firstWord = group.words[0];
+          var outer = document.createElement('span');
+          outer.style.cssText = 'display:block;overflow:hidden;margin:0;padding:0;line-height:inherit;';
           var inner = document.createElement('span');
-          inner.style.cssText = 'display:block;';
-          group.words[0].parentNode.insertBefore(wrapper, group.words[0]);
-          group.words.forEach(function (w) { inner.appendChild(w); inner.appendChild(document.createTextNode(' ')); });
-          wrapper.appendChild(inner);
+          inner.style.cssText = 'display:block;margin:0;padding:0;';
+          firstWord.parentNode.insertBefore(outer, firstWord);
+          group.words.forEach(function (w) {
+            /* move the word AND any adjacent whitespace text nodes */
+            var prev = w.previousSibling;
+            if (prev && prev.nodeType === 3 && /^\s+$/.test(prev.nodeValue)) {
+              inner.appendChild(prev);
+            }
+            inner.appendChild(w);
+          });
+          outer.appendChild(inner);
           group.inner = inner;
         });
 
-        /* 4. Stagger-animate each line's inner span up from below */
-        var holdStart  = Math.max(1.0, wordPhaseDuration) + 1.0;
-        var perLine    = 0.8 / (lineGroups.length + 1);
-        gsap.set(lineGroups.map(function(g){ return g.inner; }), { y: '110%', opacity: 0 });
+        /* 4. Animate each line up from below, staggered across the hold phase */
+        var holdStart = Math.max(1.0, wordPhaseDuration) + 1.0;
+        var perLine   = 0.75 / (lineGroups.length + 1);
+        gsap.set(lineGroups.map(function (g) { return g.inner; }), { y: '110%' });
         lineGroups.forEach(function (group, i) {
           tl.to(
             group.inner,
-            { y: '0%', opacity: 1, ease: 'power2.out', duration: perLine * 1.2 },
+            { y: '0%', ease: 'power2.out', duration: perLine * 1.4 },
             holdStart + i * perLine
           );
         });
