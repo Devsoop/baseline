@@ -4,8 +4,6 @@
 {%- style -%}
   #BaselineStory-{{ section.id }} {
     position: relative;
-    scroll-snap-type: y mandatory;
-    scroll-behavior: smooth;
   }
 
   #BaselineStory-{{ section.id }}.baseline-story {
@@ -25,9 +23,6 @@
     justify-content: center;
     overflow: hidden;
     background: linear-gradient(180deg, #6B0211 0%, #000000 100%);
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-    touch-action: none;
   }
 
   #BaselineStory-{{ section.id }} .baseline-story__banner-bg {
@@ -72,6 +67,7 @@
     font-size: 112px;
     text-transform: uppercase;
   }
+ 
 
   #BaselineStory-{{ section.id }} .baseline-story__banner-subheading {
     font-size: clamp(1rem, 2.5vw, 1.25rem);
@@ -86,9 +82,6 @@
     min-height: 400px;
     overflow: hidden;
     background: linear-gradient(180deg, #000000 0%, #6B0211 100%);
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-    touch-action: none;
   }
 
   #BaselineStory-{{ section.id }} .baseline-story__app {
@@ -310,13 +303,19 @@
     
     #BaselineStory-{{ section.id }} .baseline-story__banner-heading{
       font-size: 32px;
+      margin-bottom: 343px;
     }
     #BaselineStory-{{ section.id }} .slide-hero-heading { font-size: 32px; }
     #BaselineStory-{{ section.id }} .baseline-story__slide.slide--centered .baseline-story__slide-content {
       margin-left: 0;
     }
+  
   }
-
+  @media screen and (min-width: 750px) {
+    #BaselineStory-{{ section.id }} .baseline-story__banner-heading{
+      margin-bottom: 343px;
+    }
+  }
   #BaselineStory-{{ section.id }} .slide-img-area {
     display: flex;
     align-items: center;
@@ -574,598 +573,221 @@
 
 <script>
 (function() {
-  const section = document.getElementById('BaselineStory-{{ section.id }}');
-  if (!section) return;
-
-  const banner = section.querySelector('[data-banner]');
-  const sliderZone = section.querySelector('[data-slider-zone]');
-  const app = section.querySelector('.baseline-story__app');
-  const ruler = section.querySelector('[data-ruler]');
-  const rulerFill = section.querySelector('[data-ruler-fill]');
-  const dots = section.querySelectorAll('.pdot');
-  const slides = section.querySelectorAll('[data-slide]');
-  const TOTAL = slides.length;
-
-  if (TOTAL === 0) return;
-
-  let sliderZoneActive = false;
-  let bannerActive = false;
-  let isJumpingToSlider = false;
-
-  // Observe banner visibility
-  const bannerIO = new IntersectionObserver(function(entries) {
-    entries.forEach(function(e) {
-      bannerActive = e.isIntersecting && e.intersectionRatio >= 0.8;
-    });
-  }, { threshold: 0.8 });
-  if (banner) bannerIO.observe(banner);
-
-  // Observe slider zone visibility
-  const sliderIO = new IntersectionObserver(function(entries) {
-    entries.forEach(function(e) {
-      sliderZoneActive = e.isIntersecting && e.intersectionRatio >= 0.9;
-    });
-  }, { threshold: 0.9 });
-  if (sliderZone) sliderIO.observe(sliderZone);
-
-  let current = 0;
-  let isAnimating = false;
-  let slideSteps = [];
-
-  function typeInElement(el, onComplete) {
-    if (!el) return;
-    const full = el.dataset.fullText || el.textContent || '';
-    el.dataset.fullText = full;
-    el.textContent = '';
-
-    const proxy = { i: 0 };
-    const baseDuration = Math.max(full.length * 0.03, 0.4); // seconds
-    const duration = Math.min(baseDuration, 1); // cap so very long lines don't feel slow
-
-    gsap.to(proxy, {
-      i: full.length,
-      duration,
-      ease: 'power1.out',
-      overwrite: true,
-      onUpdate() {
-        const current = Math.round(proxy.i);
-        el.textContent = full.slice(0, current);
-      },
-      onComplete: onComplete || null
-    });
-  }
-
-  function updateRuler(idx) {
-    rulerFill.style.height = ((idx + 1) / TOTAL * 100) + '%';
-  }
-
-  function updateDots(idx) {
-    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-  }
-
-  function exitSlide(idx, tl, direction) {
-    direction = direction || 1;
-    const slide = slides[idx];
-    if (!slide) return;
-    tl.to(
-      slide,
-      {
-        yPercent: direction > 0 ? -12 : 12,
-        opacity: 0,
-        duration: 0.6,
-        ease: 'power2.inOut',
-        onComplete: () => {
-          slide.style.pointerEvents = 'none';
-        }
-      },
-      0
-    );
-  }
-
-  function showSlide(idx, tl, offset, direction) {
-    direction = direction || 1;
-    const slide = slides[idx];
-    if (!slide) return;
-    tl.fromTo(
-      slide,
-      {
-        yPercent: direction > 0 ? 12 : -12,
-        opacity: 0
-      },
-      {
-        yPercent: 0,
-        opacity: 1,
-        duration: 0.8,
-        ease: 'power2.out',
-        onStart: () => {
-          slide.style.pointerEvents = 'auto';
-        }
-      },
-      offset
-    );
-  }
-
-  function prepareSlideSteps() {
-    slideSteps = Array.from(slides).map(slide => {
-      const isCentered = slide.classList.contains('slide--centered');
-      const heroHeading = slide.querySelector('.slide-hero-heading');
-      const eyebrow = slide.querySelector('.slide-eyebrow');
-      const lines = Array.from(slide.querySelectorAll('.line-inner'));
-      const illusAll = Array.from(slide.querySelectorAll('.illus-img'));
-      const steps = [];
-
-      if (isCentered) {
-        if (heroHeading) steps.push([heroHeading]);
-      } else {
-        if (eyebrow) steps.push([eyebrow]);
-        lines.forEach(line => steps.push([line]));
-      }
-
-      if (heroHeading) gsap.set(heroHeading, { opacity: 0, y: 30 });
-      if (eyebrow) gsap.set(eyebrow, { opacity: 0, y: 20 });
-      if (lines.length) gsap.set(lines, { opacity: 0, y: '100%' });
-      if (illusAll.length) gsap.set(illusAll, { opacity: 0, y: 50 });
-
-      return {
-        steps,
-        revealed: 0,
-        isCentered,
-        imageElements: illusAll,
-        imageAnimated: false,
-        imageProgress: 0
-      };
-    });
-  }
-
-  function scrubImage(idx, direction) {
-    const state = slideSteps[idx];
-    if (!state || !state.imageElements || !state.imageElements.length) return false;
-    if (!state.imageAnimated) return false;
-
-    const variant = idx % 3;
-    const start = (function() {
-      // Push images further off-screen so they travel in from outside the viewport
-      if (variant === 0) return { x: -180, y: -180 };  // top-left, farther out
-      if (variant === 1) return { x: 180, y: 180 };    // bottom-right, farther out
-      return { x: 0, y: 260 };                         // from well below center
-    })();
-
-    // Progress per scroll: move the image fully in a single scroll step
-    const delta = 1 * (direction > 0 ? 1 : -1);
-    const next = Math.max(0, Math.min(1, (state.imageProgress || 0) + delta));
-    if (next === state.imageProgress) return false;
-
-    state.imageProgress = next;
-    const p = next;
-
-    if (p >= 1) {
-      // Snap cleanly to final state to avoid blur
-      gsap.set(state.imageElements, {
-        opacity: 1,
-        x: 0,
-        y: 0,
-        rotation: 0,
-        scale: 1,
-        clearProps: 'transform'
-      });
-    } else {
-      gsap.to(state.imageElements, {
-        opacity: 1,
-        x: start.x + (0 - start.x) * p,
-        y: start.y + (0 - start.y) * p,
-        rotation: variant === 2 ? 4 * (1 - p) : 0,
-        scale: 0.95 + (1 - 0.95) * p,
-        duration: 0.65,
-        ease: 'power3.out'
-      });
-    }
-
-    return true;
-  }
-
-  function revealNextStep(idx, direction) {
-    const state = slideSteps[idx];
-    if (!state || isAnimating) return false;
-
-    if (direction > 0) {
-      if (state.revealed >= state.steps.length) return false;
-      const elements = state.steps[state.revealed];
-      const firstEl = elements[0];
-      const slideVariant = idx % 3; // 0,1,2 → different animation styles per slide
-
-      const isText =
-        firstEl &&
-        (firstEl.classList.contains('line-inner') ||
-         firstEl.classList.contains('slide-hero-heading') ||
-         firstEl.classList.contains('slide-eyebrow'));
-
-      if (isText) {
-        // Initialize image for this slide (once); scroll will scrub it
-        if (!state.imageAnimated && state.imageElements && state.imageElements.length) {
-          state.imageAnimated = true;
-          state.imageProgress = 0;
-          const imgEls = state.imageElements;
-          const start = (function() {
-            if (slideVariant === 0) return { x: -180, y: -180 };
-            if (slideVariant === 1) return { x: 180, y: 180 };
-            return { x: 0, y: 260 };
-          })();
-
-          gsap.set(imgEls, {
-            opacity: 1,
-            x: start.x,
-            y: start.y,
-            rotation: slideVariant === 2 ? 4 : 0,
-            scale: 0.95
-          });
-        }
-
-        // Text: always completes within a single scroll "step"
-        state.revealed += 1;
-        if (slideVariant === 0) {
-          // Variant 0: typewriter
-          isAnimating = true;
-          gsap.set(firstEl, { opacity: 1, y: 0 });
-          typeInElement(firstEl, () => {
-            isAnimating = false;
-          });
-        } else {
-          // Variant 1/2: different motion styles
-          const tl = gsap.timeline({ onComplete: () => { isAnimating = false; } });
-          isAnimating = true;
-          if (slideVariant === 1) {
-            // Fade up
-            gsap.set(elements, { opacity: 0, y: 20, x: 0 });
-            tl.to(elements, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0);
-          } else {
-            // Slide in from left
-            gsap.set(elements, { opacity: 0, x: -30, y: 0 });
-            tl.to(elements, { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out' }, 0);
-          }
-        }
-      } else {
-        state.revealed += 1;
-        const tl = gsap.timeline({ onComplete: () => { isAnimating = false; } });
-        isAnimating = true;
-        tl.to(elements, { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' }, 0);
-      }
-
-      return true;
-    }
-
-    return false;
-  }
-
-  function hidePreviousStep(idx) {
-    const state = slideSteps[idx];
-    if (!state || isAnimating) return false;
-    if (state.revealed <= 0) return false;
-
-    state.revealed -= 1;
-    const elements = state.steps[state.revealed];
-    if (!elements || !elements.length) return false;
-
-    const firstEl = elements[0];
-    const isText =
-      firstEl &&
-      (firstEl.classList.contains('line-inner') ||
-       firstEl.classList.contains('slide-hero-heading') ||
-       firstEl.classList.contains('slide-eyebrow'));
-
-    isAnimating = true;
-
-    if (isText) {
-      let yValue = 0;
-      if (firstEl.classList.contains('slide-hero-heading')) {
-        yValue = 30;
-      } else if (firstEl.classList.contains('slide-eyebrow')) {
-        yValue = 20;
-      } else if (firstEl.classList.contains('line-inner')) {
-        yValue = '100%';
-      }
-
-      gsap.to(elements, {
-        opacity: 0,
-        y: yValue,
-        duration: 0.35,
-        ease: 'power2.in',
-        onComplete: () => {
-          if (firstEl.classList.contains('line-inner') && firstEl.dataset && firstEl.dataset.fullText) {
-            firstEl.textContent = '';
-          }
-          isAnimating = false;
-        }
-      });
-    } else {
-      gsap.to(elements, {
-        opacity: 0,
-        y: 20,
-        duration: 0.3,
-        ease: 'power2.in',
-        onComplete: () => {
-          isAnimating = false;
-        }
-      });
-    }
-
-    return true;
-  }
-
-  function handleDirection(direction) {
-    if (isAnimating) return;
-
-    if (direction > 0) {
-      const state = slideSteps[current];
-      // Advance text/content for this slide
-      const didReveal = revealNextStep(current, 1);
-
-      // Always scrub image in the same scroll so text + image feel coupled
-      if (state && state.imageAnimated && state.imageElements && state.imageElements.length) {
-        scrubImage(current, 1);
-
-        // If we still have text steps or image is not fully in place, stay on this slide
-        if (state.revealed < state.steps.length || state.imageProgress < 1) {
-          return;
-        }
-      } else {
-        // If we just revealed text but there is no image, keep user on slide until all text parts are done
-        if (didReveal && state && state.revealed < state.steps.length) {
-          return;
-        }
-      }
-
-      // Text + image fully played → move to next slide
-      if (current === TOTAL - 1) return;
-      goTo(current + 1, 1);
+  function loadScript(src, cb) {
+    if (document.querySelector('script[src="' + src + '"]')) {
+      cb && cb();
       return;
     }
-
-    if (direction < 0) {
-      const state = slideSteps[current];
-
-      // First reverse the last revealed step on this slide, if any
-      if (state) {
-        const didHide = hidePreviousStep(current);
-
-        // Scrub image backwards so text and image feel coupled
-        if (state.imageAnimated && state.imageElements && state.imageElements.length) {
-          scrubImage(current, -1);
-        }
-
-        if (didHide) return;
-      }
-
-      if (current === 0) return;
-      goTo(current - 1, -1);
-    }
+    var s = document.createElement('script');
+    s.src = src;
+    s.onload = function() { cb && cb(); };
+    document.head.appendChild(s);
   }
-
-  function goTo(next, direction) {
-    if (isAnimating || next === current || next < 0 || next >= TOTAL) return;
-    isAnimating = true;
-    const prev = current;
-    const dir = direction || (next > prev ? 1 : -1);
-    current = next;
-    updateDots(next);
-    updateRuler(next);
-
-    const tl = gsap.timeline({ onComplete: () => { isAnimating = false; } });
-    exitSlide(prev, tl, dir);
-    showSlide(next, tl, 0.2, dir);
-  }
-
-  function jumpToSliderZone() {
-    if (isJumpingToSlider || !sliderZone) return;
-    isJumpingToSlider = true;
-    
-    const startY = window.pageYOffset || window.scrollY;
-    const sliderTop = sliderZone.getBoundingClientRect().top + startY;
-    const distance = sliderTop - startY;
-    const duration = 800;
-    const startTime = performance.now();
-
-    function animateScroll(currentTime) {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const ease = progress < 0.5 
-        ? 2 * progress * progress 
-        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
-      
-      window.scrollTo(0, startY + distance * ease);
-      
-      if (progress < 1) {
-        requestAnimationFrame(animateScroll);
-      } else {
-        isJumpingToSlider = false;
-      }
-    }
-    
-    requestAnimationFrame(animateScroll);
-  }
-
-  function jumpToBanner() {
-    if (isJumpingToSlider || !banner) return;
-    isJumpingToSlider = true;
-    
-    const startY = window.pageYOffset || window.scrollY;
-    const bannerTop = banner.getBoundingClientRect().top + startY;
-    const distance = bannerTop - startY;
-    const duration = 800;
-    const startTime = performance.now();
-
-    function animateScroll(currentTime) {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const ease = progress < 0.5 
-        ? 2 * progress * progress 
-        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
-      
-      window.scrollTo(0, startY + distance * ease);
-      
-      if (progress < 1) {
-        requestAnimationFrame(animateScroll);
-      } else {
-        isJumpingToSlider = false;
-      }
-    }
-    
-    requestAnimationFrame(animateScroll);
-  }
-
-  let lastWheel = 0;
-  window.addEventListener('wheel', e => {
-    // If banner is active and scrolling down, jump to slider zone
-    if (bannerActive && e.deltaY > 0 && !isJumpingToSlider) {
-      e.preventDefault();
-      jumpToSliderZone();
-      return;
-    }
-
-    // If slider zone is active, handle slide navigation
-    if (sliderZoneActive && sliderZone.contains(e.target)) {
-      // On last slide scrolling down: allow page to scroll once fully revealed
-      if (current === TOTAL - 1 && e.deltaY > 0 && slideSteps[current] && slideSteps[current].revealed >= slideSteps[current].steps.length) return;
-      e.preventDefault();
-      const now = Date.now();
-      if (isAnimating || now - lastWheel < 120) return;
-      lastWheel = now;
-      
-      // If on first slide (no parts revealed) and scrolling up, jump back to banner
-      if (current === 0 && e.deltaY < 0 && (!slideSteps[0] || slideSteps[0].revealed === 0)) {
-        jumpToBanner();
-        return;
-      }
-
-      handleDirection(e.deltaY > 0 ? 1 : -1);
-      return;
-    }
-
-    // If slider zone is not fully active but user is in it, allow normal scroll
-  }, { passive: false });
-
-  let touchY = 0;
-  let touchX = 0;
-  let touchStartElement = null;
-  let touchHandled = false;
-
-  section.addEventListener('touchstart', e => {
-    touchY = e.touches[0].clientY;
-    touchX = e.touches[0].clientX;
-    touchStartElement = e.target;
-    touchHandled = false;
-  }, { passive: true });
-
-  section.addEventListener('touchmove', e => {
-    if (touchHandled) {
-      e.preventDefault();
-      return;
-    }
-    const inBanner = banner && banner.contains(touchStartElement);
-    const inSlider = sliderZone && sliderZone.contains(touchStartElement);
-    if (!inBanner && !inSlider) return;
-
-    const currentY = e.touches[0].clientY;
-    const currentX = e.touches[0].clientX;
-    const dy = touchY - currentY;
-    const dx = touchX - currentX;
-    const absDy = Math.abs(dy);
-    const absDx = Math.abs(dx);
-    if (absDy < 15) return;
-    if (absDx > absDy) return;
-
-    if (inBanner && dy > 15) {
-      touchHandled = true;
-      e.preventDefault();
-      return;
-    }
-    if (inSlider) {
-      if (current === 0 && dy < -15) {
-        touchHandled = true;
-        e.preventDefault();
-        return;
-      }
-      if (current === TOTAL - 1 && dy > 15) return;
-      touchHandled = true;
-      e.preventDefault();
-    }
-  }, { passive: false });
-
-  section.addEventListener('touchend', e => {
-    if (!touchStartElement) return;
-    const endY = e.changedTouches[0].clientY;
-    const dy = touchY - endY;
-
-    if (banner && banner.contains(touchStartElement)) {
-      if (dy > 40) {
-        jumpToSliderZone();
-      }
-      return;
-    }
-
-    if (!sliderZone || !sliderZone.contains(touchStartElement)) return;
-    if (Math.abs(dy) < 40) return;
-
-    if (current === 0 && dy < -40) {
-      jumpToBanner();
-      return;
-    }
-
-    if (current === TOTAL - 1 && dy > 40 && slideSteps[current] && slideSteps[current].revealed >= slideSteps[current].steps.length) {
-      window.scrollTo(0, window.scrollY + window.innerHeight);
-      return;
-    }
-
-    const now = Date.now();
-    if (isAnimating || now - lastWheel < 400) return;
-    lastWheel = now;
-    handleDirection(dy > 0 ? 1 : -1);
-  }, { passive: true });
-
-  section.addEventListener('keydown', e => {
-    // If banner is active and pressing down/space, jump to slider
-    if (bannerActive && (e.key === 'ArrowDown' || e.key === ' ')) {
-      e.preventDefault();
-      jumpToSliderZone();
-      return;
-    }
-
-    // If slider zone is active, handle slide navigation
-    if (!sliderZoneActive) return;
-    if (!app.contains(document.activeElement) && !section.contains(document.activeElement)) return;
-    
-    // If on first slide and pressing up, jump back to banner
-    if (current === 0 && e.key === 'ArrowUp') {
-      e.preventDefault();
-      jumpToBanner();
-      return;
-    }
-    
-    if (e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); handleDirection(1); }
-    if (e.key === 'ArrowUp') { e.preventDefault(); handleDirection(-1); }
-  });
 
   function init() {
-    if (typeof gsap === 'undefined') return setTimeout(init, 50);
-    gsap.set(slides, { opacity: 0 });
-    prepareSlideSteps();
-    updateRuler(0);
-    updateDots(0);
-    const tl = gsap.timeline({ onComplete: () => { isAnimating = false; } });
-    isAnimating = true;
-    showSlide(0, tl, 0.3, 1);
-    // Optionally reveal the first part so slide 0 isn't empty
-    if (slideSteps[0] && slideSteps[0].steps.length) {
-      tl.call(() => {
-        isAnimating = false;
-        revealNextStep(0, 1);
-      });
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+      setTimeout(init, 50);
+      return;
     }
-    const hint = section.querySelector('[data-scroll-hint]');
-    if (hint) gsap.to(hint, { opacity: 1, duration: 0.8, delay: 1.8, ease: 'power2.out' });
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    var section = document.getElementById('BaselineStory-{{ section.id }}');
+    if (!section) return;
+
+    var sliderZone = section.querySelector('[data-slider-zone]');
+    var slides = Array.from(section.querySelectorAll('[data-slide]'));
+    var rulerFill = section.querySelector('[data-ruler-fill]');
+    var dots = Array.from(section.querySelectorAll('.pdot'));
+    var scrollHint = section.querySelector('[data-scroll-hint]');
+    var TOTAL = slides.length;
+
+    if (!sliderZone || !TOTAL) return;
+
+    // Kill existing ScrollTriggers for this section (e.g. in theme editor)
+    ScrollTrigger.getAll().forEach(function(st) {
+      if (st.trigger && (st.trigger === sliderZone || section.contains(st.trigger))) {
+        st.kill();
+      }
+    });
+
+    // Base state: hide all slides, start below viewport so they can travel upward
+    gsap.set(slides, { autoAlpha: 0, yPercent: 40 });
+
+    // Master timeline that scroll-scrubs through all slides while sliderZone is pinned
+    var tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sliderZone,
+        start: 'top top',
+        end: '+=' + (TOTAL * 150) + '%',
+        pin: true,
+        scrub: 1.8,
+        anticipatePin: 1,
+        snap: TOTAL > 1 ? {
+          snapTo: function(value) {
+            // Snap to nearest slide based on overall progress
+            var points = slides.map(function(_, i) {
+              return i / (TOTAL - 1);
+            });
+            var closest = points[0];
+            var minDist = Math.abs(value - closest);
+            points.forEach(function(p) {
+              var d = Math.abs(value - p);
+              if (d < minDist) {
+                minDist = d;
+                closest = p;
+              }
+            });
+            return closest;
+          },
+          duration: 0.8,
+          ease: 'power2.inOut'
+        } : false,
+        onUpdate: function(self) {
+          var progress = self.progress;
+          var activeIndex = TOTAL > 1 ? Math.round(progress * (TOTAL - 1)) : 0;
+
+          // Ruler and dots synced to scroll progress
+          if (rulerFill) {
+            var rulerPct = TOTAL > 1 ? (activeIndex / (TOTAL - 1)) * 100 : 100;
+            rulerFill.style.height = rulerPct + '%';
+          }
+
+          if (dots.length) {
+            dots.forEach(function(dot, i) {
+              dot.classList.toggle('active', i === activeIndex);
+            });
+          }
+
+          // Only active slide should be interactive
+          slides.forEach(function(slide, i) {
+            slide.style.pointerEvents = i === activeIndex ? 'auto' : 'none';
+          });
+
+          // Fade out scroll hint once user starts scrolling
+          if (scrollHint) {
+            gsap.to(scrollHint, {
+              autoAlpha: progress < 0.05 ? 1 : 0,
+              duration: 0.35,
+              ease: 'power1.out',
+              overwrite: 'auto'
+            });
+          }
+        }
+      }
+    });
+
+    // Build per-slide segments
+    slides.forEach(function(slide, index) {
+      var isCentered = slide.classList.contains('slide--centered');
+      var heroHeading = slide.querySelector('.slide-hero-heading');
+      var eyebrow = slide.querySelector('.slide-eyebrow');
+      var lines = Array.from(slide.querySelectorAll('.line-inner'));
+      var images = Array.from(slide.querySelectorAll('.illus-img'));
+
+      var baseStart = index * 1.0;
+      var enterAt = baseStart;
+      var contentAt = baseStart + 0.15;
+      var exitAt = baseStart + 0.85;
+
+      // Ensure inner elements start from a clean base state
+      if (heroHeading) {
+        gsap.set(heroHeading, { autoAlpha: 0, y: 40 });
+      }
+      if (eyebrow) {
+        gsap.set(eyebrow, { autoAlpha: 0, y: 24 });
+      }
+      if (lines.length) {
+        gsap.set(lines, { autoAlpha: 0, y: 26 });
+      }
+      if (images.length) {
+        // Alternate entry side per slide: even → left, odd → right
+        var fromSide = index % 2 === 0 ? -60 : 60;
+        gsap.set(images, { autoAlpha: 0, xPercent: fromSide, yPercent: 0, scale: 0.95 });
+      }
+
+      // Slide in container: fade in and start its upward travel from bottom
+      tl.to(slide, {
+        autoAlpha: 1,
+        duration: 0.6,
+        ease: 'power2.out'
+      }, enterAt);
+
+      // Continuous vertical travel: from bottom toward top over the slide segment
+      tl.to(slide, {
+        yPercent: -40,
+        duration: 0.9,
+        ease: 'none'
+      }, enterAt);
+
+      // Text content animation per slide type
+      if (isCentered && heroHeading) {
+        tl.to(heroHeading, {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power2.out'
+        }, contentAt);
+      } else {
+        if (eyebrow) {
+          tl.to(eyebrow, {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.5,
+            ease: 'power2.out'
+          }, contentAt);
+        }
+        if (lines.length) {
+          tl.to(lines, {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.9,
+            ease: 'power2.out',
+            stagger: 0.12
+          }, contentAt + 0.08);
+        }
+      }
+
+      // Image motion: come in horizontally, then travel upward and fade out
+      if (images.length) {
+        // Fade & slide into viewport from side
+        tl.to(images, {
+          autoAlpha: 1,
+          xPercent: 0,
+          scale: 1,
+          duration: 0.9,
+          ease: 'power3.out'
+        }, contentAt + 0.05);
+
+        // Then move vertically toward the top while fading away
+        tl.to(images, {
+          yPercent: -40,
+          autoAlpha: 0,
+          duration: 0.9,
+          ease: 'power2.inOut'
+        }, contentAt + 0.55);
+      }
+
+      // Exit / transition to next slide: fade away while still drifting upward
+      if (index < TOTAL - 1) {
+        tl.to(slide, {
+          autoAlpha: 0,
+          duration: 0.6,
+          ease: 'power2.in'
+        }, exitAt);
+      }
+    });
+
+    // Gently fade in scroll hint on initial view
+    if (scrollHint) {
+      gsap.fromTo(scrollHint,
+        { autoAlpha: 0 },
+        { autoAlpha: 1, duration: 0.8, delay: 0.5, ease: 'power2.out' }
+      );
+    }
   }
 
-  if (document.readyState === 'complete') setTimeout(init, 200);
-  else window.addEventListener('load', () => setTimeout(init, 200));
+  loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js', init);
 })();
 </script>
 
