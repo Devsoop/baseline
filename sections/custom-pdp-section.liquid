@@ -13,8 +13,6 @@
           background-position: center;
           background-repeat: no-repeat;
       {% else %}
-        /* background-color: #0a0a0a; */
-        /* background-image: radial-gradient(ellipse 80% 50% at 50% 28%, #81091b 0%, #690212 25%, #560410 55%, rgb(99 4 17 / 41%) 85%, transparent 100%); */
         background:
     linear-gradient(
       to bottom,
@@ -195,6 +193,7 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
       transition: all 0.3s ease;
+      cursor: pointer;
     }
 
     .info-button:hover {
@@ -219,6 +218,14 @@
       line-height: 160%;
       color: {{ section.settings.info_text_color }};
       margin: 0;
+    }
+
+    /* Button description panels */
+    .btn-description-panel {
+      display: none;
+    }
+    .btn-description-panel.active {
+      display: block;
     }
 
     .dose-badge {
@@ -682,9 +689,14 @@
                 <h3>{{ block.settings.info_title }}</h3>
 
                 {% if block.settings.show_buttons %}
+                  {%- assign block_uid = block.id -%}
                   <div class="button-group">
                     {% if block.settings.button_1_text != blank %}
-                      <span class="info-button {% if block.settings.button_1_active %}active{% endif %}">
+                      <span
+                        class="info-button{% if block.settings.button_1_active %} active{% endif %}"
+                        data-btn-group="{{ block_uid }}"
+                        data-btn-target="{{ block_uid }}-desc-1"
+                      >
                         {% if block.settings.button_1_icon %}
                           <svg
                             class="info-icon"
@@ -708,7 +720,11 @@
                     {% endif %}
 
                     {% if block.settings.button_2_text != blank %}
-                      <span class="info-button {% if block.settings.button_2_active %}active{% endif %}">
+                      <span
+                        class="info-button{% if block.settings.button_2_active %} active{% endif %}"
+                        data-btn-group="{{ block_uid }}"
+                        data-btn-target="{{ block_uid }}-desc-2"
+                      >
                         {% if block.settings.button_2_icon %}
                           <svg
                             class="info-icon"
@@ -728,7 +744,11 @@
                     {% endif %}
 
                     {% if block.settings.button_3_text != blank %}
-                      <span class="info-button {% if block.settings.button_3_active %}active{% endif %}">
+                      <span
+                        class="info-button{% if block.settings.button_3_active %} active{% endif %}"
+                        data-btn-group="{{ block_uid }}"
+                        data-btn-target="{{ block_uid }}-desc-3"
+                      >
                         {% if block.settings.button_3_icon %}
                           <svg
                             class="info-icon"
@@ -745,35 +765,60 @@
                       </span>
                     {% endif %}
                   </div>
+
+                  <!-- Per-button descriptions: only the active one is visible -->
+                  {% if block.settings.button_1_text != blank %}
+                    <div
+                      id="{{ block_uid }}-desc-1"
+                      class="btn-description-panel{% if block.settings.button_1_active %} active{% endif %}"
+                    >
+                      <p class="info-text">{{ block.settings.info_description }}</p>
+                    </div>
+                  {% endif %}
+                  {% if block.settings.button_2_text != blank %}
+                    <div
+                      id="{{ block_uid }}-desc-2"
+                      class="btn-description-panel{% if block.settings.button_2_active %} active{% endif %}"
+                    >
+                      <p class="info-text">{{ block.settings.button_2_description }}</p>
+                    </div>
+                  {% endif %}
+                  {% if block.settings.button_3_text != blank %}
+                    <div
+                      id="{{ block_uid }}-desc-3"
+                      class="btn-description-panel{% if block.settings.button_3_active %} active{% endif %}"
+                    >
+                      <p class="info-text">{{ block.settings.button_3_description }}</p>
+                    </div>
+                  {% endif %}
+
+                {% else %}
+                  {% comment %} No buttons — show dose badge / description flow unchanged {% endcomment %}
+                  {% if block.settings.show_dose_badge %}
+                    <div class="dose-badge">
+                      <svg width="17" height="17" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13.4221 0.102489C14.6762 -0.136286 16.0638 0.00447243 16.9878 0.928381C17.9117 1.8523 18.0524 3.24002 17.8137 4.49408C17.5718 5.7646 16.9167 7.06039 16.0171 7.96001C15.0197 8.95742 13.8876 9.29601 12.7675 9.07801C11.902 8.90951 11.1886 8.98809 10.7988 9.40292L3.38083 17.2995C2.62498 18.1042 1.35337 18.124 0.572766 17.3434C-0.207842 16.5628 -0.187984 15.2912 0.616633 14.5353L8.51317 7.11732C8.92808 6.72761 9.00667 6.01416 8.83817 5.14861C8.62017 4.02856 8.95875 2.89649 9.95617 1.89908C10.8558 0.999464 12.1516 0.344406 13.4221 0.102489Z" fill="black"/>
+                      </svg>
+                      <span style="margin-left:4px;">{{ block.settings.dose_badge_text }}</span>
+                    </div>
+                  {% endif %}
+
+                  <p class="info-text">{{ block.settings.info_description }}</p>
+
+                  {% if block.settings.show_dose_badge %}
+                    <div class="dose-badge">
+                      <svg width="17" height="17" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13.4221 0.102489C14.6762 -0.136286 16.0638 0.00447243 16.9878 0.928381C17.9117 1.8523 18.0524 3.24002 17.8137 4.49408C17.5718 5.7646 16.9167 7.06039 16.0171 7.96001C15.0197 8.95742 13.8876 9.29601 12.7675 9.07801C11.902 8.90951 11.1886 8.98809 10.7988 9.40292L3.38083 17.2995C2.62498 18.1042 1.35337 18.124 0.572766 17.3434C-0.207842 16.5628 -0.187984 15.2912 0.616633 14.5353L8.51317 7.11732C8.92808 6.72761 9.00667 6.01416 8.83817 5.14861C8.62017 4.02856 8.95875 2.89649 9.95617 1.89908C10.8558 0.999464 12.1516 0.344406 13.4221 0.102489Z" fill="black"/>
+                      </svg>
+                      <svg width="17" height="17" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13.4221 0.102489C14.6762 -0.136286 16.0638 0.00447243 16.9878 0.928381C17.9117 1.8523 18.0524 3.24002 17.8137 4.49408C17.5718 5.7646 16.9167 7.06039 16.0171 7.96001C15.0197 8.95742 13.8876 9.29601 12.7675 9.07801C11.902 8.90951 11.1886 8.98809 10.7988 9.40292L3.38083 17.2995C2.62498 18.1042 1.35337 18.124 0.572766 17.3434C-0.207842 16.5628 -0.187984 15.2912 0.616633 14.5353L8.51317 7.11732C8.92808 6.72761 9.00667 6.01416 8.83817 5.14861C8.62017 4.02856 8.95875 2.89649 9.95617 1.89908C10.8558 0.999464 12.1516 0.344406 13.4221 0.102489Z" fill="black"/>
+                      </svg>
+                      <span style="margin-left:4px;">{{ block.settings.dose_badge_text_additional }}</span>
+                    </div>
+                    <p class="info-text">{{ block.settings.info_description_additional }}</p>
+                  {% endif %}
                 {% endif %}
 
-                {% if block.settings.show_dose_badge %}
-                  <div class="dose-badge">
-                    <!-- SVG icon -->
-                    <svg width="17" height="17" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M13.4221 0.102489C14.6762 -0.136286 16.0638 0.00447243 16.9878 0.928381C17.9117 1.8523 18.0524 3.24002 17.8137 4.49408C17.5718 5.7646 16.9167 7.06039 16.0171 7.96001C15.0197 8.95742 13.8876 9.29601 12.7675 9.07801C11.902 8.90951 11.1886 8.98809 10.7988 9.40292L3.38083 17.2995C2.62498 18.1042 1.35337 18.124 0.572766 17.3434C-0.207842 16.5628 -0.187984 15.2912 0.616633 14.5353L8.51317 7.11732C8.92808 6.72761 9.00667 6.01416 8.83817 5.14861C8.62017 4.02856 8.95875 2.89649 9.95617 1.89908C10.8558 0.999464 12.1516 0.344406 13.4221 0.102489Z" fill="black"/>
-                    </svg>
-
-                    <span style="margin-left:4px;">{{ block.settings.dose_badge_text }}</span>
-                  </div>
-                {% endif %}
-
-                <p class="info-text">{{ block.settings.info_description }}</p>
-
-                {% if block.settings.show_dose_badge %}
-                  <div class="dose-badge">
-                    <svg width="17" height="17" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M13.4221 0.102489C14.6762 -0.136286 16.0638 0.00447243 16.9878 0.928381C17.9117 1.8523 18.0524 3.24002 17.8137 4.49408C17.5718 5.7646 16.9167 7.06039 16.0171 7.96001C15.0197 8.95742 13.8876 9.29601 12.7675 9.07801C11.902 8.90951 11.1886 8.98809 10.7988 9.40292L3.38083 17.2995C2.62498 18.1042 1.35337 18.124 0.572766 17.3434C-0.207842 16.5628 -0.187984 15.2912 0.616633 14.5353L8.51317 7.11732C8.92808 6.72761 9.00667 6.01416 8.83817 5.14861C8.62017 4.02856 8.95875 2.89649 9.95617 1.89908C10.8558 0.999464 12.1516 0.344406 13.4221 0.102489Z" fill="black"/>
-                    </svg>
-                    <svg width="17" height="17" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M13.4221 0.102489C14.6762 -0.136286 16.0638 0.00447243 16.9878 0.928381C17.9117 1.8523 18.0524 3.24002 17.8137 4.49408C17.5718 5.7646 16.9167 7.06039 16.0171 7.96001C15.0197 8.95742 13.8876 9.29601 12.7675 9.07801C11.902 8.90951 11.1886 8.98809 10.7988 9.40292L3.38083 17.2995C2.62498 18.1042 1.35337 18.124 0.572766 17.3434C-0.207842 16.5628 -0.187984 15.2912 0.616633 14.5353L8.51317 7.11732C8.92808 6.72761 9.00667 6.01416 8.83817 5.14861C8.62017 4.02856 8.95875 2.89649 9.95617 1.89908C10.8558 0.999464 12.1516 0.344406 13.4221 0.102489Z" fill="black"/>
-                    </svg>
-
-                    <span style="margin-left:4px;">{{ block.settings.dose_badge_text_additional }}</span>
-                  </div>
-                {% endif %}
-
-                <p class="info-text">{{ block.settings.info_description_additional }}</p>
               </div>
               {% if block.settings.show_info_card %}
                 <div class="info-block-tile-two">
@@ -897,17 +942,46 @@
 </section>
 
 <script>
-  // Flip card functionality
   document.addEventListener('DOMContentLoaded', function () {
-    const benefitCards = document.querySelectorAll('.benefit-card');
 
+    // ── Tabbed button descriptions ──────────────────────────────
+    document.querySelectorAll('.info-button[data-btn-group]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var group   = this.dataset.btnGroup;
+        var target  = this.dataset.btnTarget;
+
+        // Deactivate all buttons in this group
+        document.querySelectorAll('.info-button[data-btn-group="' + group + '"]').forEach(function (b) {
+          b.classList.remove('active');
+          // Reset all SVG path fills to white
+          b.querySelectorAll('path').forEach(function (p) { p.style.fill = 'white'; });
+        });
+
+        // Activate clicked button
+        this.classList.add('active');
+        // Set SVG path fills to black for active button
+        this.querySelectorAll('path').forEach(function (p) { p.style.fill = 'black'; });
+
+        // Hide all description panels in this group
+        document.querySelectorAll('.btn-description-panel[id^="' + group + '"]').forEach(function (panel) {
+          panel.classList.remove('active');
+        });
+
+        // Show the target description panel
+        var targetPanel = document.getElementById(target);
+        if (targetPanel) targetPanel.classList.add('active');
+      });
+    });
+
+    // ── Flip card functionality ─────────────────────────────────
+    const benefitCards = document.querySelectorAll('.benefit-card');
     benefitCards.forEach((card) => {
       card.addEventListener('click', function () {
         this.classList.toggle('flipped');
       });
     });
 
-    // Optional: Auto-scroll functionality for better UX on mobile
+    // ── Drag-to-scroll on benefits row ─────────────────────────
     const scrollContainer = document.querySelector('.benefits-cards-wrapper');
     if (scrollContainer) {
       let isDown = false;
@@ -1253,6 +1327,10 @@
           "default": true
         },
         {
+          "type": "header",
+          "content": "Button 1"
+        },
+        {
           "type": "text",
           "id": "button_1_text",
           "label": "Button 1 Text",
@@ -1267,8 +1345,18 @@
         {
           "type": "checkbox",
           "id": "button_1_active",
-          "label": "Button 1 Active",
+          "label": "Button 1 Active by Default",
           "default": true
+        },
+        {
+          "type": "textarea",
+          "id": "info_description",
+          "label": "Button 1 Description",
+          "default": "Supports optimal nutrient absorption and helps the body maintain balance, and helps improve absorption of fat-soluble supplements like curcumin, D, E, and K."
+        },
+        {
+          "type": "header",
+          "content": "Button 2"
         },
         {
           "type": "text",
@@ -1285,8 +1373,18 @@
         {
           "type": "checkbox",
           "id": "button_2_active",
-          "label": "Button 2 Active",
+          "label": "Button 2 Active by Default",
           "default": false
+        },
+        {
+          "type": "textarea",
+          "id": "button_2_description",
+          "label": "Button 2 Description",
+          "default": "Taking olive oil with meals enhances the absorption of fat-soluble nutrients and polyphenols, while supporting healthy digestion and reducing post-meal inflammation."
+        },
+        {
+          "type": "header",
+          "content": "Button 3"
         },
         {
           "type": "text",
@@ -1303,8 +1401,18 @@
         {
           "type": "checkbox",
           "id": "button_3_active",
-          "label": "Button 3 Active",
+          "label": "Button 3 Active by Default",
           "default": false
+        },
+        {
+          "type": "textarea",
+          "id": "button_3_description",
+          "label": "Button 3 Description",
+          "default": "After exercise, olive oil's anti-inflammatory polyphenols help reduce muscle soreness, support tissue repair, and replenish energy stores for faster recovery."
+        },
+        {
+          "type": "header",
+          "content": "Dose Badge (non-button mode)"
         },
         {
           "type": "checkbox",
@@ -1320,8 +1428,8 @@
         },
         {
           "type": "textarea",
-          "id": "info_description",
-          "label": "Info Description (1st)",
+          "id": "info_description_additional",
+          "label": "Info Description (2nd)",
           "default": "Supports optimal nutrient absorption and helps the body maintain balance, and helps improve absorption of fat-soluble supplements like curcumin, D, E, and K."
         },
         {
@@ -1329,12 +1437,6 @@
           "id": "dose_badge_text_additional",
           "label": "Dose Badge Text (2nd)",
           "default": "✓ 1 TABLESPOON (15ML)"
-        },
-        {
-          "type": "textarea",
-          "id": "info_description_additional",
-          "label": "Info Description (2nd)",
-          "default": "Supports optimal nutrient absorption and helps the body maintain balance, and helps improve absorption of fat-soluble supplements like curcumin, D, E, and K."
         },
         {
           "type": "checkbox",
@@ -1445,7 +1547,9 @@
             "button_1_active": true,
             "button_2_text": "WITH MEALS",
             "button_3_text": "AFTER EXERCISE",
-            "info_description": "Supports optimal nutrient absorption on an empty stomach, and helps the body maintain balance, and helps improve absorption of fat-soluble supplements like curcumin, D, E, and K."
+            "info_description": "Supports optimal nutrient absorption on an empty stomach, and helps the body maintain balance, and helps improve absorption of fat-soluble supplements like curcumin, D, E, and K.",
+            "button_2_description": "Taking olive oil with meals enhances the absorption of fat-soluble nutrients and polyphenols, while supporting healthy digestion and reducing post-meal inflammation.",
+            "button_3_description": "After exercise, olive oil's anti-inflammatory polyphenols help reduce muscle soreness, support tissue repair, and replenish energy stores for faster recovery."
           }
         },
         {
