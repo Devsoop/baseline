@@ -375,7 +375,7 @@ details[open].menu-opening > .menu-drawer__submenu {
   max-width: 24rem;
   display:flex;
   flex-direction:column;
-  gap:30px;
+  gap:25px;
 }
 
 .menu-drawer--baseline .menu-drawer__menu-item {
