@@ -439,7 +439,7 @@
       var polyTextEl = section.querySelector('.animation-hero__polyphenols-text');
       if (polyTextEl) {
 
-        /* 1. Wrap text nodes only — never break HTML tags like <strong> */
+        /* 1. Wrap text nodes only — never break <strong> or other tags */
         function wrapTextNodes(el) {
           var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
           var nodes = [];
@@ -465,50 +465,47 @@
         }
         wrapTextNodes(polyTextEl);
 
-        /* 2. Force reflow so positions are accurate */
-        polyTextEl.getBoundingClientRect();
-
+        /* 2. Use offsetTop relative to polyTextEl — stable inside pinned sections */
+        var containerTop = polyTextEl.getBoundingClientRect().top;
         var allWords = Array.from(polyTextEl.querySelectorAll('.poly-word'));
 
-        /* 3. Group words by visual line (same offsetTop) */
         var lineGroups = [];
         allWords.forEach(function (word) {
-          var top = Math.round(word.getBoundingClientRect().top);
+          var wordTop = Math.round(word.getBoundingClientRect().top - containerTop);
           var last = lineGroups[lineGroups.length - 1];
-          if (last && Math.abs(last.top - top) < 5) {
+          if (last && Math.abs(last.top - wordTop) < 6) {
             last.words.push(word);
           } else {
-            lineGroups.push({ top: top, words: [word] });
+            lineGroups.push({ top: wordTop, words: [word] });
           }
         });
 
-        /* 4. Hide all words, then: first 2 lines together, rest one by one */
-        gsap.set(allWords, { opacity: 0, y: 18 });
+        /* 3. Set all words hidden initially */
+        gsap.set(allWords, { opacity: 0, y: 20 });
 
         var holdStart  = Math.max(1.0, wordPhaseDuration) + 1.0;
-        var totalBeats = 1 + Math.max(0, lineGroups.length - 2);
-        var perLine    = 0.7 / (totalBeats + 1);
+        var totalBeats = 1 + Math.max(0, lineGroups.length - 2); /* beat 0 = lines 1+2 together, beat 1,2,3... = remaining */
+        var perBeat    = 0.75 / (totalBeats + 1);
 
-        /* First 2 lines animate in together */
+        /* Lines 1 & 2 animate in together as one beat */
         var firstTwoWords = lineGroups.slice(0, 2).reduce(function (acc, g) {
           return acc.concat(g.words);
         }, []);
         tl.to(
           firstTwoWords,
-          { opacity: 1, y: 0, ease: 'power2.out', duration: perLine * 1.5 },
+          { opacity: 1, y: 0, ease: 'power2.out', duration: perBeat * 1.4 },
           holdStart
         );
 
-        /* Remaining lines one by one */
+        /* Lines 3, 4, 5... each animate in as a complete line, one beat apart */
         lineGroups.slice(2).forEach(function (group, i) {
           tl.to(
             group.words,
-            { opacity: 1, y: 0, ease: 'power2.out', duration: perLine * 1.5 },
-            holdStart + (i + 1) * perLine
+            { opacity: 1, y: 0, ease: 'power2.out', duration: perBeat * 1.4 },
+            holdStart + (i + 1) * perBeat
           );
         });
       }
-
       /* Header comes back down as polyphenols arrives */
 
       /* Header comes back down as polyphenols arrives */
