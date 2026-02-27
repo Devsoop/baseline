@@ -372,6 +372,9 @@ details[open].menu-opening > .menu-drawer__submenu {
   margin: 0 0 2rem;
   width: 100%;
   max-width: 24rem;
+  display:flex;
+  flex-direction:column;
+  gap:48px;
 }
 
 .menu-drawer--baseline .menu-drawer__menu-item {
