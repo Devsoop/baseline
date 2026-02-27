@@ -14,10 +14,14 @@
   .animation-hero-{{ section.id }} .animation-hero__track {
     height: 300vh;
     width: 100%;
+    /* background-color: #0a0a0a;
+    background-image:
+      radial-gradient(ellipse 80% 25% at 50% 14%, #81091b 0%, #690212 25%, #560410 55%, rgb(99 4 17 / 41%) 85%, transparent 100%); */
     will-change: transform;
     position: relative;
 
     background-image: url('https://cdn.shopify.com/s/files/1/0942/1144/0963/files/Group_15.png?v=1770036645');
+    /* background-size: cover; */
     background-size: 100% 200vh;
   }
 
@@ -69,15 +73,19 @@
     pointer-events: none;
   }
 
+
+
   /* ── Word-split helpers ─────────────────────────────────────────────── */
   .anim-word-wrap {
     display: inline-block;
+    /* overflow: hidden; */
     vertical-align: bottom;
   }
   .anim-word {
     display: inline-block;
     will-change: transform;
   }
+  /* Invisible wall: clip at bottom of text so words fully disappear (no top edge showing). No extra padding = disappear sooner. */
   .animation-hero-{{ section.id }} .animation-hero__title-clip {
     overflow: hidden;
     display: block;
@@ -89,6 +97,7 @@
   id="AnimationHero-{{ section.id }}"
   data-section-id="{{ section.id }}"
 >
+  <!-- The sliding track: full 200vh, one gradient, both blocks inside -->
   <div class="animation-hero__track">
     <!-- PART 1 · Hero (red top half) -->
     <div class="animation-hero__hero page-width">
@@ -181,6 +190,7 @@
       {%- endif -%}
     </div>
   </div>
+  <!-- /.animation-hero__track -->
 </section>
 
 <style>
@@ -200,6 +210,7 @@
     letter-spacing:2%;
     color: white;
   }
+
   .animation-hero__btn {
     display: inline-block;
     padding: 0.75rem 40px;
@@ -213,7 +224,9 @@
     transition: opacity 0.2s;
     will-change: transform, opacity;
   }
-  .animation-hero__btn:hover { opacity: 0.9; }
+  .animation-hero__btn:hover {
+    opacity: 0.9;
+  }
   .animation-hero__btn--outline {
     border: 2px solid #fff;
     border-radius: 9999px;
@@ -232,7 +245,6 @@
   .animation-hero__banner-img-wrap {
     width: 100%;
     will-change: transform, opacity;
-    margin-top: 100px;
   }
   .animation-hero__banner-img {
     width: 100%;
@@ -248,58 +260,67 @@
     color: white;
   }
   @media (max-width: 550px) {
-    .animation-hero__polyphenols-title { font-size: 32px !important; }
-    .animation-hero__polyphenols-text  { font-size: 16px !important; }
+    .animation-hero__polyphenols-title {
+      font-size: 32px !important;
+    }
+    .animation-hero__polyphenols-text {
+      font-size: 16px !important;
+    }
   }
   .animation-hero__polyphenols-text {
     margin-bottom: 1.5rem;
     font-size: 24px;
     line-height: 200%;
-    letter-spacing: 0%;
+    letter-spacing:0%;
   }
-  .animation-hero__polyphenols-text strong { font-weight: 700; }
-
-  /* ── Line-animation clip rows ───────────────────────────────────────── */
-  .poly-line-outer {
-    display: block;
-    overflow: hidden;
-    line-height: inherit;
+  .animation-hero__polyphenols-text strong {
+    font-weight: 700;
   }
-  .poly-line-inner {
-    display: block;
-  }
-
   .animation-hero__polyphenols-media {
     max-width: 280px;
     margin-left: auto;
     margin-right: auto;
   }
+  .animation-hero__banner-img-wrap {margin-top: 100px;}
   @media (min-width: 990px) {
-    .animation-hero__polyphenols-media { max-width: 320px; }
+    
+    .animation-hero__polyphenols-media {
+      max-width: 320px;
+    }
   }
   .animation-hero__polyphenols-img {
     width: 100%;
     height: auto;
     display: block;
   }
+    /* ── Responsive title ───────────────────────────────────────────────── */
   @media screen and (max-width: 991px) {
-    .animation-hero__btn { font-size: 14px; text-align: center; }
+    .animation-hero__btn{
+      font-size: 14px;
+      text-align: center;
+    }
     .animation-hero-{{ section.id }} .animation-hero__title { font-size: 82px; }
   }
   @media screen and (max-width: 500px) {
     .animation-hero-{{ section.id }} .animation-hero__title { font-size: 46px; }
   }
   @media screen and (max-width: 749px) {
-    .animation-hero-{{ section.id }} .animation-hero__banner { max-width: 100%; }
+    .animation-hero-{{ section.id }} .animation-hero__banner {
+      max-width: 100%;
+    }
   }
 </style>
 
 <script>
   (function () {
     function loadScript(src, cb) {
-      if (document.querySelector('script[src="' + src + '"]')) { cb(); return; }
+      if (document.querySelector('script[src="' + src + '"]')) {
+        cb();
+        return;
+      }
       var s = document.createElement('script');
-      s.src = src; s.onload = cb;
+      s.src = src;
+      s.onload = cb;
       document.head.appendChild(s);
     }
 
@@ -322,19 +343,20 @@
       var section = document.getElementById('AnimationHero-{{ section.id }}');
       if (!section) return;
 
+      /* Kill existing ScrollTriggers for this section (e.g. after theme editor re-render) */
       ScrollTrigger.getAll().forEach(function (st) {
         if (st.trigger && section.contains(st.trigger)) st.kill();
       });
 
-      var track     = section.querySelector('.animation-hero__track');
+      var track = section.querySelector('.animation-hero__track');
       var heroTitle = section.querySelector('.animation-hero__title');
-      var heroCta   = section.querySelector('.animation-hero__hero-cta');
+      var heroCta = section.querySelector('.animation-hero__hero-cta');
       var bannerWrap = section.querySelector('.animation-hero__banner-img-wrap');
-      var header    = document.querySelector(
+      var header = document.querySelector(
         'sticky-header, .header-wrapper, #shopify-section-header, .site-header, header.header'
       );
 
-      /* ── Split hero title into animated words ── */
+      /* Split title words, reversed so last word animates out first. Escape HTML so special chars don't break DOM. */
       var wordEls = [];
       if (heroTitle) {
         var rawText = heroTitle.innerText != null ? heroTitle.innerText : heroTitle.textContent || '';
@@ -347,106 +369,13 @@
         wordEls = Array.from(heroTitle.querySelectorAll('.anim-word')).reverse();
       }
 
-      /* ── Build line-wrapped DOM for polyphenols text ── */
-      /* Strategy:
-         1. Temporarily make the element visible & in-flow so offsetTop is real.
-         2. Wrap every text node word in an inline span.
-         3. Measure each span's offsetTop relative to the container.
-         4. Group spans that share the same offsetTop → one visual line.
-         5. Replace each group with:
-              <span class="poly-line-outer">   ← overflow:hidden clip
-                <span class="poly-line-inner"> ← slides up from y:100%
-                  …words…
-                </span>
-              </span>
-         This way we animate full visual lines, not individual words.
-      */
-      var polyTextEl  = section.querySelector('.animation-hero__polyphenols-text');
-      var lineInners  = [];   /* will hold every .poly-line-inner for GSAP */
-
-      if (polyTextEl) {
-
-        /* 1. Wrap text nodes only — preserves <strong> etc. */
-        (function wrapTextNodes(el) {
-          var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
-          var nodes = []; var n;
-          while ((n = walker.nextNode())) nodes.push(n);
-          nodes.forEach(function (tn) {
-            var tokens = tn.nodeValue.split(/(\s+)/);
-            if (tokens.length <= 1) return;
-            var frag = document.createDocumentFragment();
-            tokens.forEach(function (tok) {
-              if (!tok.trim()) {
-                frag.appendChild(document.createTextNode(tok));
-              } else {
-                var sp = document.createElement('span');
-                sp.className = 'poly-word-tmp';
-                sp.style.cssText = 'display:inline;';
-                sp.textContent = tok;
-                frag.appendChild(sp);
-              }
-            });
-            tn.parentNode.replaceChild(frag, tn);
-          });
-        })(polyTextEl);
-
-        /* 2. Force layout so offsetTop values are correct */
-        void polyTextEl.offsetHeight;
-
-        /* 3. Gather all word spans and measure offsetTop relative to polyTextEl */
-        var allTmpWords = Array.from(polyTextEl.querySelectorAll('.poly-word-tmp'));
-        var containerOffsetTop = polyTextEl.getBoundingClientRect().top;
-
-        var lineMap = [];   /* [{top, words:[el,…]}, …] */
-        allTmpWords.forEach(function (w) {
-          var wTop = Math.round(w.getBoundingClientRect().top - containerOffsetTop);
-          var last = lineMap[lineMap.length - 1];
-          if (last && Math.abs(last.top - wTop) < 6) {
-            last.words.push(w);
-          } else {
-            lineMap.push({ top: wTop, words: [w] });
-          }
-        });
-
-        /* 4. For every detected visual line, build outer/inner wrapper spans */
-        lineMap.forEach(function (line) {
-          var firstWord = line.words[0];
-          var parent    = firstWord.parentNode;
-
-          /* outer clip */
-          var outer = document.createElement('span');
-          outer.className = 'poly-line-outer';
-
-          /* inner slider */
-          var inner = document.createElement('span');
-          inner.className = 'poly-line-inner';
-
-          /* Insert outer before first word of this line */
-          parent.insertBefore(outer, firstWord);
-
-          /* Move each word (+ any preceding whitespace text node) into inner */
-          line.words.forEach(function (w) {
-            var prev = w.previousSibling;
-            if (prev && prev.nodeType === 3 && /^\s+$/.test(prev.nodeValue)) {
-              inner.appendChild(prev);   /* grab the space */
-            }
-            inner.appendChild(w);
-          });
-
-          outer.appendChild(inner);
-          lineInners.push(inner);
-        });
-
-        /* 5. Remove temporary class from word spans (keep them inline) */
-        polyTextEl.querySelectorAll('.poly-word-tmp').forEach(function (sp) {
-          sp.classList.remove('poly-word-tmp');
-        });
-
-        /* 6. Start all line-inners hidden below their clip */
-        gsap.set(lineInners, { y: '110%', opacity: 0 });
-      }
-
-      /* ── Main timeline ── */
+      /*
+      Pin the section (100vh clip window) for 3× scroll distance.
+      t 0 → 1  : hero content exits
+      t 1 → 2  : track slides UP 100vh — the section's own black bottom half
+                 enters the viewport naturally, polyphenols content visible
+      t 2 → 3  : polyphenols pinned (hold)
+    */
       var tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
@@ -456,20 +385,27 @@
           scrub: 2.2,
           anticipatePin: 1,
           snap: {
-            snapTo: function (progress) { return progress < 0.3 ? 0 : 1; },
+            snapTo: (progress) => {
+              return progress < 0.3 ? 0 : 1; // below 50% go back, above go next
+            },
             duration: 3,
             ease: 'power2.inOut',
           },
         },
       });
 
-      /* Phase 1 — hero title words exit downward */
+      /* Phase 1 — words move down one line-height so they fully pass the clip (wall at text bottom). fromTo so scroll-back restores y: 0. */
       var wordPhaseDuration = wordEls.length ? 0.9 + (wordEls.length - 1) * 0.45 : 0;
       if (wordEls.length) {
         tl.fromTo(
           wordEls,
           { y: 0 },
-          { y: 100, stagger: 0.45, ease: 'power3.in', duration: 0.9 },
+          {
+            y: 100,
+            stagger: 0.45,
+            ease: 'power3.in',
+            duration: 0.9,
+          },
           0
         );
       }
@@ -483,68 +419,21 @@
         tl.to(header, { yPercent: -120, ease: 'power2.in', duration: 0.5 }, 0.5);
       }
 
-      /* Phase 2 — track slides UP, polyphenols panel enters */
+      /* Phase 2 — track slides UP after all words have exited (start after word phase) */
       tl.to(
         track,
-        { y: '-100vh', ease: 'power3.inOut', duration: 1.0 },
+        {
+          y: '-100vh',
+          ease: 'power3.inOut',
+          duration: 1.0,
+        },
         Math.max(1.0, wordPhaseDuration)
       );
 
       // hold slide 2 pinned
       tl.to({}, { duration: 1 }, Math.max(1.0, wordPhaseDuration) + 1.0);
 
-      /* Phase 3 — polyphenols text: line by line, first 2 together */
-      var polyTextEl = section.querySelector('.animation-hero__polyphenols-text');
-      if (polyTextEl) {
-
-        /* 1. Wrap text nodes only in inline spans — no layout change */
-        (function wrapTextNodes(el) {
-          var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
-          var nodes = []; var n;
-          while ((n = walker.nextNode())) nodes.push(n);
-          nodes.forEach(function (tn) {
-            var tokens = tn.nodeValue.split(/(\s+)/);
-            if (tokens.length <= 1) return;
-            var frag = document.createDocumentFragment();
-            tokens.forEach(function (tok) {
-              if (!tok.trim()) {
-                frag.appendChild(document.createTextNode(tok));
-              } else {
-                var sp = document.createElement('span');
-                sp.className = 'poly-w';
-                sp.style.cssText = 'display:inline; white-space:inherit;';
-                sp.textContent = tok;
-                frag.appendChild(sp);
-              }
-            });
-            tn.parentNode.replaceChild(frag, tn);
-          });
-        })(polyTextEl);
-
-        /* 2. Force layout then measure each word's top relative to container */
-        void polyTextEl.offsetHeight;
-        var containerTop = polyTextEl.getBoundingClientRect().top;
-        var allWords = Array.from(polyTextEl.querySelectorAll('.poly-w'));
-
-        /* 3. Group words that share the same visual line top */
-        var lineGroups = [];
-        allWords.forEach(function (w) {
-          var wTop = Math.round(w.getBoundingClientRect().top - containerTop);
-          var last = lineGroups[lineGroups.length - 1];
-          if (last && Math.abs(last.top - wTop) < 6) {
-            last.words.push(w);
-          } else {
-            lineGroups.push({ top: wTop, words: [w] });
-          }
-        });
-
-        /* 4. Hide all words then animate line groups — no DOM restructuring */
-        gsap.set(allWords, { opacity: 0, y: 20 });
-
-        var holdStart = Math.max(1.0, wordPhaseDuration) + 1.0;
-        var totalBeats = 1 +
-
-      /* Header returns as polyphenols panel settles */
+      /* Header comes back down as polyphenols arrives */
       if (header) {
         tl.to(header, { yPercent: 0, ease: 'power2.out', duration: 0.8 }, Math.max(1.0, wordPhaseDuration) + 0.4);
       }
