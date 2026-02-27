@@ -486,10 +486,9 @@
 
         /* 5. Start animating exactly when track starts sliding up,
               spread lines across the slide duration (1.0) */
-        var slideStart = Math.max(1.0, wordPhaseDuration) + 0.3;  /* +0.3 delay before first line */
-        var perBeat = slideDuration / (lineGroups.length + 1) + 0.08;  /* +0.08 gap between each line */
-                                  /* same as Phase 2 duration */
-        
+        var slideStart = Math.max(1.0, wordPhaseDuration);   /* same as Phase 2 start */
+        var slideDuration = 2.0;                              /* same as Phase 2 duration */
+        var perBeat = slideDuration / (lineGroups.length + 1);
 
         lineGroups.forEach(function (group, i) {
           tl.to(
