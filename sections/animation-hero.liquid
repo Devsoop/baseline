@@ -435,7 +435,7 @@
       // hold slide 2 pinned
       tl.to({}, { duration: 1 }, Math.max(1.0, wordPhaseDuration) + 1.0);
 
-      /* Phase 3 — polyphenols text: one visual line at a time */
+      /* Phase 3 — lines animate in AS the polyphenols panel slides up */
       var polyTextEl = section.querySelector('.animation-hero__polyphenols-text');
       if (polyTextEl) {
 
@@ -463,10 +463,10 @@
           });
         })(polyTextEl);
 
-        /* 2. Force reflow — essential for accurate measurements */
+        /* 2. Force reflow */
         void polyTextEl.offsetHeight;
 
-        /* 3. Group words by visual line using top relative to container */
+        /* 3. Group words by visual line */
         var containerTop = polyTextEl.getBoundingClientRect().top;
         var allWords = Array.from(polyTextEl.querySelectorAll('.poly-w'));
 
@@ -481,17 +481,20 @@
           }
         });
 
-        /* 4. Hide everything, then reveal one full line per beat */
+        /* 4. Hide all words */
         gsap.set(allWords, { opacity: 0, y: 22 });
 
-        var holdStart = Math.max(1.0, wordPhaseDuration) + 1.0;
-        var perBeat   = 0.8 / (lineGroups.length + 1);
+        /* 5. Start animating exactly when track starts sliding up,
+              spread lines across the slide duration (1.0) */
+        var slideStart = Math.max(1.0, wordPhaseDuration);   /* same as Phase 2 start */
+        var slideDuration = 1.0;                              /* same as Phase 2 duration */
+        var perBeat = slideDuration / (lineGroups.length + 1);
 
         lineGroups.forEach(function (group, i) {
           tl.to(
             group.words,
-            { opacity: 1, y: 0, ease: 'power2.out', duration: perBeat * 1.3 },
-            holdStart + i * perBeat
+            { opacity: 1, y: 0, ease: 'power2.out', duration: perBeat * 1.2 },
+            slideStart + i * perBeat
           );
         });
       }
