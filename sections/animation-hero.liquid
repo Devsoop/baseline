@@ -425,8 +425,65 @@
         Math.max(1.0, wordPhaseDuration)
       );
 
+      {% comment %} // hold slide 2 pinned
+      tl.to({}, { duration: 1 }, Math.max(1.0, wordPhaseDuration) + 1.0); {% endcomment %}
       // hold slide 2 pinned
       tl.to({}, { duration: 1 }, Math.max(1.0, wordPhaseDuration) + 1.0);
+
+      /* Phase 3 — polyphenols text: animate visual line by visual line */
+      var polyTextEl = section.querySelector('.animation-hero__polyphenols-text');
+      if (polyTextEl) {
+
+        /* 1. Wrap every word in a <span> so we can measure offsetTop */
+        polyTextEl.querySelectorAll('p, li').forEach(function (block) {
+          block.innerHTML = block.innerHTML
+            .split(/(\s+)/)
+            .map(function (token) {
+              return token.trim()
+                ? '<span class="poly-word" style="display:inline-block;white-space:nowrap;">' + token + '</span>'
+                : token;
+            })
+            .join('');
+        });
+
+        var allWords = Array.from(polyTextEl.querySelectorAll('.poly-word'));
+
+        /* 2. Group words that sit on the same visual line (same offsetTop) */
+        var lineGroups = [];
+        allWords.forEach(function (word) {
+          var top = word.getBoundingClientRect().top;
+          var last = lineGroups[lineGroups.length - 1];
+          if (last && Math.abs(last.top - top) < 4) {
+            last.words.push(word);
+          } else {
+            lineGroups.push({ top: top, words: [word] });
+          }
+        });
+
+        /* 3. Wrap each visual-line group in a clip <span> + inner <span> */
+        lineGroups.forEach(function (group) {
+          var wrapper = document.createElement('span');
+          wrapper.style.cssText = 'display:block;overflow:hidden;';
+          var inner = document.createElement('span');
+          inner.style.cssText = 'display:block;';
+          group.words[0].parentNode.insertBefore(wrapper, group.words[0]);
+          group.words.forEach(function (w) { inner.appendChild(w); inner.appendChild(document.createTextNode(' ')); });
+          wrapper.appendChild(inner);
+          group.inner = inner;
+        });
+
+        /* 4. Stagger-animate each line's inner span up from below */
+        var holdStart  = Math.max(1.0, wordPhaseDuration) + 1.0;
+        var perLine    = 0.8 / (lineGroups.length + 1);
+        gsap.set(lineGroups.map(function(g){ return g.inner; }), { y: '110%', opacity: 0 });
+        lineGroups.forEach(function (group, i) {
+          tl.to(
+            group.inner,
+            { y: '0%', opacity: 1, ease: 'power2.out', duration: perLine * 1.2 },
+            holdStart + i * perLine
+          );
+        });
+      }
 
       /* Header comes back down as polyphenols arrives */
       if (header) {
