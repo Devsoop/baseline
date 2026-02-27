@@ -430,8 +430,73 @@
         Math.max(1.0, wordPhaseDuration)
       );
 
+      {% comment %} // hold slide 2 pinned
+      tl.to({}, { duration: 1 }, Math.max(1.0, wordPhaseDuration) + 1.0); {% endcomment %}
       // hold slide 2 pinned
       tl.to({}, { duration: 1 }, Math.max(1.0, wordPhaseDuration) + 1.0);
+
+      /* Phase 3 — polyphenols text: one visual line at a time */
+      var polyTextEl = section.querySelector('.animation-hero__polyphenols-text');
+      if (polyTextEl) {
+
+        /* 1. Wrap text nodes only — purely inline, zero layout change */
+        (function wrapTextNodes(el) {
+          var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+          var nodes = []; var n;
+          while ((n = walker.nextNode())) nodes.push(n);
+          nodes.forEach(function (tn) {
+            var tokens = tn.nodeValue.split(/(\s+)/);
+            if (tokens.length <= 1) return;
+            var frag = document.createDocumentFragment();
+            tokens.forEach(function (tok) {
+              if (!tok.trim()) {
+                frag.appendChild(document.createTextNode(tok));
+              } else {
+                var sp = document.createElement('span');
+                sp.style.cssText = 'display:inline;';
+                sp.className = 'poly-w';
+                sp.textContent = tok;
+                frag.appendChild(sp);
+              }
+            });
+            tn.parentNode.replaceChild(frag, tn);
+          });
+        })(polyTextEl);
+
+        /* 2. Force reflow — essential for accurate measurements */
+        void polyTextEl.offsetHeight;
+
+        /* 3. Group words by visual line using top relative to container */
+        var containerTop = polyTextEl.getBoundingClientRect().top;
+        var allWords = Array.from(polyTextEl.querySelectorAll('.poly-w'));
+
+        var lineGroups = [];
+        allWords.forEach(function (w) {
+          var wTop = Math.round(w.getBoundingClientRect().top - containerTop);
+          var last = lineGroups[lineGroups.length - 1];
+          if (last && Math.abs(last.top - wTop) < 6) {
+            last.words.push(w);
+          } else {
+            lineGroups.push({ top: wTop, words: [w] });
+          }
+        });
+
+        /* 4. Hide everything, then reveal one full line per beat */
+        gsap.set(allWords, { opacity: 0, y: 22 });
+
+        var holdStart = Math.max(1.0, wordPhaseDuration) + 1.0;
+        var perBeat   = 0.8 / (lineGroups.length + 1);
+
+        lineGroups.forEach(function (group, i) {
+          tl.to(
+            group.words,
+            { opacity: 1, y: 0, ease: 'power2.out', duration: perBeat * 1.3 },
+            holdStart + i * perBeat
+          );
+        });
+      }
+
+      /* Header comes back down as polyphenols arrives */
 
       /* Header comes back down as polyphenols arrives */
       if (header) {
