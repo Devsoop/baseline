@@ -50,19 +50,19 @@
           "type": "card_lab",
           "settings": {
             "background_color": "#9e011e",
-            "title": "Lab\nVerified",
+            "title": "LabVerified",
             "description": "Every batch is independently tested and certified. Full transparency from farm to bottle.",
             "button_text": "See Example Lab Report",
-            "button_url": ""
+            "button_url": "https://lab.usebaseline.com/?batch=test"
           }
         },
         "card_try_dGknHK": {
           "type": "card_try",
           "settings": {
             "background_color": "#000000",
-            "title": "Try\nBaseline\nToday",
+            "title": "TryBaselineToday",
             "button_text": "Try Baseline",
-            "button_url": ""
+            "button_url": "shopify://products/500ml-pouch"
           }
         },
         "card_cold_qgEn6z": {
