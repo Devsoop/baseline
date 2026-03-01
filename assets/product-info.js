@@ -231,7 +231,7 @@ renderProductInfo({ requestUrl, targetId, callback }) {
           updateSourceFromDestination('Price-Per-Item', ({ classList }) => classList.contains('hidden'));
           updateSourceFromDestination('selling-plan-picker');
           updateSourceFromDestination('gifts', (source) => source.style.display === 'none' || !source.querySelector('.product-gifts__container'));
-          
+          updateSourceFromDestination('premium-info-content', (source) => source.style.display === 'none' || !source.innerHTML.trim());
           // Update variant features div (now outside the gifts element)
              // Update variant features div (now outside the gifts element)
              const giftsElement = this.querySelector(`#gifts-${this.dataset.section}`);

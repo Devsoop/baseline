@@ -38,7 +38,7 @@
     background-size: contain;
     background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path fill='white' d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'></path></svg>");
   }
-  .premium-info-block-{{ block.id }} {
+  .premium-info-block {
     background: {{ block.settings.background_color }};
     padding: 24px;
     {% comment %} border-radius: {{ block.settings.border_radius }}px; {% endcomment %}
@@ -47,7 +47,7 @@
     position: relative;
   }
 
-  .premium-offer-container-{{ block.id }} {
+  .premium-offer-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -59,18 +59,18 @@
     transition: transform 0.2s ease;
   }
 
-  .premium-offer-container-{{ block.id }}:hover {
+  .premium-offer-container:hover {
     transform: translateY(-2px);
   }
 
-  .premium-offer-left-{{ block.id }} {
+  .premium-offer-left {
     display: flex;
     align-items: center;
     gap: 20px;
     flex: 1;
   }
 
-  .premium-offer-text-{{ block.id }} h3 {
+  .premium-offer-text h3 {
     max-width:200px;
     color: {{ block.settings.text_color }};
     font-size: {{ block.settings.title_font_size }}px;
@@ -80,32 +80,32 @@
     font-weight: 600;
     font-family: var(--font-heading-family);
   }
-  .premium-offer-text-{{ block.id }}{
+  .premium-offer-text{
     display:flex;
     align-items:center;
     gap:20px;
   }
 
-  .premium-offer-right-{{ block.id }} {
+  .premium-offer-right {
     display: flex;
     align-items: center;
     gap: 12px;
   }
 
-  .premium-price-{{ block.id }} {
+  .premium-price {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
   }
 
-  .original-price-{{ block.id }} {
+  .original-price {
     color: {{ block.settings.text_color }};
     text-decoration: line-through;
     font-size: 14px;
     opacity: 0.7;
   }
 
-  .free-price-{{ block.id }} {
+  .free-price {
     color: {{ block.settings.free_text_color }};
     font-size: 18px;
     font-weight: 600;
@@ -113,7 +113,7 @@
     font-family: var(--font-heading-family);
   }
 
-  .info-toggle-{{ block.id }} {
+  .info-toggle {
     width: 24px;
     height: 24px;
     border: 2px solid {{ block.settings.text_color }};
@@ -129,12 +129,12 @@
     flex-shrink: 0;
   }
 
-  .info-toggle-{{ block.id }}:hover {
+  .info-toggle:hover {
     background: {{ block.settings.text_color }};
     color: {{ block.settings.background_color }};
   }
 
-  .premium-product-visual-{{ block.id }} {
+  .premium-product-visual {
     max-height: 0;
     overflow: hidden;
     opacity: 0;
@@ -142,13 +142,13 @@
     margin-bottom: 0;
   }
 
-  .premium-product-visual-{{ block.id }}.active {
+  .premium-product-visual.active {
     max-height: 500px;
     opacity: 1;
     margin-bottom: 20px;
   }
 
-  .product-showcase-{{ block.id }} {
+    .product-showcase {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -158,24 +158,24 @@
     {% comment %} border-radius: 8px; {% endcomment %}
   }
 
-  .product-image-container-{{ block.id }} {
+  .product-image-container {
     flex: 0 0 auto;
     max-width: 200px;
   }
 
-  .product-image-container-{{ block.id }} img {
+  .product-image-container img {
     width: 100%;
     height: auto;
     object-fit: contain;
   }
 
-  .plus-icon-{{ block.id }} {
+  .plus-icon {
     font-size: 40px;
     color: {{ block.settings.text_color }};
     font-weight: 300;
   }
 
-  .product-badges-{{ block.id }} {
+  .product-badges {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -183,7 +183,7 @@
     margin-top: 20px;
   }
 
-  .badge-{{ block.id }} {
+  .badge {
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid {{ block.settings.badge_border_color }};
     color: {{ block.settings.badge_text_color }};
@@ -199,7 +199,7 @@
 
 
 
-  .delivery-info-{{ block.id }} {
+  .delivery-info {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -217,14 +217,14 @@
     width: 100%;
   }
 
-  .delivery-info-{{ block.id }} svg {
+  .delivery-info svg {
     width: 20px;
     height: 20px;
     fill: {{ block.settings.text_color }};
   }
 
   @media (max-width: 950px){
-     .premium-offer-container-{{ block.id }} {
+     .premium-offer-container {
       flex-direction: column;
       align-items: flex-start;
       gap: 12px;
@@ -233,83 +233,86 @@
   }
 
   @media (max-width: 768px) {
-    .premium-info-block-{{ block.id }} {
+    .premium-info-block {
       padding: 16px;
     }
 
 
 
-    .premium-offer-left-{{ block.id }} {
+    .premium-offer-left {
       width: 100%;
       flex-direction: column;
       align-items: flex-start;
       gap: 12px;
     }
 
-    .premium-offer-right-{{ block.id }} {
+    .premium-offer-right {
       width: 100%;
       justify-content: space-between;
     }
 
-    .product-showcase-{{ block.id }} {
+    .product-showcase {
       flex-direction: column;
       gap: 20px;
       padding: 30px 15px;
     }
 
-    .product-image-container-{{ block.id }} {
+    .product-image-container {
       max-width: 150px;
     }
 
-    .premium-benefits-{{ block.id }} {
+    .premium-benefits {
       grid-template-columns: 1fr;
       gap: 10px;
     }
 
-    .product-badges-{{ block.id }} {
+    .product-badges {
       margin-top: 15px;
     }
 
-    .premium-offer-text-{{ block.id }} h3 {
+    .premium-offer-text h3 {
       {% assign reduced_size = block.settings.title_font_size | minus: 2 %}
       font-size: {{ reduced_size }}px;
     }
 
-    .free-price-{{ block.id }} {
+    .free-price {
       font-size: 20px;
     }
   }
 
   @media (max-width: 480px) {
-    .product-image-container-{{ block.id }} {
+    .product-image-container {
       max-width: 120px;
     }
 
-    .badge-{{ block.id }} {
+    .badge {
       font-size: 10px;
       padding: 6px 12px;
     }
   }
 </style>
 
-<div class="premium-info-block-{{ block.id }}" {{ block.shopify_attributes }}>
+<div id="premium-info-content-{{ section.id }}" class="premium-info-content">
+<div id="premium-info-block-{{ section.id }}" class="premium-info-block">
   {% assign variant = product.selected_or_first_available_variant %}
   {% assign current_variant_features = variant.metafields.custom.features | metafield_tag %}
+  {% assign current_variant_delivery = variant.metafields.custom.delivery_time %}
   {%- render 'gifts', product: product, block: block -%}
  
 
-  <div class="premium-benefits-{{ block.id }}">
+  <div id="premium-benefits" class="premium-benefits">
     {{ current_variant_features }}
   </div>
 </div>
-{%- if block.settings.delivery_text != blank -%}
-  <div class="delivery-info-{{ block.id }}">
+{%- if current_variant_delivery != blank -%}
+  <div id="delivery-info" class="delivery-info">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path d="M19 7h-3V5c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h1c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h1c1.1 0 2-.9 2-2v-3l-3-4zM7 18c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm12-8.5h-3V7h1.5l1.5 2.5zM19 18c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
     </svg>
-    <span>{{ block.settings.delivery_text }}</span>
+    <span>{{ current_variant_delivery.value }}</span>
   </div>
 {%- endif -%}
+</div>
 <script>
   (function () {
     // Event delegation: one listener on document so it works after subscription-change
@@ -359,44 +362,14 @@
 
 {% comment %} Script For Hiding and showing Free Gift Div with Variant Change  {% endcomment %}
 <script>
-  window.variantFreeProduct_{{ block.id }} = {
+  window.variantFreeProduct = {
     {% for variant in product.variants %}
       "{{ variant.id }}": {{ variant.metafields.custom.free_product | json }},
     {% endfor %}
   };
 
-  // Show on initial load if the selected variant qualifies
-  (function() {
-    var selectedId = {{ product.selected_or_first_available_variant.id }};
-    var metafield = window.variantFreeProduct_{{ block.id }}[selectedId];
-    if (metafield !== null && metafield !== undefined && metafield !== "") {
-      document.querySelector('[data-block-id="{{ block.id }}"]').style.display = "";
-    }
-  })();
+  
 </script>
 
-<script>
-    document.addEventListener('change', function(e) {
-    // Works with standard Shopify variant selectors and most themes
-    if (e.target.name === 'id' || e.target.classList.contains('product-form__input')) {
-      var variantId = e.target.value;
-      var metafield = window.variantFreeProduct_{{ block.id }}[variantId];
-      var container = document.querySelector('[data-block-id="{{ block.id }}"]');
-      if (metafield !== null && metafield !== undefined && metafield !== "") {
-        container.style.display = "";
-      } else {
-        container.style.display = "none";
-      }
-    }
-  });
 
-  // Also listen for the 'variant:changed' custom event fired by themes like Dawn
-  document.addEventListener('variant:changed', function(e) {
-    var variantId = e.detail.variant ? e.detail.variant.id : null;
-    if (!variantId) return;
-    var metafield = window.variantFreeProduct_{{ block.id }}[variantId];
-    var container = document.querySelector('[data-block-id="{{ block.id }}"]');
-    container.style.display = (metafield !== null && metafield !== undefined && metafield !== "") ? "" : "none";
-  });
-</script>
 {% comment %} Script For Hiding and showing Free Gift Div with Variant Change -------End  {% endcomment %}
