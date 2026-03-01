@@ -390,7 +390,7 @@
         "benefit_card_back_text_color": "#ffffff",
         "show_cta_button": true,
         "cta_text": "TAKE THE 3-MINUTE POLYPHENOLS JOURNEY",
-        "cta_link": "",
+        "cta_link": "https://learn.usebaseline.com",
         "cta_background": "rgba(0,0,0,0)",
         "cta_text_color": "#ffffff",
         "cta_border_color": "#ffffff",
@@ -471,14 +471,14 @@
           "type": "faq_item",
           "settings": {
             "question": "What makes baseline different from other olive oils?",
-            "answer": "<p>baseline is a high-polyphenol extra virgin olive oil that's lab-tested by batch. We guarantee at least 500 mg/kg of polyphenols – compounds linked to a range of health benefits. Every bottle is traceable and verified with a QR code.</p>"
+            "answer": "<p>baseline is a high-polyphenol extra virgin olive oil that's lab-tested by batch. We guarantee at least 400 mg/kg of polyphenols – compounds linked to a range of health benefits. Every bottle is traceable and verified with a QR code.</p>"
           }
         },
         "faq_item_EeJADL": {
           "type": "faq_item",
           "settings": {
             "question": "What are polyphenols and why do they matter?",
-            "answer": "<p>Polyphenols are naturally occurring antioxidants found in olive oil. High concentrations are associated with anti-inflammatory and cardiovascular benefits. Most commercial olive oils lose polyphenols during processing – we preserve them.</p>"
+            "answer": "<p>Polyphenols are naturally occurring antioxidants found in olive oil. High concentrations are associated many different health benefits. Most commercial olive oils lose polyphenols during processing – we preserve them.</p>"
           }
         },
         "faq_item_LQpzEF": {
@@ -492,14 +492,14 @@
           "type": "faq_item",
           "settings": {
             "question": "Is baseline suitable for cooking?",
-            "answer": "<p>Yes, it's great for low to medium-heat cooking, drizzling, and dressings. For maximum polyphenol benefit, use raw or add at the end of cooking.</p>"
+            "answer": "<p>While you can cook with it, we recommend using it raw (e.g., drizzled or taken directly) to preserve its full nutritional value and antioxidant content.</p>"
           }
         },
         "faq_item_Vn93hf": {
           "type": "faq_item",
           "settings": {
             "question": "Is it organic?",
-            "answer": "<p>Our olives are grown without synthetic pesticides. Certified organic status varies by harvest location – check the batch QR code for full provenance details.</p>"
+            "answer": "<p>While baseline isn’t certified organic <em>yet</em>, we source oils from producers that believe in natural cultivation without the use of  pesticides or chemical fertilizers. We’re actively working toward formal organic certification.</p>"
           }
         },
         "faq_item_bzGjbA": {
@@ -513,7 +513,7 @@
           "type": "faq_item",
           "settings": {
             "question": "When will my order arrive?",
-            "answer": "<p>Orders typically dispatch within 1–2 business days. Delivery times depend on your location – standard shipping is 3–5 business days.</p>"
+            "answer": "<p>Orders typically dispatch within 1–2 business days. Delivery times depend on your location – standard shipping is 2 business days.</p>"
           }
         }
       },
