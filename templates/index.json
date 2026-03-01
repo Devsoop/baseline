@@ -50,7 +50,7 @@
           "type": "card_lab",
           "settings": {
             "background_color": "#9e011e",
-            "title": "LabVerified",
+            "title": "Lab Verified",
             "description": "Every batch is independently tested and certified. Full transparency from farm to bottle.",
             "button_text": "See Example Lab Report",
             "button_url": "https://lab.usebaseline.com/?batch=test"
@@ -60,7 +60,7 @@
           "type": "card_try",
           "settings": {
             "background_color": "#000000",
-            "title": "TryBaselineToday",
+            "title": "Try Baseline Today",
             "button_text": "Try Baseline",
             "button_url": "shopify://products/500ml-pouch"
           }
