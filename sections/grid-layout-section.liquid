@@ -703,7 +703,7 @@
               {%- assign img_fresh_mob = block_fresh.settings.image_mobile -%}
               {%- if img_fresh_mob != blank and img_fresh != blank -%}
                 <picture>
-                  <source media="(max-width: 1900px)" srcset="{{ img_fresh_mob | image_url: width: 600 }}">
+                  <source media="(max-width: 768px)" srcset="{{ img_fresh_mob | image_url: width: 600 }}">
                   <img
                     class="grid-layout__card-img"
                     src="{{ img_fresh | image_url: width: 670 }}"
