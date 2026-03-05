@@ -1,12 +1,21 @@
 {%- style -%}
   /* ── Outer clip window: exactly one viewport tall ───────────────────── */
-  .animation-hero-{{ section.id }} {
+  /* .animation-hero-{{ section.id }} {
     height: 100vh;
     overflow: hidden;
     position: relative;
-    margin-top:0;
+    margin-top: -110px;
 
-  }
+  } */
+   .animation-hero-{{ section.id }} {
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.template-index .section-animation-hero {
+  margin-top: 0 !important;
+}
 
   /* ── The full section body: 200vh, gradient red (top) → black (bottom) ─
      Hero lives on the red half, Polyphenols on the black half.
