@@ -26,14 +26,13 @@
   }
 
   #BaselineStory-{{ section.id }} .baseline-story__banner-bg {
-    text-align:center;
+    text-align: center;
     position: absolute;
     inset: 0;
-    z-index: 0;
-    transform: translate(-50%, 0);
     left: 50%;
-    top: unset;
-    bottom: 0;
+    top: 50%;
+    bottom: auto;
+    transform: translate(-50%, -50%);
     z-index: 2;
   }
 
@@ -332,7 +331,8 @@
     height: auto;
     object-fit: contain;
     opacity: 0;
-    transform: translateY(50px);
+    /* Let GSAP fully control transforms so centering is accurate */
+    transform: none;
     filter: drop-shadow(0 20px 40px rgba(0,0,0,0.7));
     display: block;
   }
@@ -429,7 +429,7 @@
     #BaselineStory-{{ section.id }} .baseline-story__slide-content {
       margin-top: 0;
       width: 100%;
-      margin-left: 60px;
+   
     }
     #BaselineStory-{{ section.id }} .baseline-story__slide.text-slide.slide--full-width .baseline-story__slide-content{
       margin-top: -100px;
@@ -625,26 +625,8 @@
         pin: true,
         scrub: 1.8,
         anticipatePin: 1,
-        snap: TOTAL > 1 ? {
-          snapTo: function(value) {
-            // Snap to nearest slide based on overall progress
-            var points = slides.map(function(_, i) {
-              return i / (TOTAL - 1);
-            });
-            var closest = points[0];
-            var minDist = Math.abs(value - closest);
-            points.forEach(function(p) {
-              var d = Math.abs(value - p);
-              if (d < minDist) {
-                minDist = d;
-                closest = p;
-              }
-            });
-            return closest;
-          },
-          duration: 0.8,
-          ease: 'power2.inOut'
-        } : false,
+        // Disable snapping so the slide doesn't jump back when scrolling stops mid-way
+        snap: false,
         onUpdate: function(self) {
           var progress = self.progress;
           var activeIndex = TOTAL > 1 ? Math.round(progress * (TOTAL - 1)) : 0;
@@ -703,15 +685,17 @@
         gsap.set(lines, { autoAlpha: 0, y: 26 });
       }
       if (images.length) {
-        // Alternate entry side per slide: even → left, odd → right
+        // Alternate entry side per slide: even → left, odd → right.
+        // Start images slightly below so they rise up from the bottom of the viewport.
         var fromSide = index % 2 === 0 ? -60 : 60;
-        gsap.set(images, { autoAlpha: 0, xPercent: fromSide, yPercent: 0, scale: 0.95 });
+        gsap.set(images, { autoAlpha: 0, xPercent: fromSide, yPercent: 40, scale: 0.95 });
       }
 
       // Slide in container: fade in and start its upward travel from bottom
       tl.to(slide, {
         autoAlpha: 1,
-        duration: 0.6,
+        // Finish fading in around the time the slide reaches yPercent: 15%
+        duration: 0.28,
         ease: 'power2.out'
       }, enterAt);
 
@@ -724,22 +708,39 @@
 
       // Text content animation per slide type
       if (isCentered && heroHeading) {
+        // Centered hero text: fade in as it moves toward middle, then fade out near top
         tl.to(heroHeading, {
           autoAlpha: 1,
           y: 0,
           duration: 0.8,
           ease: 'power2.out'
         }, contentAt);
+
+        tl.to(heroHeading, {
+          autoAlpha: 0,
+          y: -20,
+          duration: 0.7,
+          ease: 'power2.inOut'
+        }, contentAt + 0.5);
       } else {
         if (eyebrow) {
+          // Eyebrow comes in from below, then fades/moves slightly up near the top
           tl.to(eyebrow, {
             autoAlpha: 1,
             y: 0,
             duration: 0.5,
             ease: 'power2.out'
           }, contentAt);
+
+          tl.to(eyebrow, {
+            autoAlpha: 0,
+            y: -16,
+            duration: 0.6,
+            ease: 'power2.inOut'
+          }, contentAt + 0.5);
         }
         if (lines.length) {
+          // Body lines fade in from below, then fade/move up together near the top
           tl.to(lines, {
             autoAlpha: 1,
             y: 0,
@@ -747,27 +748,35 @@
             ease: 'power2.out',
             stagger: 0.12
           }, contentAt + 0.08);
+
+          tl.to(lines, {
+            autoAlpha: 0,
+            y: -16,
+            duration: 0.7,
+            ease: 'power2.inOut'
+          }, contentAt + 0.5);
         }
       }
 
-      // Image motion: come in horizontally, then travel upward and fade out
+      // Image motion: rise from bottom, fully visible around middle, then move up and fade out
       if (images.length) {
-        // Fade & slide into viewport from side
+        // Fade & slide into viewport from side, rising from bottom toward center
         tl.to(images, {
           autoAlpha: 1,
           xPercent: 0,
+          yPercent: 0,
           scale: 1,
-          duration: 0.9,
+          duration: 0.5,
           ease: 'power3.out'
-        }, contentAt + 0.05);
+        }, contentAt);
 
-        // Then move vertically toward the top while fading away
+        // Then move further upward toward the top while fading away
         tl.to(images, {
           yPercent: -40,
           autoAlpha: 0,
           duration: 0.9,
           ease: 'power2.inOut'
-        }, contentAt + 0.55);
+        }, contentAt + 0.5);
       }
 
       // Exit / transition to next slide: fade away while still drifting upward
