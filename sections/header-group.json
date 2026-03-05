@@ -15,7 +15,7 @@
       "type": "header",
       "custom_css": [
         ".header__icon--account {display: none;}",
-        ".gradient {background: green;}"
+        ".gradient {background: transparent;}"
       ],
       "settings": {
         "logo_position": "middle-left",
