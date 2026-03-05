@@ -8,6 +8,13 @@
     
 
   }
+  @supports (padding-top: env(safe-area-inset-top)) {
+  @media screen and (max-width: 749px) {
+    .animation-hero-{{ section.id }} {
+      margin-top: calc(-60px - env(safe-area-inset-top));
+    }
+  }
+}
 
   /* ── The full section body: 200vh, gradient red (top) → black (bottom) ─
      Hero lives on the red half, Polyphenols on the black half.
