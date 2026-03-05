@@ -354,9 +354,9 @@
       var heroTitle = section.querySelector('.animation-hero__title');
       var heroCta = section.querySelector('.animation-hero__hero-cta');
       var bannerWrap = section.querySelector('.animation-hero__banner-img-wrap');
-      var header = document.querySelector(
+      {% comment %} var header = document.querySelector(
         'sticky-header, .header-wrapper, #shopify-section-header, .site-header, header.header'
-      );
+      ); {% endcomment %}
 
       /* Split title words, reversed so last word animates out first. Escape HTML so special chars don't break DOM. */
       var wordEls = [];
