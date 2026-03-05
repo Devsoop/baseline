@@ -7,6 +7,20 @@
     margin-top: -110px;
 
   }
+  /* Kill the spacer/wrapper Shopify injects above the first section */
+#shopify-section-header,
+.header-wrapper,
+.shopify-section-header,
+sticky-header {
+  background-color: #0a0a0a !important;
+}
+
+/* Target the spacer div themes inject after the header */
+#shopify-section-header + * [data-header-sticky-spacer],
+.header-spacer,
+.shopify-section-header-group {
+  background-color: #0a0a0a !important;
+}
   
 
   /* ── The full section body: 200vh, gradient red (top) → black (bottom) ─
