@@ -21,24 +21,24 @@
   {%- liquid
     assign is_one_time_product = false
     assign is_subscription_product = false
-
+    
     comment
       Logic:
       - If product has custom.subscription_product set, it means this product IS the one-time product
       - If product has custom.one_time_product set, it means this product IS the subscription product
     endcomment
-
+    
     if product.metafields.custom.subscription_product.value
       assign is_one_time_product = true
     endif
-
+    
     if product.metafields.custom.one_time_product.value
       assign is_subscription_product = true
     endif
-
+    
     assign subscription_selected = 'selected'
     assign onetime_selected = ''
-
+    
     if is_one_time_product
       assign subscription_selected = ''
       assign onetime_selected = 'selected'
@@ -48,29 +48,24 @@
     endif
   -%}
   <span class="selling-plan-picker-heading">Frequency</span>
-  <div
-    id="selling-plan-picker-{{ section.id }}"
-    class="selling-plan-picker"
-    data-section="{{ section.id }}"
-    {{ block.shopify_attributes }}
-  >
+  <div id="selling-plan-picker-{{ section.id }}" class="selling-plan-picker" data-section="{{ section.id }}" {{ block.shopify_attributes }}>
     <div class="selling-plan-picker__container">
       {%- comment -%} Subscribe & Save Option {%- endcomment -%}
-      <div
-        role="button"
+      <div 
+        role="button" 
         class="selling-plan-option selling-plan-option--subscription {{ subscription_selected }}"
         data-selling-plan-id="{{ selling_plan_allocation.selling_plan.id }}"
         data-price="{{ selling_plan_allocation.price }}"
         data-compare-price="{{ current_variant.compare_at_price | default: current_variant.price }}"
       >
         <div class="selling-plan-option__check-wrapper">
-          <img
-            alt=""
-            loading="lazy"
-            width="15"
-            height="15"
-            decoding="async"
-            class="selling-plan-option__check"
+          <img 
+            alt="" 
+            loading="lazy" 
+            width="15" 
+            height="15" 
+            decoding="async" 
+            class="selling-plan-option__check" 
             src="{{ 'black-tick.svg' | asset_url }}"
           >
         </div>
@@ -80,25 +75,26 @@
             <p class="packaging-size">500ml per pouch</p>
             {%- if block.settings.subscription_benefits != blank -%}
               <ul class="selling-plan-option__benefits">
-                {% comment %}
-                  {%- assign benefits = block.settings.subscription_benefits | split: ',' -%}
-                  {%- for benefit in benefits -%}
-                    <li>{{ benefit | strip }}</li>
-                  {%- endfor -%}
-                {% endcomment %}
-                {%- if product.selected_or_first_available_variant.metafields.custom.free_product != blank -%}
-                  {%- assign benefits = block.settings.subscription_benefits | split: ',' -%}
-                  {%- for benefit in benefits -%}
-                    <li>{{ benefit | strip }}</li>
-                  {%- endfor -%}
-                {%- endif -%}
+               
+                {% comment %} {%- assign benefits = block.settings.subscription_benefits | split: ',' -%}
+                {%- for benefit in benefits -%}
+                  <li>{{ benefit | strip }}</li>
+                {%- endfor -%} {% endcomment %}
+                 {%- assign benefits = block.settings.subscription_benefits | split: ',' -%}
+{%- for benefit in benefits -%}
+  {%- if product.selected_or_first_available_variant.metafields.custom.free_product != blank -%}
+    {%- if benefit contains 'Free Shipping' -%}
+      <li>{{ benefit | strip }}</li>
+    {%- endif -%}
+  {%- else -%}
+    <li>{{ benefit | strip }}</li>
+  {%- endif -%}
+{%- endfor -%}
               </ul>
             {%- endif -%}
           </div>
           <div class="selling-plan-option__price-container">
-            {%- if current_variant.compare_at_price
-              and current_variant.compare_at_price != selling_plan_allocation.price
-            -%}
+            {%- if current_variant.compare_at_price and current_variant.compare_at_price != selling_plan_allocation.price -%}
               <del class="selling-plan-option__compare-price">
                 {{ current_variant.compare_at_price | money }}
               </del>
@@ -111,36 +107,36 @@
       </div>
 
       {%- comment -%} One Time Purchase Option {%- endcomment -%}
-      <div
-        role="button"
+      <div 
+        role="button" 
         class="selling-plan-option selling-plan-option--onetime {{ onetime_selected }}"
         data-selling-plan-id=""
         data-price="{{ current_variant.price }}"
         data-compare-price="{{ current_variant.compare_at_price }}"
       >
         <div class="selling-plan-option__check-wrapper">
-          <img
-            alt=""
-            loading="lazy"
-            width="15"
-            height="15"
-            decoding="async"
-            class="selling-plan-option__check"
+          <img 
+            alt="" 
+            loading="lazy" 
+            width="15" 
+            height="15" 
+            decoding="async" 
+            class="selling-plan-option__check" 
             src="{{ 'black-tick.svg' | asset_url }}"
           >
         </div>
-        <div class="selling-plan-option__content">
+        <div  class="selling-plan-option__content">
           <div style="display:flex; flex-direction:column; gap:1.2rem;">
-            <p class="selling-plan-option__title">One Time Purchase</p>
-            <p class="packaging-size">250ml per bottle</p>
+          <p class="selling-plan-option__title">One Time Purchase</p>
+          <p class="packaging-size">250ml per bottle</p>
           </div>
-          <div class="selling-plan-option__price-container">
+          <div  class="selling-plan-option__price-container">
             {%- if current_variant.compare_at_price > current_variant.price -%}
               <del class="selling-plan-option__compare-price">
                 {{ current_variant.compare_at_price | money }}
               </del>
             {%- endif -%}
-            <span class="selling-plan-option__price">
+            <span  class="selling-plan-option__price">
               {{ current_variant.price | money }}
             </span>
           </div>
@@ -149,9 +145,9 @@
     </div>
 
     {%- comment -%} Hidden input for selling plan {%- endcomment -%}
-    <input
-      type="hidden"
-      name="selling_plan"
+    <input 
+      type="hidden" 
+      name="selling_plan" 
       value="{% if is_one_time_product %}{% else %}{{ selling_plan_allocation.selling_plan.id }}{% endif %}"
       form="{{ product_form_id }}"
       class="selling-plan-input"
