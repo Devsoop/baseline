@@ -83,14 +83,6 @@
               </ul>
             {%- endif -%}
           </div>
-          {% comment %} <div class="selling-plan-option__price-container">
-            <del class="selling-plan-option__compare-price">
-              {{ current_variant.compare_at_price | default: current_variant.price | money }}
-            </del>
-            <span class="selling-plan-option__price">
-              {{ selling_plan_allocation.price | money }}
-            </span>
-          </div> {% endcomment %}
           <div class="selling-plan-option__price-container">
             {%- if current_variant.compare_at_price and current_variant.compare_at_price != selling_plan_allocation.price -%}
               <del class="selling-plan-option__compare-price">
