@@ -86,15 +86,15 @@
                     <li>{{ benefit | strip }}</li>
                   {%- endfor -%}
                 {% endcomment %}
-                
-                  {%- assign benefits = block.settings.subscription_benefits | split: ',' -%}
-                  {%- for benefit in benefits -%}
-                    <li>Free Shipping</li>
-                    {%- if product.selected_or_first_available_variant.metafields.custom.free_product != blank -%}
+
+                {%- assign benefits = block.settings.subscription_benefits | split: ',' -%}
+                <li>Free Shipping</li>
+                {%- for benefit in benefits -%}
+                  
+                  {%- if product.selected_or_first_available_variant.metafields.custom.free_product != blank -%}
                     <li>{{ benefit | strip }}</li>
-                    {%- endif -%}
-                  {%- endfor -%}
-                
+                  {%- endif -%}
+                {%- endfor -%}
               </ul>
             {%- endif -%}
           </div>
