@@ -80,15 +80,8 @@
             <p class="packaging-size">500ml per pouch</p>
             {%- if block.settings.subscription_benefits != blank -%}
               <ul class="selling-plan-option__benefits">
-                {% comment %}
-                  {%- assign benefits = block.settings.subscription_benefits | split: ',' -%}
-                  {%- for benefit in benefits -%}
-                    <li>{{ benefit | strip }}</li>
-                  {%- endfor -%}
-                {% endcomment %}
-
-                {%- assign benefits = block.settings.subscription_benefits | split: ',' -%}
                 <li>Free Shipping</li>
+                {%- assign benefits = block.settings.subscription_benefits | split: ',' -%}
                 {%- for benefit in benefits -%}
                   {%- if product.selected_or_first_available_variant.metafields.custom.free_product != blank -%}
                     <li>{{ benefit | strip }}</li>
