@@ -69,11 +69,11 @@
         "review_g3dyRW": {
           "type": "review",
           "settings": {
-            "stars_count": 5,
+            "stars_count": 4.5,
             "stars_size": 14,
-            "stars_size_mobile": 12,
+            "stars_size_mobile": 24,
             "stars_gap": 2,
-            "review": "<p>4.7/5.0 | 2X Sell-out Viral Product</p>",
+            "review": "<p>Rated 4.7 out of 5 (1000+ Reviews)</p>",
             "review_custom": false,
             "review_font": "dm_sans_n5",
             "review_size": 13,
@@ -91,7 +91,7 @@
             "review_padding_horizontal_mobile": 12,
             "review_padding_vertical": 8,
             "review_padding_vertical_mobile": 8,
-            "review_color": "#c18d42",
+            "review_color": "#121212",
             "review_bg_color": "#ffffff",
             "review_border_color": "#ffffff",
             "stars_color": "#ffffff",
