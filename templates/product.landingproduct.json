@@ -228,12 +228,22 @@
             "title": "<p>Delicious </p>",
             "text": "<p>Baseline has an <strong>intense fruity aroma and a distinctive peppery kick.</strong></p><p>‎ </p><p>You can taste and smell the difference in the freshness and potency of our oil.</p>"
           }
+        },
+        "item_rfaJyc": {
+          "type": "item",
+          "settings": {
+            "percent": 90,
+            "percent_text": "<p>Optional subtext</p>",
+            "title": "<h3>TELL YOUR STORY</h3>",
+            "text": "<p>Talk about results of your customers and how your product improved their life.</p>"
+          }
         }
       },
       "block_order": [
         "item_aLLNdy",
         "item_VEnJMa",
-        "item_VVeBqH"
+        "item_VVeBqH",
+        "item_rfaJyc"
       ],
       "name": "SS - Feature #22 🎛️ Preset 2",
       "settings": {
@@ -363,6 +373,80 @@
         "border_thickness": 0,
         "section_radius": 0,
         "lazy": true
+      }
+    },
+    "ss_text_block_pro_GyGHay": {
+      "type": "ss-text-block-pro",
+      "blocks": {
+        "image_TEt3m7": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/451181ae6a1f8e2cc7ea9d4ba326c170b4c16020_c7917dee-da38-469c-b6e5-ecf29dcc5c72.png",
+            "image_radius": 0,
+            "image_mt": 0,
+            "image_align": "center"
+          }
+        },
+        "title_kre39W": {
+          "type": "title",
+          "settings": {
+            "title": "Our Oil",
+            "title_custom": false,
+            "title_font": "assistant_n4",
+            "title_size": 40,
+            "title_height": 100,
+            "title_align": "center",
+            "title_mt": 12,
+            "title_color": "#000000"
+          }
+        },
+        "text_wEX4be": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Baseline works with small producers who, over generations, have mastered the craft of producing exceptional olive oil.</p><p>.</p><p> We combine this traditional expertise with modern science — lab testing every batch and releasing our oil in fully traceable harvest batches.</p>",
+            "text_custom": false,
+            "text_font": "assistant_n4",
+            "text_size": 20,
+            "text_height": 130,
+            "text_align": "center",
+            "text_mt": 16,
+            "text_color": "#000000"
+          }
+        }
+      },
+      "block_order": [
+        "image_TEt3m7",
+        "title_kre39W",
+        "text_wEX4be"
+      ],
+      "name": "SS - Text Block Pro",
+      "settings": {
+        "image": "shopify://shop_images/451181ae6a1f8e2cc7ea9d4ba326c170b4c16020_fa285d2f-16b6-446a-a50b-62559579611c.png",
+        "image_width": 20,
+        "image_custom": false,
+        "image_height_desktop": 400,
+        "image_height_mobile": 240,
+        "image_radius": 12,
+        "image_ration": "none",
+        "image_location": "row",
+        "image_location_mobile": "column-reverse",
+        "content_padding_horizontal": 20,
+        "content_padding_vertical": 8,
+        "content_radius": 36,
+        "gap": 30,
+        "gap_mobile": 15,
+        "background_color": "#f5f5f5",
+        "background_gradient": "",
+        "border_color": "#000000",
+        "content_bg": "",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "padding_horizontal": 5,
+        "padding_horizontal_mobile": 1.5,
+        "content_width": 120,
+        "border_thickness": 0
       }
     },
     "main": {
@@ -1123,6 +1207,7 @@
   "order": [
     "ss_hero_pro_f8c4f6_6V4pPb",
     "ss_feature_22_2fdbab_89bfHP",
+    "ss_text_block_pro_GyGHay",
     "main",
     "custom_pdp_section_U7WAkj",
     "custom_pdp_comparison_rc7BMw",
