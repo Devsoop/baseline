@@ -62,10 +62,205 @@
         "enable_country_selector": false,
         "enable_language_selector": false
       }
+    },
+    "ss_hero_pro_f8c4f6_iTYwcQ": {
+      "type": "ss-hero-pro-f8c4f6",
+      "blocks": {
+        "review_g3dyRW": {
+          "type": "review",
+          "settings": {
+            "stars_count": 5,
+            "stars_size": 14,
+            "stars_size_mobile": 12,
+            "stars_gap": 2,
+            "review": "<p>4.7/5.0 | 2X Sell-out Viral Product</p>",
+            "review_custom": false,
+            "review_font": "dm_sans_n5",
+            "review_size": 13,
+            "review_size_mobile": 11,
+            "review_advanced": false,
+            "review_height": 130,
+            "review_mt": 0,
+            "review_mt_mobile": 0,
+            "background": false,
+            "review_bg_opacity": 0.3,
+            "enable_blur": true,
+            "review_radius": 10,
+            "review_border_thickness": 1,
+            "review_padding_horizontal": 12,
+            "review_padding_horizontal_mobile": 12,
+            "review_padding_vertical": 8,
+            "review_padding_vertical_mobile": 8,
+            "review_color": "#c18d42",
+            "review_bg_color": "#ffffff",
+            "review_border_color": "#ffffff",
+            "stars_color": "#ffffff",
+            "stars_bg_color": "#00b67a",
+            "stars_bg_half_color": "#dddddd"
+          }
+        },
+        "heading_4jpABd": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>Nature’s most powerful superfood</p>",
+            "heading_custom": true,
+            "heading_font": "ibm_plex_sans_n6",
+            "heading_accent_font": "dm_serif_text_i4",
+            "heading_size": 52,
+            "heading_size_mobile": 28,
+            "heading_advanced": true,
+            "heading_height": 120,
+            "heading_mt": 8,
+            "heading_mt_mobile": 8,
+            "heading_color": "#121212",
+            "heading_accent_color": "#4c1d95"
+          }
+        },
+        "feature_pbWmVe": {
+          "type": "feature",
+          "settings": {
+            "icon": "pin_tack",
+            "text": "Boost your social battery and magnetic pull"
+          }
+        },
+        "feature_Migqxi": {
+          "type": "feature",
+          "settings": {
+            "icon": "pin_tack",
+            "text": "Feel bold, calm, and collected in any crowd"
+          }
+        },
+        "feature_w9PLUb": {
+          "type": "feature",
+          "settings": {
+            "icon": "pin_tack",
+            "text": "A sophisticated blend crafted to captivate"
+          }
+        },
+        "button_tXRnnk": {
+          "type": "button",
+          "settings": {
+            "button": "Unlock Your Signature Scent →",
+            "url": "",
+            "open_in_new_tab": false,
+            "button_style": "non_outline",
+            "button_custom": false,
+            "button_font": "dm_sans_n6",
+            "button_size": 16,
+            "button_size_mobile": 14,
+            "button_advanced": false,
+            "button_height": 100,
+            "button_padding_horizontal": 40,
+            "button_padding_horizontal_mobile": 32,
+            "button_padding_vertical": 20,
+            "button_padding_vertical_mobile": 20,
+            "button_radius": 8,
+            "button_border_thickness": 1,
+            "button_mt": 24,
+            "button_mt_mobile": 24,
+            "button_custom_styling": true,
+            "button_full_width_mobile": true,
+            "button_color": "#2d1a47",
+            "button_hover_color": "#2d1a47",
+            "button_bg_color": "#e5c9ff",
+            "button_bg_hover_color": "#e5c9ff",
+            "button_border_color": "#1a1a1a",
+            "button_border_hover_color": "#1a1a1a",
+            "button_shadow_color": "#d17efc"
+          }
+        },
+        "verified_Bjne6d": {
+          "type": "verified",
+          "settings": {
+            "icon_size": 14,
+            "icon_size_mobile": 16,
+            "icon": "credit_card",
+            "text": "<p>30-Day Money-back Guarantee</p>",
+            "text_custom": false,
+            "text_font": "dm_sans_n5",
+            "text_size": 13,
+            "text_size_mobile": 12,
+            "text_advanced": true,
+            "text_height": 150,
+            "text_mt": 12,
+            "text_mt_mobile": 16,
+            "icon_color": "#4c1d95",
+            "text_color": "#4c1d95"
+          }
+        }
+      },
+      "block_order": [
+        "review_g3dyRW",
+        "heading_4jpABd",
+        "feature_pbWmVe",
+        "feature_Migqxi",
+        "feature_w9PLUb",
+        "button_tXRnnk",
+        "verified_Bjne6d"
+      ],
+      "name": "SS - Hero pro 💎 🎛️ Preset 4",
+      "settings": {
+        "hero_height": "fixed_height",
+        "hero_fixed_height": 600,
+        "hero_fixed_height_mobile": 700,
+        "content_max_width": 50,
+        "enable_split_layout": true,
+        "content_align": "left",
+        "content_align_mobile": "center",
+        "content_vertical_align": "center",
+        "content_vertical_align_mobile": "end",
+        "features_advanced": false,
+        "features_mt": 20,
+        "features_mt_mobile": 20,
+        "features_gap": 12,
+        "features_gap_mobile": 12,
+        "feature_background": true,
+        "feature_bg_opacity": 0.3,
+        "feature_enable_blur": true,
+        "feature_radius": 100,
+        "feature_border_thickness": 1,
+        "feature_padding_horizontal": 12,
+        "feature_padding_horizontal_mobile": 12,
+        "feature_padding_vertical": 6,
+        "feature_padding_vertical_mobile": 6,
+        "feature_icon_size": 18,
+        "feature_icon_size_mobile": 16,
+        "feature_text_custom": false,
+        "feature_text_font": "dm_sans_n5",
+        "feature_text_size": 18,
+        "feature_text_size_mobile": 12,
+        "feature_text_height": 150,
+        "feature_icon_color": "#4c1d95",
+        "feature_text_color": "#4c1d95",
+        "feature_bg_color": "#ffffff",
+        "feature_border_color": "#ffffff",
+        "layout_bg_type": "image",
+        "bg_image_mobile": "shopify://shop_images/HeroImageFull.png",
+        "bg_overlay": 0,
+        "bg_overlay_color": "#121212",
+        "background_style": "solid",
+        "background_color": "#f9f5ff",
+        "background_gradient": "radial-gradient(rgba(30, 30, 36, 1), rgba(5, 5, 5, 1) 100%)",
+        "border_color": "#121212",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "margin_horizontal": 0,
+        "margin_horizontal_mobile": 0,
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "padding_horizontal": 5,
+        "padding_horizontal_mobile": 1.5,
+        "width": "custom",
+        "content_width": 1300,
+        "border_thickness": 0,
+        "section_radius": 0,
+        "lazy": false
+      }
     }
   },
   "order": [
     "header",
-    "announcement-bar"
+    "announcement-bar",
+    "ss_hero_pro_f8c4f6_iTYwcQ"
   ]
 }
