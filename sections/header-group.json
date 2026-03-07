@@ -71,12 +71,12 @@
           "settings": {
             "stars_count": 4.5,
             "stars_size": 14,
-            "stars_size_mobile": 24,
+            "stars_size_mobile": 10,
             "stars_gap": 2,
-            "review": "<p>Rated 4.7 out of 5 (1000+ Reviews)</p>",
-            "review_custom": false,
-            "review_font": "dm_sans_n5",
-            "review_size": 13,
+            "review": "<p>Rated <strong>4.7 </strong>out of 5 (1000+ Reviews)</p>",
+            "review_custom": true,
+            "review_font": "ibm_plex_sans_n4",
+            "review_size": 15,
             "review_size_mobile": 11,
             "review_advanced": false,
             "review_height": 130,
@@ -114,27 +114,6 @@
             "heading_mt_mobile": 8,
             "heading_color": "#121212",
             "heading_accent_color": "#4c1d95"
-          }
-        },
-        "feature_pbWmVe": {
-          "type": "feature",
-          "settings": {
-            "icon": "pin_tack",
-            "text": "Boost your social battery and magnetic pull"
-          }
-        },
-        "feature_Migqxi": {
-          "type": "feature",
-          "settings": {
-            "icon": "pin_tack",
-            "text": "Feel bold, calm, and collected in any crowd"
-          }
-        },
-        "feature_w9PLUb": {
-          "type": "feature",
-          "settings": {
-            "icon": "pin_tack",
-            "text": "A sophisticated blend crafted to captivate"
           }
         },
         "button_tXRnnk": {
@@ -192,9 +171,6 @@
       "block_order": [
         "review_g3dyRW",
         "heading_4jpABd",
-        "feature_pbWmVe",
-        "feature_Migqxi",
-        "feature_w9PLUb",
         "button_tXRnnk",
         "verified_Bjne6d"
       ],
