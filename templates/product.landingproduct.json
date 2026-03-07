@@ -201,6 +201,7 @@
         "item_aLLNdy": {
           "type": "item",
           "settings": {
+            "image": "shopify://shop_images/IMG_6315.jpg",
             "percent": 0,
             "percent_text": "",
             "title": "<p>High Polyphenol</p>",
@@ -220,8 +221,9 @@
         "item_VVeBqH": {
           "type": "item",
           "settings": {
+            "image": "shopify://shop_images/IMG_6329.jpg",
             "percent": 0,
-            "percent_text": "<p>Report a noticeable improvement in tone.</p>",
+            "percent_text": "",
             "title": "<p>Delicious </p>",
             "text": "<p>Baseline has an intense fruity aroma and a distinctive peppery kick.</p><p>You can taste and smell the difference in the freshness and potency of our oil.</p>"
           }
