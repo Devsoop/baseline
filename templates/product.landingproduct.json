@@ -228,22 +228,12 @@
             "title": "<p>Delicious </p>",
             "text": "<p>Baseline has an <strong>intense fruity aroma and a distinctive peppery kick.</strong></p><p>‎ </p><p>You can taste and smell the difference in the freshness and potency of our oil.</p>"
           }
-        },
-        "item_rfaJyc": {
-          "type": "item",
-          "settings": {
-            "percent": 90,
-            "percent_text": "<p>Optional subtext</p>",
-            "title": "<h3>TELL YOUR STORY</h3>",
-            "text": "<p>Talk about results of your customers and how your product improved their life.</p>"
-          }
         }
       },
       "block_order": [
         "item_aLLNdy",
         "item_VEnJMa",
-        "item_VVeBqH",
-        "item_rfaJyc"
+        "item_VVeBqH"
       ],
       "name": "SS - Feature #22 🎛️ Preset 2",
       "settings": {
