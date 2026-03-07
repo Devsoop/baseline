@@ -202,18 +202,19 @@
           "type": "item",
           "settings": {
             "percent": 0,
-            "percent_text": "<p>Report a visible fading of dark spots.</p>",
-            "title": "<p>BENEFIT # 1</p>",
-            "text": "<p>Retinoids can help to stimulate cell turnover and improve skin texture and quality, reducing the appearance of dark spots.</p>"
+            "percent_text": "",
+            "title": "<p>High Polyphenol</p>",
+            "text": "<p>Polyphenols are natural compounds olive trees produce to protect themselves.</p><p>By consuming them, we benefit from those protective properties too.</p><p>Most olive oils contain around 50 mg/kg.  Baseline guarantees 400+ mg/kg</p>"
           }
         },
         "item_VEnJMa": {
           "type": "item",
           "settings": {
+            "image": "shopify://shop_images/IMG_6361.jpg",
             "percent": 0,
             "percent_text": "<p>Report a decrease in skin sensitivity.</p>",
-            "title": "<p>BENEFIT # 2</p>",
-            "text": "<p>Ingredients that help to strengthen the skin's protective layer, such as ceramides and fatty acids, can be beneficial.</p>"
+            "title": "<p>Lab Verified</p>",
+            "text": "<p>Every batch is independently lab tested across 8+ quality and potency metrics.</p><p>Scan the QR code on your bottle to see the full results and know exactly what you're getting.</p>"
           }
         },
         "item_VVeBqH": {
@@ -221,8 +222,8 @@
           "settings": {
             "percent": 0,
             "percent_text": "<p>Report a noticeable improvement in tone.</p>",
-            "title": "<p>BENEFIT # 3</p>",
-            "text": "<p>Well-hydrated skin is more resilient and appears healthier. Ingredients like hyaluronic acid can help to lock in moisture.</p>"
+            "title": "<p>Delicious </p>",
+            "text": "<p>Baseline has an intense fruity aroma and a distinctive peppery kick.</p><p>You can taste and smell the difference in the freshness and potency of our oil.</p>"
           }
         }
       },
