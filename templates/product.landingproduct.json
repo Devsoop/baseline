@@ -65,7 +65,7 @@
         "text_9bpgCQ": {
           "type": "text",
           "settings": {
-            "text": "<p>High Quality, high-polyphenol extra virgin olive oil, so you can unlock olive oil’s real health benefits.</p>",
+            "text": "<p>High-polyphenol extra virgin olive oil, so you can unlock olive oil’s real health benefits.</p>",
             "text_custom": true,
             "text_font": "ibm_plex_sans_n4",
             "text_size": 18,
@@ -174,6 +174,7 @@
         "feature_border_color": "#ffffff",
         "layout_bg_type": "image",
         "bg_image_mobile": "shopify://shop_images/HeroImageFull.png",
+        "bg_video_url": "",
         "bg_overlay": 0,
         "bg_overlay_color": "#121212",
         "background_style": "solid",
@@ -205,7 +206,7 @@
             "percent": 0,
             "percent_text": "",
             "title": "<p>High Polyphenol</p>",
-            "text": "<p>Polyphenols are natural compounds olive trees produce to protect themselves.</p><p>By consuming them, we benefit from those protective properties too.</p><p>Most olive oils contain around 50 mg/kg.  Baseline guarantees 400+ mg/kg</p>"
+            "text": "<p>Compounds olives produce to protect themselves — and that help protect our bodies too.</p><p>.</p><p>Typical olive oil: <strong>~50 mg/kg</strong><br/>Baseline: <strong>400+ mg/kg</strong></p>"
           }
         },
         "item_VEnJMa": {
@@ -213,9 +214,9 @@
           "settings": {
             "image": "shopify://shop_images/IMG_6361.jpg",
             "percent": 0,
-            "percent_text": "<p>Report a decrease in skin sensitivity.</p>",
+            "percent_text": "",
             "title": "<p>Lab Verified</p>",
-            "text": "<p>Every batch is independently lab tested across 8+ quality and potency metrics.</p><p>Scan the QR code on your bottle to see the full results and know exactly what you're getting.</p>"
+            "text": "<p>Every batch is independently lab tested across <strong>8+ quality and potency metrics</strong>.</p><p>.</p><p>Scan the QR code to see full results and know exactly what you're getting.</p>"
           }
         },
         "item_VVeBqH": {
@@ -225,7 +226,7 @@
             "percent": 0,
             "percent_text": "",
             "title": "<p>Delicious </p>",
-            "text": "<p>Baseline has an intense fruity aroma and a distinctive peppery kick.</p><p>You can taste and smell the difference in the freshness and potency of our oil.</p>"
+            "text": "<p>Baseline has an <strong>intense fruity aroma and a distinctive peppery kick.</strong></p><p><strong>.</strong></p><p>You can taste and smell the difference in the freshness and potency of our oil.</p>"
           }
         }
       },
@@ -236,11 +237,11 @@
       ],
       "name": "SS - Feature #22 🎛️ Preset 2",
       "settings": {
-        "heading": "<p>Why Baseline Is Different</p>",
+        "heading": "<p>WHY BASELINE IS DIFFERENT</p>",
         "heading_custom": true,
         "heading_font": "ibm_plex_sans_n5",
         "heading_size": 28,
-        "heading_size_mobile": 26,
+        "heading_size_mobile": 30,
         "heading_height": 150,
         "heading_align": "center",
         "heading_align_mobile": "center",
@@ -276,8 +277,8 @@
         "content_padding_vertical_mobile": 24,
         "content_padding_horizontal": 20,
         "content_padding_horizontal_mobile": 16,
-        "title_custom": false,
-        "title_font": "josefin_sans_n4",
+        "title_custom": true,
+        "title_font": "ibm_plex_mono_n6",
         "title_size": 16,
         "title_size_mobile": 16,
         "title_height": 150,
@@ -310,7 +311,7 @@
         "pagination_size": 12,
         "pagination_size_mobile": 12,
         "pagination_height": 100,
-        "button": "LEARN MORE",
+        "button": "",
         "button_url": "",
         "button_custom": false,
         "button_font": "josefin_sans_n4",
@@ -331,7 +332,7 @@
         "circle_progress": "#ffffff",
         "percent_color": "#ffffff",
         "percent_text_color": "#ffffff",
-        "title_color": "#000000",
+        "title_color": "#000000ff",
         "text_color": "#000000",
         "slide_bg_color": "#ffffff",
         "image_overlay_color": "#000000",
@@ -345,9 +346,9 @@
         "button_bg_hover_color": "#c2b9dd",
         "button_border_color": "#ffffff",
         "button_border_hover_color": "#c2b9dd",
-        "heading_color": "#171717",
-        "background_color": "#ffffff",
-        "background_gradient": "",
+        "heading_color": "#ffffff",
+        "background_color": "#9e011e",
+        "background_gradient": "radial-gradient(rgba(158, 1, 30, 1) 50%, rgba(0, 0, 0, 1) 100%)",
         "border_color": "#000000",
         "margin_top": 0,
         "margin_bottom": 0,
