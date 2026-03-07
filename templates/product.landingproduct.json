@@ -348,7 +348,7 @@
         "button_border_hover_color": "#c2b9dd",
         "heading_color": "#ffffff",
         "background_color": "#9e011e",
-        "background_gradient": "radial-gradient(rgba(158, 1, 30, 1) 50%, rgba(0, 0, 0, 1) 100%)",
+        "background_gradient": "radial-gradient(rgba(158, 1, 30, 1) 50%, rgba(129, 1, 22, 1) 77%, rgba(56, 2, 3, 1) 100%)",
         "border_color": "#000000",
         "margin_top": 0,
         "margin_bottom": 0,
