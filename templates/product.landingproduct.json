@@ -206,7 +206,7 @@
             "percent": 0,
             "percent_text": "",
             "title": "<p>High Polyphenol</p>",
-            "text": "<p>Compounds olives produce to protect themselves — and that help protect our bodies too.</p><p>.</p><p>Typical olive oil: <strong>~50 mg/kg</strong><br/>Baseline: <strong>400+ mg/kg</strong></p>"
+            "text": "<p>Compounds olives produce to protect themselves — and that help protect our bodies too.</p><p>‎ </p><p>Typical olive oil: <strong>~50 mg/kg</strong><br/>Baseline: <strong>400+ mg/kg</strong></p>"
           }
         },
         "item_VEnJMa": {
@@ -216,7 +216,7 @@
             "percent": 0,
             "percent_text": "",
             "title": "<p>Lab Verified</p>",
-            "text": "<p>Every batch is independently lab tested across <strong>8+ quality and potency metrics</strong>.</p><p>.</p><p>Scan the QR code to see full results and know exactly what you're getting.</p>"
+            "text": "<p>Every batch is independently lab tested across <strong>8+ quality and potency metrics</strong>.</p><p>‎ </p><p>Scan the QR code to see full results and know exactly what you're getting.</p>"
           }
         },
         "item_VVeBqH": {
@@ -226,7 +226,7 @@
             "percent": 0,
             "percent_text": "",
             "title": "<p>Delicious </p>",
-            "text": "<p>Baseline has an <strong>intense fruity aroma and a distinctive peppery kick.</strong></p><p><strong>.</strong></p><p>You can taste and smell the difference in the freshness and potency of our oil.</p>"
+            "text": "<p>Baseline has an <strong>intense fruity aroma and a distinctive peppery kick.</strong></p><p>‎ </p><p>You can taste and smell the difference in the freshness and potency of our oil.</p>"
           }
         }
       },
@@ -265,7 +265,7 @@
         "circle_horizontal_align": "start",
         "circle_horizontal_align_mobile": "start",
         "percent_text_custom": true,
-        "percent_text_font": "ibm_plex_sans_n4",
+        "percent_text_font": "montserrat_n4",
         "percent_text_size": 12,
         "percent_text_size_mobile": 13,
         "percent_text_height": 150,
