@@ -378,15 +378,6 @@
     "ss_text_block_pro_GyGHay": {
       "type": "ss-text-block-pro",
       "blocks": {
-        "image_TEt3m7": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/451181ae6a1f8e2cc7ea9d4ba326c170b4c16020_c7917dee-da38-469c-b6e5-ecf29dcc5c72.png",
-            "image_radius": 0,
-            "image_mt": 0,
-            "image_align": "center"
-          }
-        },
         "title_kre39W": {
           "type": "title",
           "settings": {
@@ -415,7 +406,6 @@
         }
       },
       "block_order": [
-        "image_TEt3m7",
         "title_kre39W",
         "text_wEX4be"
       ],
@@ -435,7 +425,7 @@
         "content_radius": 36,
         "gap": 30,
         "gap_mobile": 15,
-        "background_color": "#f5f5f5",
+        "background_color": "#ffffff",
         "background_gradient": "",
         "border_color": "#000000",
         "content_bg": "",
@@ -907,68 +897,58 @@
     "ss_testimonial_8_0a40e8_kWqx49": {
       "type": "ss-testimonial-8-0a40e8",
       "blocks": {
+        "testimonials_b3C9dr": {
+          "type": "testimonials",
+          "settings": {
+            "stars_count": 5,
+            "heading": "Quality and taste is on a different level",
+            "text": "The flavor and smell is completely different from normal olive oil at the grocery store. It’s bold, peppery, and super fresh tasting. You can tell it’s the real thing.",
+            "author_date": "Lily S"
+          }
+        },
         "testimonials_nTMy8t": {
           "type": "testimonials",
           "settings": {
             "stars_count": 5,
-            "heading": "I adopted it!",
-            "text": "I've been using an Oral B electric toothbrush for years, but I'm thrilled to have switched to the My Variations one: it's softer yet more effective, quieter, and cleaner. Don't hesitate! After the initial tickling sensation, you'll definitely adopt it",
-            "author_date": "Cathrine - 29 July"
+            "heading": "My skin actually looks healthier",
+            "text": "I bought this mostly for gut health, but after a few weeks my skin started looking clearer and more hydrated. A friend actually asked me if I changed my skincare routine which I didn’t. Only thing I added was this.",
+            "author_date": "Cathrine R"
           }
         },
         "testimonials_nnAM6F": {
           "type": "testimonials",
           "settings": {
             "stars_count": 5,
-            "heading": "Very good toothbrush",
-            "text": "Very good toothbrush. I was skeptical at first because of the price, but the FlexiClean toothbrush is indeed superb. It has a nice design, is easy to use, and although it tickles at first, the feature of changing sides every 30 seconds is great for not missing any brushing area – it's very clever.",
-            "author_date": "Franck - 30 June"
-          }
-        },
-        "testimonials_wQ73Lf": {
-          "type": "testimonials",
-          "settings": {
-            "stars_count": 5,
-            "heading": "I love it!!! 😍",
-            "text": "At first, I thought I'd have to return my toothbrush because the tickling sensation was bothering me, but after a few days, I got used to it and I'm really glad I persisted. For me, it's the best toothbrush out there, and I've tried several.",
-            "author_date": "Gerard - 30 June"
+            "heading": "Didn’t realize olive oil could be this different",
+            "text": "I’ve used olive oil my whole life, but this is on another level. The taste is strong in a good way and you can tell it’s actually potent. After learning about the polyphenols and scanning the lab results, I honestly won’t go back to regular store oils.",
+            "author_date": "George T"
           }
         },
         "testimonials_wdtXn6": {
           "type": "testimonials",
           "settings": {
             "stars_count": 5,
-            "heading": "As day and night",
-            "text": "I didn't expect to see the difference so quickly. I feel that my teeth are really clean. Since then, no bleeding when brushing.",
-            "author_date": "Vivian - 29 JUNE 2023"
+            "heading": "Feels more like a supplement than an olive oil",
+            "text": "I originally bought Baseline out of curiosity but now I take a small shot every morning. It feels more like a health supplement than cooking oil. My gut feels calmer and I don’t get that heavy feeling after meals anymore.",
+            "author_date": "Vivian E"
           }
         },
-        "testimonials_b3C9dr": {
+        "testimonials_wQ73Lf": {
           "type": "testimonials",
           "settings": {
             "stars_count": 5,
-            "heading": "Very effective electric toothbrush...",
-            "text": "Electric toothbrush that's very effective (gentle yet cleans teeth very well) and very convenient (no more constantly dirty toothbrush holders cluttering the bathroom counter)",
-            "author_date": "Miguel - 27 August"
-          }
-        },
-        "testimonials_twETtY": {
-          "type": "testimonials",
-          "settings": {
-            "stars_count": 5,
-            "heading": "I have very sensitive gums",
-            "text": "I have very sensitive gums that bleed with every brushing. I was skeptical about switching from my more expensive Oral B to another brand. The result? Thrilled!",
-            "author_date": "Barbara - 30 September"
+            "heading": "Didn’t realize how bad my digestion was before",
+            "text": "I always thought feeling heavy or bloated after meals was normal. After taking Baseline daily for a couple weeks my stomach just feels calmer. Hard to explain but digestion definitely feels smoother.",
+            "author_date": "Olivia B"
           }
         }
       },
       "block_order": [
+        "testimonials_b3C9dr",
         "testimonials_nTMy8t",
         "testimonials_nnAM6F",
-        "testimonials_wQ73Lf",
         "testimonials_wdtXn6",
-        "testimonials_b3C9dr",
-        "testimonials_twETtY"
+        "testimonials_wQ73Lf"
       ],
       "name": "SS - Testimonial #8 🎛️ Preset 2",
       "settings": {
@@ -1039,7 +1019,7 @@
         "card_author_date_text_custom": true,
         "card_author_date_text_font": "montserrat_n4",
         "card_author_date_text_size": 0,
-        "card_author_date_text_size_mobile": 0,
+        "card_author_date_text_size_mobile": 12,
         "card_author_date_text_advanced": false,
         "card_author_date_text_height": 130,
         "card_author_date_text_mt": 16,
