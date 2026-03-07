@@ -168,18 +168,18 @@
           "settings": {
             "icon_size": 14,
             "icon_size_mobile": 16,
-            "icon": "credit_card",
+            "icon": "shield_check",
             "text": "<p>30-Day Money-back Guarantee</p>",
-            "text_custom": false,
-            "text_font": "dm_sans_n5",
+            "text_custom": true,
+            "text_font": "ibm_plex_sans_n4",
             "text_size": 13,
             "text_size_mobile": 12,
             "text_advanced": true,
             "text_height": 150,
             "text_mt": 12,
             "text_mt_mobile": 16,
-            "icon_color": "#4c1d95",
-            "text_color": "#4c1d95"
+            "icon_color": "#121212",
+            "text_color": "#121212"
           }
         }
       },
