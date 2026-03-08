@@ -3631,7 +3631,7 @@ details-disclosure > details {
    filter: invert(1);
 }
 
-/* existing theme styles above */
+/* Added by enzo */
 
 html {
   scroll-behavior: smooth;
