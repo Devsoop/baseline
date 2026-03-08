@@ -653,7 +653,7 @@
             "benefit_description": "Supports hydration, elasticity, a natural glow",
             "benefit_icon_back": "shopify://shop_images/stars_no_bg.png",
             "benefit_back_title": "Skin",
-            "benefit_back_description": "Improves cholesterol, supports circulation, and lowers heart disease risk.",
+            "benefit_back_description": "Oral consumption helps reduce wrinkles, deeply hydrates, and supports skin repair",
             "benifit_card_button_text": "Learn More",
             "benifit_card_button_link": "shopify://blogs/health-benefits/skin-health"
           }
@@ -666,7 +666,7 @@
             "benefit_description": "Supports your body’s\nnatural immune response",
             "benefit_icon_back": "shopify://shop_images/virus_no_bg.png",
             "benefit_back_title": "Immune Support",
-            "benefit_back_description": "Improves cholesterol, supports circulation, and lowers heart disease risk.",
+            "benefit_back_description": "Supports immune balance, fights harmful bacteria, and may ease inflammation in autoimmune conditions.",
             "benifit_card_button_text": "Learn More",
             "benifit_card_button_link": "shopify://blogs/health-benefits/immune-support-research"
           }
@@ -679,7 +679,7 @@
             "benefit_description": "Supports focus, clarity,\nand mental sharpness",
             "benefit_icon_back": "shopify://shop_images/brain_no_bg.png",
             "benefit_back_title": "Cognition",
-            "benefit_back_description": "Improves cholesterol, supports circulation, and lowers heart disease risk.",
+            "benefit_back_description": "Supports memory and is linked to a lower risk of dementia.",
             "benifit_card_button_text": "Learn More",
             "benifit_card_button_link": "shopify://blogs/health-benefits/cognitive-function"
           }
@@ -692,7 +692,7 @@
             "benefit_description": "Fights oxidative stress\nat the cellular level",
             "benefit_icon_back": "shopify://shop_images/shield_no_bg.png",
             "benefit_back_title": "Protection",
-            "benefit_back_description": "Improves cholesterol, supports circulation, and lowers heart disease risk.",
+            "benefit_back_description": "Protects cells by neutralising free radicals and reducing oxidative stress",
             "benifit_card_button_text": "Learn More",
             "benifit_card_button_link": "shopify://blogs/health-benefits/antioxidant-protection"
           }
@@ -705,7 +705,7 @@
             "benefit_description": "Aids inflammation response, tissue repair",
             "benefit_icon_back": "shopify://shop_images/muscle_no_bg.png",
             "benefit_back_title": "Repair",
-            "benefit_back_description": "Improves cholesterol, supports circulation, and lowers heart disease risk.",
+            "benefit_back_description": "Reduces inflammation, eases soreness, and supports faster recovery.",
             "benifit_card_button_text": "Learn More",
             "benifit_card_button_link": "shopify://blogs/health-benefits/inflammation-recovery-research"
           }
@@ -731,7 +731,7 @@
             "benefit_description": "Supports sustained energy and drive",
             "benefit_icon_back": "shopify://shop_images/atom_no_bg.png",
             "benefit_back_title": "Vitality",
-            "benefit_back_description": "Improves cholesterol, supports circulation, and lowers heart disease risk.",
+            "benefit_back_description": "Supports stable energy, endurance, and muscle recovery.",
             "benifit_card_button_text": "Learn More",
             "benifit_card_button_link": "shopify://blogs/health-benefits/energy-and-endurance-research"
           }
@@ -744,7 +744,7 @@
             "benefit_description": " Linked to long-termcellular health",
             "benefit_icon_back": "shopify://shop_images/ribbon_no_bg.png",
             "benefit_back_title": "Anti-Cancer",
-            "benefit_back_description": "Improves cholesterol, supports circulation, and lowers heart disease risk.",
+            "benefit_back_description": "Linked to lower cancer risk and contains compounds that help protect cells from damage and abnormal growth.",
             "benifit_card_button_text": "Learn More",
             "benifit_card_button_link": "shopify://blogs/health-benefits/anti-cancer-research"
           }
@@ -757,7 +757,7 @@
             "benefit_description": " Supports natural hormonal balance",
             "benefit_icon_back": "shopify://shop_images/molecule_no_bg.png",
             "benefit_back_title": "Hormones.",
-            "benefit_back_description": "Improves cholesterol, supports circulation, and lowers heart disease risk.",
+            "benefit_back_description": "Supports hormonal balance, improves insulin sensitivity, and reduces stress hormones.",
             "benifit_card_button_text": "Learn More",
             "benifit_card_button_link": "shopify://blogs/health-benefits/hormone-health-research"
           }
