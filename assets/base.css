@@ -3630,3 +3630,9 @@ details-disclosure > details {
 .footer.color-scheme-4 .footer-block-image {
    filter: invert(1);
 }
+
+/* existing theme styles above */
+
+html {
+  scroll-behavior: smooth;
+}
