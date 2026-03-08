@@ -15,7 +15,8 @@
         "review_6hamDq": {
           "type": "review",
           "settings": {
-            "stars_count": 4.5,
+            "stars_count": 5,
+            "stars_icon": "shopify://shop_images/1828884.png",
             "stars_size": 14,
             "stars_size_mobile": 10,
             "stars_gap": 2,
