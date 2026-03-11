@@ -41,8 +41,8 @@
         "card_fresh_7UEBNe": {
           "type": "card_fresh",
           "settings": {
-            "image": "shopify://shop_images/image_17.png",
-            "image_mobile": "shopify://shop_images/Image_8.png",
+            "image": "shopify://shop_images/image_17_1.webp",
+            "image_mobile": "shopify://shop_images/Image_8.webp",
             "copy": "Fresh. Sourced from the\nfinest single-origin farms\nacross the globe."
           }
         },
@@ -68,8 +68,8 @@
         "card_cold_qgEn6z": {
           "type": "card_cold",
           "settings": {
-            "image": "shopify://shop_images/image_16.png",
-            "image_mobile": "shopify://shop_images/Image_9.png",
+            "image": "shopify://shop_images/image_16.webp",
+            "image_mobile": "shopify://shop_images/Image_9.webp",
             "copy": "Cold Extracted.\nCold extraction to preserve polyphenols."
           }
         }
