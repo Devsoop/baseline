@@ -315,6 +315,16 @@
     }
   }
 </style>
+{%- unless section.settings.enable_animation -%}
+  .animation-hero-{{ section.id }} {
+    height: auto;
+    overflow: visible;
+  }
+  .animation-hero-{{ section.id }} .animation-hero__track {
+    height: auto;
+    transform: none !important;
+  }
+{%- endunless -%}
 
 <script>
     (function () {
