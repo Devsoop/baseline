@@ -1,15 +1,4 @@
 {%- style -%}
-    {%- unless section.settings.enable_animation -%}
-    .animation-hero-{{ section.id }} {
-      height: auto;
-      overflow: visible;
-    }
-    .animation-hero-{{ section.id }} .animation-hero__track {
-      height: auto;
-      transform: none !important;
-    }
-  {%- endunless -%}
-
     /* ── Outer clip window: exactly one viewport tall ───────────────────── */
     .animation-hero-{{ section.id }} {
       height: 100vh;
@@ -322,6 +311,16 @@
       max-width: 100%;
     }
   }
+  {%- unless section.settings.enable_animation -%}
+    .animation-hero-{{ section.id }} {
+      height: auto;
+      overflow: visible;
+    }
+    .animation-hero-{{ section.id }} .animation-hero__track {
+      height: auto;
+      transform: none !important;
+    }
+  {%- endunless -%}
 </style>
 
 <script>
