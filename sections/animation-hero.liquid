@@ -1,98 +1,106 @@
 {%- style -%}
-  /* ── Outer clip window: exactly one viewport tall ───────────────────── */
-  .animation-hero-{{ section.id }} {
-    height: 100vh;
-    overflow: hidden;
-    position: relative;
-    margin-top: -110px;
-
-  }
-  
-  
-  
-
-  /* ── The full section body: 300vh, gradient red (top) → black (bottom) ─
-     Hero lives on the red half, Polyphenols on the black half.
-     When this slides up 100vh the black half enters the viewport.        */
-  .animation-hero-{{ section.id }} .animation-hero__track {
-    height: 300vh;
-    width: 100%;
-    /* background-color: #0a0a0a;
-    background-image:
-      radial-gradient(ellipse 80% 25% at 50% 14%, #81091b 0%, #690212 25%, #560410 55%, rgb(99 4 17 / 41%) 85%, transparent 100%); */
-    will-change: transform;
-    position: relative;
-
-    background-image: url('https://cdn.shopify.com/s/files/1/0942/1144/0963/files/Group_15.png?v=1770036645');
-    /* background-size: cover; */
-    background-size: 100% 200vh;
-  }
-
-  /* ── Hero panel: top 100vh of the track (sits on the red area) ───────── */
-  .animation-hero-{{ section.id }} .animation-hero__hero {
-    height: 100vh;
-    width: 100%;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  }
-
-  /* ── Polyphenols panel: bottom 100vh of the track (sits on black area) ── */
-  .animation-hero-{{ section.id }} .animation-hero__polyphenols {
-    height: 90vh;
-    width: 100%;
-    position: relative;
-    display: grid;
-    gap: 2rem;
-    align-items: center;
-    padding-top: 10vh;
-    padding-bottom: 0;
-  }
-  @media (min-width: 990px) {
-    .animation-hero-{{ section.id }} .animation-hero__polyphenols {
-      grid-template-columns: 66.6% 33%;
-      gap: 1rem;
+    {%- unless section.settings.enable_animation -%}
+    .animation-hero-{{ section.id }} {
+      height: auto;
+      overflow: visible;
     }
-  }
+    .animation-hero-{{ section.id }} .animation-hero__track {
+      height: auto;
+      transform: none !important;
+    }
+  {%- endunless -%}
 
-  /* ── Linear fade at the bottom of the hero image ───────────────────── */
-  .animation-hero-{{ section.id }} .hero-bg-linear {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    background: linear-gradient(
-      180deg,
-      rgba(0,0,0,0)    0%,
-      rgba(0,0,0,0.15) 35%,
-      rgba(0,0,0,0.6)  55%,
-      #000000          70%,
-      #000000          100%
-    );
-    pointer-events: none;
-  }
+    /* ── Outer clip window: exactly one viewport tall ───────────────────── */
+    .animation-hero-{{ section.id }} {
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+      margin-top: -110px;
+
+    }
+
+    /* ── The full section body: 300vh, gradient red (top) → black (bottom) ─
+       Hero lives on the red half, Polyphenols on the black half.
+       When this slides up 100vh the black half enters the viewport.        */
+    .animation-hero-{{ section.id }} .animation-hero__track {
+      height: 300vh;
+      width: 100%;
+      /* background-color: #0a0a0a;
+      background-image:
+        radial-gradient(ellipse 80% 25% at 50% 14%, #81091b 0%, #690212 25%, #560410 55%, rgb(99 4 17 / 41%) 85%, transparent 100%); */
+      will-change: transform;
+      position: relative;
+
+      background-image: url('https://cdn.shopify.com/s/files/1/0942/1144/0963/files/Group_15.png?v=1770036645');
+      /* background-size: cover; */
+      background-size: 100% 200vh;
+    }
+
+    /* ── Hero panel: top 100vh of the track (sits on the red area) ───────── */
+    .animation-hero-{{ section.id }} .animation-hero__hero {
+      height: 100vh;
+      width: 100%;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    /* ── Polyphenols panel: bottom 100vh of the track (sits on black area) ── */
+    .animation-hero-{{ section.id }} .animation-hero__polyphenols {
+      height: 90vh;
+      width: 100%;
+      position: relative;
+      display: grid;
+      gap: 2rem;
+      align-items: center;
+      padding-top: 10vh;
+      padding-bottom: 0;
+    }
+    @media (min-width: 990px) {
+      .animation-hero-{{ section.id }} .animation-hero__polyphenols {
+        grid-template-columns: 66.6% 33%;
+        gap: 1rem;
+      }
+    }
+
+    /* ── Linear fade at the bottom of the hero image ───────────────────── */
+    .animation-hero-{{ section.id }} .hero-bg-linear {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(0,0,0,0)    0%,
+        rgba(0,0,0,0.15) 35%,
+        rgba(0,0,0,0.6)  55%,
+        #000000          70%,
+        #000000          100%
+      );
+      pointer-events: none;
+    }
 
 
 
-  /* ── Word-split helpers ─────────────────────────────────────────────── */
-  .anim-word-wrap {
-    display: inline-block;
-    /* overflow: hidden; */
-    vertical-align: bottom;
-  }
-  .anim-word {
-    display: inline-block;
-    will-change: transform;
-  }
-  /* Invisible wall: clip at bottom of text so words fully disappear (no top edge showing). No extra padding = disappear sooner. */
-  .animation-hero-{{ section.id }} .animation-hero__title-clip {
-    overflow: hidden;
-    display: block;
-  }
+    /* ── Word-split helpers ─────────────────────────────────────────────── */
+    .anim-word-wrap {
+      display: inline-block;
+      /* overflow: hidden; */
+      vertical-align: bottom;
+    }
+    .anim-word {
+      display: inline-block;
+      will-change: transform;
+    }
+    /* Invisible wall: clip at bottom of text so words fully disappear (no top edge showing). No extra padding = disappear sooner. */
+    .animation-hero-{{ section.id }} .animation-hero__title-clip {
+      overflow: hidden;
+      display: block;
+    }
 {%- endstyle -%}
 
 <section
@@ -143,13 +151,15 @@
               {{
                 mobile_img
                 | image_url: width: 800
-                | image_tag: loading: 'lazy', class: 'animation-hero__banner-img', alt: mobile_img.alt | default: 'Hero banner'
+                | image_tag: loading: 'lazy', class: 'animation-hero__banner-img', alt: mobile_img.alt
+                | default: 'Hero banner'
               }}
             {%- else -%}
               {{
                 desktop_img
                 | image_url: width: 1200
-                | image_tag: loading: 'lazy', class: 'animation-hero__banner-img', alt: desktop_img.alt | default: 'Hero banner'
+                | image_tag: loading: 'lazy', class: 'animation-hero__banner-img', alt: desktop_img.alt
+                | default: 'Hero banner'
               }}
             {%- endif -%}
           </div>
@@ -286,7 +296,7 @@
   }
   .animation-hero__banner-img-wrap {margin-top: 100px;}
   @media (min-width: 990px) {
-    
+
     .animation-hero__polyphenols-media {
       max-width: 320px;
     }
@@ -326,7 +336,8 @@
       s.onload = cb;
       document.head.appendChild(s);
     }
-
+    var animationEnabled = {{ section.settings.enable_animation | json }};
+    if (!animationEnabled) return;
     loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', function () {
       loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js', function () {
         init();
@@ -490,7 +501,7 @@
         /* 5. Start animating exactly when track starts sliding up,
               spread lines across the slide duration (1.0) */
         var slideStart = Math.max(1.0, wordPhaseDuration);   /* same as Phase 2 start */
-        var slideDuration = 2.5;                             
+        var slideDuration = 2.5;
         var perBeat = slideDuration / (lineGroups.length + 1);
 
         lineGroups.forEach(function (group, i) {
@@ -530,6 +541,7 @@
   "class": "section-animation-hero",
   "settings": [
     { "type": "header", "content": "Hero area" },
+    { "type": "checkbox", "id": "enable_animation", "label": "Enable scroll animation", "default": true },
     { "type": "text", "id": "hero_heading", "label": "Hero heading", "default": "Health in every drop" },
     { "type": "text", "id": "hero_button_text", "label": "Hero button text", "default": "Try baseline" },
     { "type": "url", "id": "hero_button_link", "label": "Hero button link" },
