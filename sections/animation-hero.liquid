@@ -317,212 +317,216 @@
 </style>
 
 <script>
-  (function () {
-    function loadScript(src, cb) {
-      if (document.querySelector('script[src="' + src + '"]')) {
-        cb();
-        return;
-      }
-      var s = document.createElement('script');
-      s.src = src;
-      s.onload = cb;
-      document.head.appendChild(s);
-    }
-
-    loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', function () {
-      loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js', function () {
-        init();
-      });
-    });
-
-    function escapeHtml(text) {
-      var div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
-
-    function init() {
-      if (typeof gsap === 'undefined') return;
-      gsap.registerPlugin(ScrollTrigger);
-
-      var section = document.getElementById('AnimationHero-{{ section.id }}');
-      if (!section) return;
-
-      /* Kill existing ScrollTriggers for this section (e.g. after theme editor re-render) */
-      ScrollTrigger.getAll().forEach(function (st) {
-        if (st.trigger && section.contains(st.trigger)) st.kill();
-      });
-
-      var track = section.querySelector('.animation-hero__track');
-      var heroTitle = section.querySelector('.animation-hero__title');
-      var heroCta = section.querySelector('.animation-hero__hero-cta');
-      var bannerWrap = section.querySelector('.animation-hero__banner-img-wrap');
-      var header = document.querySelector(
-        'sticky-header, .header-wrapper, #shopify-section-header, .site-header, header.header'
-      );
-
-      /* Split title words, reversed so last word animates out first. Escape HTML so special chars don't break DOM. */
-      var wordEls = [];
-      if (heroTitle) {
-        var rawText = heroTitle.innerText != null ? heroTitle.innerText : heroTitle.textContent || '';
-        var words = rawText.trim().split(/\s+/).filter(Boolean);
-        heroTitle.innerHTML = words
-          .map(function (w) {
-            return '<span class="anim-word-wrap"><span class="anim-word">' + escapeHtml(w) + '</span></span>';
-          })
-          .join(' ');
-        wordEls = Array.from(heroTitle.querySelectorAll('.anim-word')).reverse();
+    (function () {
+      function loadScript(src, cb) {
+        if (document.querySelector('script[src="' + src + '"]')) {
+          cb();
+          return;
+        }
+        var s = document.createElement('script');
+        s.src = src;
+        s.onload = cb;
+        document.head.appendChild(s);
       }
 
-      /*
-      Pin the section (100vh clip window) for 3× scroll distance.
-      t 0 → 1  : hero content exits
-      t 1 → 2  : track slides UP 100vh — the section's own black bottom half
-                 enters the viewport naturally, polyphenols content visible
-      t 2 → 3  : polyphenols pinned (hold)
-    */
-      var tl = gsap.timeline({
-        scrollTrigger: {
+      var animationEnabled = {{ section.settings.enable_animation | json }};
+      if (!animationEnabled) return;
+
+
+      loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', function () {
+        loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js', function () {
+          init();
+        });
+      });
+
+      function escapeHtml(text) {
+        var div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      function init() {
+        if (typeof gsap === 'undefined') return;
+        gsap.registerPlugin(ScrollTrigger);
+
+        var section = document.getElementById('AnimationHero-{{ section.id }}');
+        if (!section) return;
+
+        /* Kill existing ScrollTriggers for this section (e.g. after theme editor re-render) */
+        ScrollTrigger.getAll().forEach(function (st) {
+          if (st.trigger && section.contains(st.trigger)) st.kill();
+        });
+
+        var track = section.querySelector('.animation-hero__track');
+        var heroTitle = section.querySelector('.animation-hero__title');
+        var heroCta = section.querySelector('.animation-hero__hero-cta');
+        var bannerWrap = section.querySelector('.animation-hero__banner-img-wrap');
+        var header = document.querySelector(
+          'sticky-header, .header-wrapper, #shopify-section-header, .site-header, header.header'
+        );
+
+        /* Split title words, reversed so last word animates out first. Escape HTML so special chars don't break DOM. */
+        var wordEls = [];
+        if (heroTitle) {
+          var rawText = heroTitle.innerText != null ? heroTitle.innerText : heroTitle.textContent || '';
+          var words = rawText.trim().split(/\s+/).filter(Boolean);
+          heroTitle.innerHTML = words
+            .map(function (w) {
+              return '<span class="anim-word-wrap"><span class="anim-word">' + escapeHtml(w) + '</span></span>';
+            })
+            .join(' ');
+          wordEls = Array.from(heroTitle.querySelectorAll('.anim-word')).reverse();
+        }
+
+        /*
+        Pin the section (100vh clip window) for 3× scroll distance.
+        t 0 → 1  : hero content exits
+        t 1 → 2  : track slides UP 100vh — the section's own black bottom half
+                   enters the viewport naturally, polyphenols content visible
+        t 2 → 3  : polyphenols pinned (hold)
+      */
+        var tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: '+=300%',
+            pin: true,
+            scrub: 2.2,
+            anticipatePin: 1,
+            snap: {
+              snapTo: (progress) => {
+                return progress < 0.3 ? 0 : 1; // below 50% go back, above go next
+              },
+              duration: 3,
+              ease: 'power2.inOut',
+            },
+          },
+        });
+
+        /* Phase 1 — words move down one line-height so they fully pass the clip (wall at text bottom). fromTo so scroll-back restores y: 0. */
+        var wordPhaseDuration = wordEls.length ? 0.9 + (wordEls.length - 1) * 0.45 : 0;
+        if (wordEls.length) {
+          tl.fromTo(
+            wordEls,
+            { y: 0 },
+            {
+              y: 100,
+              stagger: 0.45,
+              ease: 'power3.in',
+              duration: 0.9,
+            },
+            0
+          );
+        }
+        if (heroCta) {
+          tl.to(heroCta, { filter: 'blur(10px)', opacity: 0, ease: 'power2.in', duration: 0.6 }, 0);
+        }
+        if (bannerWrap) {
+          tl.to(bannerWrap, { scale: 2.55, opacity: 0, ease: 'power2.inOut', duration: 1.0 }, 0);
+        }
+        if (header) {
+          tl.to(header, { yPercent: -120, ease: 'power2.in', duration: 0.5 }, 0.5);
+        }
+
+        /* Phase 2 — track slides UP after all words have exited (start after word phase) */
+        tl.to(
+          track,
+          {
+            y: '-100vh',
+            ease: 'power3.inOut',
+            duration: 1.0,
+          },
+          Math.max(1.0, wordPhaseDuration)
+        );
+
+        {% comment %} // hold slide 2 pinned
+        tl.to({}, { duration: 1 }, Math.max(1.0, wordPhaseDuration) + 1.0); {% endcomment %}
+        // hold slide 2 pinned
+        tl.to({}, { duration: 1 }, Math.max(1.0, wordPhaseDuration) + 1.0);
+
+        /* Phase 3 — lines animate in AS the polyphenols panel slides up */
+        var polyTextEl = section.querySelector('.animation-hero__polyphenols-text');
+        if (polyTextEl) {
+
+          /* 1. Wrap text nodes only — purely inline, zero layout change */
+          (function wrapTextNodes(el) {
+            var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+            var nodes = []; var n;
+            while ((n = walker.nextNode())) nodes.push(n);
+            nodes.forEach(function (tn) {
+              var tokens = tn.nodeValue.split(/(\s+)/);
+              if (tokens.length <= 1) return;
+              var frag = document.createDocumentFragment();
+              tokens.forEach(function (tok) {
+                if (!tok.trim()) {
+                  frag.appendChild(document.createTextNode(tok));
+                } else {
+                  var sp = document.createElement('span');
+                  sp.style.cssText = 'display:inline;';
+                  sp.className = 'poly-w';
+                  sp.textContent = tok;
+                  frag.appendChild(sp);
+                }
+              });
+              tn.parentNode.replaceChild(frag, tn);
+            });
+          })(polyTextEl);
+
+          /* 2. Force reflow */
+          void polyTextEl.offsetHeight;
+
+          /* 3. Group words by visual line */
+          var containerTop = polyTextEl.getBoundingClientRect().top;
+          var allWords = Array.from(polyTextEl.querySelectorAll('.poly-w'));
+
+          var lineGroups = [];
+          allWords.forEach(function (w) {
+            var wTop = Math.round(w.getBoundingClientRect().top - containerTop);
+            var last = lineGroups[lineGroups.length - 1];
+            if (last && Math.abs(last.top - wTop) < 6) {
+              last.words.push(w);
+            } else {
+              lineGroups.push({ top: wTop, words: [w] });
+            }
+          });
+
+          /* 4. Hide all words */
+          gsap.set(allWords, { opacity: 0, y: 22 });
+
+          /* 5. Start animating exactly when track starts sliding up,
+                spread lines across the slide duration (1.0) */
+          var slideStart = Math.max(1.0, wordPhaseDuration);   /* same as Phase 2 start */
+          var slideDuration = 2.5;
+          var perBeat = slideDuration / (lineGroups.length + 1);
+
+          lineGroups.forEach(function (group, i) {
+            tl.to(
+              group.words,
+              { opacity: 1, y: 0, ease: 'power2.out', duration: perBeat * 1.2 },
+              slideStart + i * perBeat
+            );
+          });
+        }
+
+        /* Header comes back down as polyphenols arrives */
+
+        /* Header comes back down as polyphenols arrives */
+        if (header) {
+          tl.to(header, { yPercent: 0, ease: 'power2.out', duration: 0.8 }, Math.max(1.0, wordPhaseDuration) + 0.4);
+        }
+
+        /* Cleanup */
+        ScrollTrigger.create({
           trigger: section,
           start: 'top top',
-          end: '+=300%',
-          pin: true,
-          scrub: 2.2,
-          anticipatePin: 1,
-          snap: {
-            snapTo: (progress) => {
-              return progress < 0.3 ? 0 : 1; // below 50% go back, above go next
-            },
-            duration: 3,
-            ease: 'power2.inOut',
+          end: '+=500%',
+          onLeave: function () {
+            if (header) gsap.set(header, { clearProps: 'all' });
+            if (heroCta) gsap.set(heroCta, { clearProps: 'all' });
           },
-        },
-      });
-
-      /* Phase 1 — words move down one line-height so they fully pass the clip (wall at text bottom). fromTo so scroll-back restores y: 0. */
-      var wordPhaseDuration = wordEls.length ? 0.9 + (wordEls.length - 1) * 0.45 : 0;
-      if (wordEls.length) {
-        tl.fromTo(
-          wordEls,
-          { y: 0 },
-          {
-            y: 100,
-            stagger: 0.45,
-            ease: 'power3.in',
-            duration: 0.9,
-          },
-          0
-        );
-      }
-      if (heroCta) {
-        tl.to(heroCta, { filter: 'blur(10px)', opacity: 0, ease: 'power2.in', duration: 0.6 }, 0);
-      }
-      if (bannerWrap) {
-        tl.to(bannerWrap, { scale: 2.55, opacity: 0, ease: 'power2.inOut', duration: 1.0 }, 0);
-      }
-      if (header) {
-        tl.to(header, { yPercent: -120, ease: 'power2.in', duration: 0.5 }, 0.5);
-      }
-
-      /* Phase 2 — track slides UP after all words have exited (start after word phase) */
-      tl.to(
-        track,
-        {
-          y: '-100vh',
-          ease: 'power3.inOut',
-          duration: 1.0,
-        },
-        Math.max(1.0, wordPhaseDuration)
-      );
-
-      {% comment %} // hold slide 2 pinned
-      tl.to({}, { duration: 1 }, Math.max(1.0, wordPhaseDuration) + 1.0); {% endcomment %}
-      // hold slide 2 pinned
-      tl.to({}, { duration: 1 }, Math.max(1.0, wordPhaseDuration) + 1.0);
-
-      /* Phase 3 — lines animate in AS the polyphenols panel slides up */
-      var polyTextEl = section.querySelector('.animation-hero__polyphenols-text');
-      if (polyTextEl) {
-
-        /* 1. Wrap text nodes only — purely inline, zero layout change */
-        (function wrapTextNodes(el) {
-          var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
-          var nodes = []; var n;
-          while ((n = walker.nextNode())) nodes.push(n);
-          nodes.forEach(function (tn) {
-            var tokens = tn.nodeValue.split(/(\s+)/);
-            if (tokens.length <= 1) return;
-            var frag = document.createDocumentFragment();
-            tokens.forEach(function (tok) {
-              if (!tok.trim()) {
-                frag.appendChild(document.createTextNode(tok));
-              } else {
-                var sp = document.createElement('span');
-                sp.style.cssText = 'display:inline;';
-                sp.className = 'poly-w';
-                sp.textContent = tok;
-                frag.appendChild(sp);
-              }
-            });
-            tn.parentNode.replaceChild(frag, tn);
-          });
-        })(polyTextEl);
-
-        /* 2. Force reflow */
-        void polyTextEl.offsetHeight;
-
-        /* 3. Group words by visual line */
-        var containerTop = polyTextEl.getBoundingClientRect().top;
-        var allWords = Array.from(polyTextEl.querySelectorAll('.poly-w'));
-
-        var lineGroups = [];
-        allWords.forEach(function (w) {
-          var wTop = Math.round(w.getBoundingClientRect().top - containerTop);
-          var last = lineGroups[lineGroups.length - 1];
-          if (last && Math.abs(last.top - wTop) < 6) {
-            last.words.push(w);
-          } else {
-            lineGroups.push({ top: wTop, words: [w] });
-          }
-        });
-
-        /* 4. Hide all words */
-        gsap.set(allWords, { opacity: 0, y: 22 });
-
-        /* 5. Start animating exactly when track starts sliding up,
-              spread lines across the slide duration (1.0) */
-        var slideStart = Math.max(1.0, wordPhaseDuration);   /* same as Phase 2 start */
-        var slideDuration = 2.5;
-        var perBeat = slideDuration / (lineGroups.length + 1);
-
-        lineGroups.forEach(function (group, i) {
-          tl.to(
-            group.words,
-            { opacity: 1, y: 0, ease: 'power2.out', duration: perBeat * 1.2 },
-            slideStart + i * perBeat
-          );
         });
       }
-
-      /* Header comes back down as polyphenols arrives */
-
-      /* Header comes back down as polyphenols arrives */
-      if (header) {
-        tl.to(header, { yPercent: 0, ease: 'power2.out', duration: 0.8 }, Math.max(1.0, wordPhaseDuration) + 0.4);
-      }
-
-      /* Cleanup */
-      ScrollTrigger.create({
-        trigger: section,
-        start: 'top top',
-        end: '+=500%',
-        onLeave: function () {
-          if (header) gsap.set(header, { clearProps: 'all' });
-          if (heroCta) gsap.set(heroCta, { clearProps: 'all' });
-        },
-      });
-    }
-  })();
+    })();
 </script>
 
 {% schema %}
@@ -532,7 +536,7 @@
   "class": "section-animation-hero",
   "settings": [
     { "type": "header", "content": "Hero area" },
-    { "type": "checkbox",  "id": "enable_animation", "label": "Enable scroll animation", "default": true},
+    { "type": "checkbox", "id": "enable_animation", "label": "Enable scroll animation", "default": true },
     { "type": "text", "id": "hero_heading", "label": "Hero heading", "default": "Health in every drop" },
     { "type": "text", "id": "hero_button_text", "label": "Hero button text", "default": "Try baseline" },
     { "type": "url", "id": "hero_button_link", "label": "Hero button link" },
