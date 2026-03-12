@@ -7,9 +7,9 @@
     margin-top: -110px;
 
   }
-  
-  
-  
+
+
+
 
   /* ── The full section body: 300vh, gradient red (top) → black (bottom) ─
      Hero lives on the red half, Polyphenols on the black half.
@@ -143,13 +143,15 @@
               {{
                 mobile_img
                 | image_url: width: 800
-                | image_tag: loading: 'lazy', class: 'animation-hero__banner-img', alt: mobile_img.alt | default: 'Hero banner'
+                | image_tag: loading: 'lazy', class: 'animation-hero__banner-img', alt: mobile_img.alt
+                | default: 'Hero banner'
               }}
             {%- else -%}
               {{
                 desktop_img
                 | image_url: width: 1200
-                | image_tag: loading: 'lazy', class: 'animation-hero__banner-img', alt: desktop_img.alt | default: 'Hero banner'
+                | image_tag: loading: 'lazy', class: 'animation-hero__banner-img', alt: desktop_img.alt
+                | default: 'Hero banner'
               }}
             {%- endif -%}
           </div>
@@ -286,7 +288,7 @@
   }
   .animation-hero__banner-img-wrap {margin-top: 100px;}
   @media (min-width: 990px) {
-    
+
     .animation-hero__polyphenols-media {
       max-width: 320px;
     }
@@ -490,7 +492,7 @@
         /* 5. Start animating exactly when track starts sliding up,
               spread lines across the slide duration (1.0) */
         var slideStart = Math.max(1.0, wordPhaseDuration);   /* same as Phase 2 start */
-        var slideDuration = 2.5;                             
+        var slideDuration = 2.5;
         var perBeat = slideDuration / (lineGroups.length + 1);
 
         lineGroups.forEach(function (group, i) {
@@ -530,6 +532,7 @@
   "class": "section-animation-hero",
   "settings": [
     { "type": "header", "content": "Hero area" },
+    { "type": "checkbox",  "id": "enable_animation", "label": "Enable scroll animation", "default": true},
     { "type": "text", "id": "hero_heading", "label": "Hero heading", "default": "Health in every drop" },
     { "type": "text", "id": "hero_button_text", "label": "Hero button text", "default": "Try baseline" },
     { "type": "url", "id": "hero_button_link", "label": "Hero button link" },
