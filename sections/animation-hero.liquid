@@ -314,8 +314,7 @@
       max-width: 100%;
     }
   }
-</style>
-{%- unless section.settings.enable_animation -%}
+  {%- unless section.settings.enable_animation -%}
   .animation-hero-{{ section.id }} {
     height: auto;
     overflow: visible;
@@ -325,6 +324,8 @@
     transform: none !important;
   }
 {%- endunless -%}
+</style>
+
 
 <script>
     (function () {
