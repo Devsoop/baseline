@@ -87,18 +87,18 @@
             "border_radius": 8
           }
         },
-        "text_w8BDBx": {
-          "type": "text",
-          "settings": {
-            "text": "<em><strong>Try 100% Risk Free</strong></em><em>  30 Day Money Back Guarantee</em>",
-            "text_style": "body"
-          }
-        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
             "show_dynamic_checkout": false,
             "show_gift_card_recipient": true
+          }
+        },
+        "text_w8BDBx": {
+          "type": "text",
+          "settings": {
+            "text": "<em><strong>Try 100% Risk Free</strong></em><em>  30 Day Money Back Guarantee</em>",
+            "text_style": "body"
           }
         },
         "share": {
@@ -119,8 +119,8 @@
         "variant_picker",
         "quantity_selector",
         "premium_info_pVYCiM",
-        "text_w8BDBx",
         "buy_buttons",
+        "text_w8BDBx",
         "share"
       ],
       "custom_css": [
