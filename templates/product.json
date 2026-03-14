@@ -49,6 +49,13 @@
             "swatch_shape": "circle"
           }
         },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": true
+          }
+        },
         "quantity_selector": {
           "type": "quantity_selector",
           "disabled": true,
@@ -87,13 +94,6 @@
             "border_radius": 8
           }
         },
-        "buy_buttons": {
-          "type": "buy_buttons",
-          "settings": {
-            "show_dynamic_checkout": false,
-            "show_gift_card_recipient": true
-          }
-        },
         "text_w8BDBx": {
           "type": "text",
           "settings": {
@@ -117,9 +117,9 @@
         "selling_plan_picker_thmKQB",
         "price",
         "variant_picker",
+        "buy_buttons",
         "quantity_selector",
         "premium_info_pVYCiM",
-        "buy_buttons",
         "text_w8BDBx",
         "share"
       ],
