@@ -764,9 +764,9 @@
         }
       }
 
-      // Image motion: rise from bottom, fully visible around middle, then move up and fade out
+      // Image motion: rise from bottom AFTER text, fully visible around middle, then move up and fade out
       if (images.length) {
-        // Fade & slide into viewport from side, rising from bottom toward center
+        // Delayed entry — text animates in first, then image follows from bottom
         tl.to(images, {
           autoAlpha: 1,
           xPercent: 0,
@@ -774,7 +774,7 @@
           scale: 1,
           duration: 0.5,
           ease: 'power3.out'
-        }, contentAt);
+        }, contentAt + 0.25);
 
         // Then move further upward toward the top while fading away
         tl.to(images, {
