@@ -411,6 +411,13 @@
           "disabled": true,
           "settings": {}
         },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": true
+          }
+        },
         "premium_info_pVYCiM": {
           "type": "premium_info",
           "settings": {
@@ -451,13 +458,6 @@
             "text_style": "body"
           }
         },
-        "buy_buttons": {
-          "type": "buy_buttons",
-          "settings": {
-            "show_dynamic_checkout": false,
-            "show_gift_card_recipient": true
-          }
-        },
         "share": {
           "type": "share",
           "disabled": true,
@@ -475,9 +475,9 @@
         "price",
         "variant_picker",
         "quantity_selector",
+        "buy_buttons",
         "premium_info_pVYCiM",
         "text_w8BDBx",
-        "buy_buttons",
         "share"
       ],
       "custom_css": [
@@ -827,7 +827,7 @@
           "type": "comparison_row",
           "settings": {
             "category": "POLYPHENOLS",
-            "brand_value": "500+ mg/kg",
+            "brand_value": "400+ mg/kg",
             "competitor_value": "50 mg/kg",
             "brand_selected": true
           }
