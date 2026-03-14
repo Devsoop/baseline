@@ -730,12 +730,11 @@
         }, contentAt + 0.5);
       } else {
         if (eyebrow) {
-          // Eyebrow rises from further below — similar feel to the image entry
-          gsap.set(eyebrow, { autoAlpha: 0, y: 50 });
+          // Eyebrow comes in from below, then fades/moves slightly up near the top
           tl.to(eyebrow, {
             autoAlpha: 1,
             y: 0,
-            duration: 0.55,
+            duration: 0.5,
             ease: 'power2.out'
           }, contentAt);
 
@@ -747,15 +746,14 @@
           }, contentAt + 0.5);
         }
         if (lines.length) {
-          // Lines also start from well below the viewport
-          gsap.set(lines, { autoAlpha: 0, y: 60 });
+          // Body lines fade in from below, then fade/move up together near the top
           tl.to(lines, {
             autoAlpha: 1,
             y: 0,
             duration: 0.9,
             ease: 'power2.out',
             stagger: 0.12
-          }, contentAt + 0.08);   // text starts first
+          }, contentAt + 0.08);
 
           tl.to(lines, {
             autoAlpha: 0,
@@ -766,11 +764,9 @@
         }
       }
 
-      // Image motion: delayed so it enters AFTER text has begun rising
+      // Image motion: rise from bottom, fully visible around middle, then move up and fade out
       if (images.length) {
-        var fromSide = index % 2 === 0 ? -60 : 60;
-        gsap.set(images, { autoAlpha: 0, xPercent: fromSide, yPercent: 40, scale: 0.95 });
-
+        // Fade & slide into viewport from side, rising from bottom toward center
         tl.to(images, {
           autoAlpha: 1,
           xPercent: 0,
@@ -778,8 +774,9 @@
           scale: 1,
           duration: 0.5,
           ease: 'power3.out'
-        }, contentAt + 0.30);   // ← image starts 0.30 after text begins
+        }, contentAt);
 
+        // Then move further upward toward the top while fading away
         tl.to(images, {
           yPercent: -20,
           autoAlpha: 0,
