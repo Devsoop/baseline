@@ -13,7 +13,7 @@
       "type": "animation-hero",
       "name": "Animation hero",
       "settings": {
-        "enable_animation": false,
+        "enable_animation": true,
         "hero_heading": "Health in every drop",
         "hero_button_text": "Try baseline",
         "hero_button_link": "shopify://products/500ml-pouch",
