@@ -314,6 +314,7 @@
     .animation-hero-{{ section.id }} .animation-hero__banner {
       max-width: 100%;
     }
+    
   }
   {%- unless section.settings.enable_animation -%}
     .animation-hero-{{ section.id }} {
@@ -323,6 +324,11 @@
     .animation-hero-{{ section.id }} .animation-hero__track {
       height: auto;
       transform: none !important;
+    }
+    .animation-hero__polyphenols {
+      height: auto;
+          padding-top: 120px;
+    padding-bottom: 120px;
     }
   {%- endunless -%}
 </style>
