@@ -38,7 +38,7 @@
     }
 
     /* ── Polyphenols panel: bottom 100vh of the track (sits on black area) ── */
-    .animation-hero-{{ section.id }} .animation-hero__polyphenols {
+    .animation-hero__polyphenols {
       height: 100vh;
       width: 100%;
       position: relative;
@@ -49,7 +49,7 @@
       padding-bottom: 0;
     }
     @media (min-width: 990px) {
-      .animation-hero-{{ section.id }} .animation-hero__polyphenols {
+      .animation-hero__polyphenols {
         grid-template-columns: 66.6% 33%;
         gap: 1rem;
       }
@@ -326,10 +326,8 @@
       height: auto;
       transform: none !important;
     }
-   .animation-hero-{{ section.id }} .animation-hero__polyphenols {
+    .animation-hero__polyphenols {
       height: auto !important;
-          padding-top: 120px;
-    padding-bottom: 120px;
     }
   {%- endunless -%}
 </style>
