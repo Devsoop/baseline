@@ -327,12 +327,18 @@
       height: auto;
       overflow: visible;
     }
+    
     .animation-hero-{{ section.id }} .animation-hero__track {
       height: auto;
       transform: none !important;
     }
     .animation-hero__polyphenols {
       height: auto !important;
+    }
+    @media screen and (max-width: 500px) {
+      .animation-hero-{{ section.id }} .animation-hero__hero {
+        height: 70vh;
+      }
     }
   {%- endunless -%}
 </style>
