@@ -98,6 +98,12 @@
               {%- case block.type -%}
                 {%- when '@app' -%}
                   {% render block %}
+                
+                {%- when 'selling_plan_picker' -%}
+                <div class="selling-plan-picker-wrapper" {{ block.shopify_attributes }}>
+                  {%- render 'selling-plan-picker', product: product, block: block, product_form_id: product_form_id -%}
+                </div>
+                  
                 {%- when 'text' -%}
                   <p
                     class="product__text inline-richtext{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}"
