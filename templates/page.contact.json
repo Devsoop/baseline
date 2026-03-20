@@ -9,6 +9,76 @@
  */
 {
   "sections": {
+    "featured_product_37Fjp9": {
+      "type": "featured-product",
+      "blocks": {
+        "text_THCaJk": {
+          "type": "text",
+          "settings": {
+            "text": "{{ section.settings.product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title_n4tGrN": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h1"
+          }
+        },
+        "price_Nckq4G": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker_NNdRdr": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector_XXQJe8": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons_py4yNg": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share_3CpXAD": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "text_THCaJk",
+        "title_n4tGrN",
+        "price_Nckq4G",
+        "variant_picker_NNdRdr",
+        "quantity_selector_XXQJe8",
+        "buy_buttons_py4yNg",
+        "share_3CpXAD"
+      ],
+      "name": "t:sections.featured-product.presets.name",
+      "settings": {
+        "product": "500ml-pouch",
+        "color_scheme": "",
+        "secondary_background": false,
+        "media_size": "small",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
     "main": {
       "type": "main-page",
       "disabled": true,
@@ -45,6 +115,7 @@
     }
   },
   "order": [
+    "featured_product_37Fjp9",
     "main",
     "form"
   ]
